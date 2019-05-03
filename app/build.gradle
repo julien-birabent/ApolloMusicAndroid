@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -72,10 +74,10 @@ dependencies {
     /* Dagger2 - We are going to use dagger.android which includes
      * support for Activity and fragment injection so we need to include
      * the following dependencies */
+    kapt "com.google.dagger:dagger-android-processor:$dagger2Version"
     implementation "com.google.dagger:dagger-android:$dagger2Version"
     implementation "com.google.dagger:dagger-android-support:$dagger2Version"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger2Version"
 
     /* Dagger2 - default dependency */
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger2Version"
+    kapt "com.google.dagger:dagger-compiler:$dagger2Version"
 }
