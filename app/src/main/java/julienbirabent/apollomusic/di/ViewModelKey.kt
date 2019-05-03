@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy
 import kotlin.reflect.KClass
 import kotlin.annotation.Target
 
-@Documented
+@MustBeDocumented
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
 @Retention(RetentionPolicy.RUNTIME)
 @MapKey
