@@ -1,7 +1,6 @@
 package julienbirabent.apollomusic.ui.example
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.ActivityExampleBinding

@@ -14,9 +14,15 @@ import android.view.ViewGroup;
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import dagger.android.support.AndroidSupportInjection;
+import julienbirabent.apollomusic.viewmodel.ViewModelFactory;
+
+import javax.inject.Inject;
 
 @FragmentWithArgs
 public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
+
+    @Inject
+    ViewModelFactory viewModelFactory;
 
     private BaseActivity mActivity;
     private View mRootView;
