@@ -20,25 +20,18 @@ class ApolloMusicApplication : Application(), HasActivityInjector, HasSupportFra
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
-    private lateinit var applicationComponent: ApplicationComponent
-
     override fun onCreate() {
         super.onCreate()
-        applicationComponent = DaggerApplicationComponent
+        DaggerApplicationComponent
             .builder()
             .application(this)
             .build()
-
-        applicationComponent.inject(this)
+            .inject(this)
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
 
     override fun activityInjector(): AndroidInjector<Activity> {
         return activityDispatchingInjector
-    }
-
-    fun getComponent(): ApplicationComponent {
-        return applicationComponent
     }
 }
