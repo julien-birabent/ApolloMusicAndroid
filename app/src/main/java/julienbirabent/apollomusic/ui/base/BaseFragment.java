@@ -1,4 +1,4 @@
-package julienbirabent.apollomusic.ui;
+package julienbirabent.apollomusic.ui.base;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;

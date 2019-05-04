@@ -27,6 +27,10 @@ android {
     }
 }
 
+kapt {
+    generateStubs = true
+}
+
 ext {
     dagger2Version = '2.17'
     retrofitVersion = '2.5.0'

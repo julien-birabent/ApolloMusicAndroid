@@ -1,19 +1,37 @@
 package julienbirabent.apollomusic
 
-import dagger.android.support.DaggerApplication
+import android.app.Activity
+import android.app.Application
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import julienbirabent.apollomusic.di.component.ApplicationComponent
 import julienbirabent.apollomusic.di.component.DaggerApplicationComponent
+import javax.inject.Inject
 
-class ApolloMusicApplication : DaggerApplication() {
 
-    private val applicationInjector = DaggerApplicationComponent.builder()
-        .application(this)
-        .build()
+class ApolloMusicApplication : Application(), HasActivityInjector {
 
+    @Inject
+    lateinit var activityDispatchingInjector: DispatchingAndroidInjector<Activity>
+
+    private lateinit var applicationComponent: ApplicationComponent
 
     override fun onCreate() {
         super.onCreate()
+        applicationComponent = DaggerApplicationComponent
+            .builder()
+            .application(this)
+            .build()
+
+        applicationComponent.inject(this)
     }
 
-    override fun applicationInjector() = applicationInjector
+    fun getComponent(): ApplicationComponent {
+        return applicationComponent
+    }
 
+    override fun activityInjector(): AndroidInjector<Activity> {
+        return activityDispatchingInjector
+    }
 }

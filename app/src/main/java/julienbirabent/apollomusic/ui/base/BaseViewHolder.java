@@ -1,4 +1,4 @@
-package julienbirabent.apollomusic.ui;
+package julienbirabent.apollomusic.ui.base;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

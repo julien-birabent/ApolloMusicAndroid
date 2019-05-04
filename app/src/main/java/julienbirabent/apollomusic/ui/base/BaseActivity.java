@@ -1,4 +1,4 @@
-package julienbirabent.apollomusic.ui;
+package julienbirabent.apollomusic.ui.base;
 
 import android.annotation.TargetApi;
 import android.content.Context;
