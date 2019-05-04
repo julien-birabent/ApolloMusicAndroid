@@ -84,4 +84,11 @@ dependencies {
 
     /* Dagger2 - default dependency */
     kapt "com.google.dagger:dagger-compiler:$dagger2Version"
+
+    /* FragmentWithArgs - reduce boilerplate when creating fragment with arguments*/
+    implementation 'com.hannesdorfmann.fragmentargs:annotation:4.0.0-RC1'
+    annotationProcessor 'com.hannesdorfmann.fragmentargs:processor:4.0.0-RC1'
+
+    kapt 'com.hannesdorfmann.fragmentargs:annotation:4.0.0-RC1'
+    kapt 'com.hannesdorfmann.fragmentargs:processor:4.0.0-RC1'
 }

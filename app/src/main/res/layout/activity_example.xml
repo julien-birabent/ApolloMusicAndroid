@@ -8,11 +8,13 @@
     </data>
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/activity_example_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <Button
             android:text="Click me"
+            android:onClick="@{() -> viewModel.onClickButton()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

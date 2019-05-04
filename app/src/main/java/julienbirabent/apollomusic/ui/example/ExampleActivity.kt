@@ -1,19 +1,20 @@
 package julienbirabent.apollomusic.ui.example
 
-import android.arch.lifecycle.ViewModelProviders
+import android.os.Bundle
+import android.os.PersistableBundle
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.ActivityExampleBinding
 import julienbirabent.apollomusic.ui.base.BaseActivity
-import julienbirabent.apollomusic.viewmodel.ViewModelFactory
-import javax.inject.Inject
 
-class ExampleActivity : BaseActivity<ActivityExampleBinding, ExampleViewModel>() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory
+class ExampleActivity : BaseActivity<ActivityExampleBinding, ExampleViewModel>(), ExampleNavigator {
 
-    lateinit var exampleViewModel: ExampleViewModel
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        viewModel.navigator = this
+    }
 
     override fun getBindingVariable(): Int {
         return BR.viewModel
@@ -23,9 +24,20 @@ class ExampleActivity : BaseActivity<ActivityExampleBinding, ExampleViewModel>()
         return R.layout.activity_example
     }
 
-    override fun getViewModel(): ExampleViewModel {
-        exampleViewModel = ViewModelProviders.of(this, factory).get(ExampleViewModel::class.java)
-        return exampleViewModel
+    override fun getViewModelClass(): Class<ExampleViewModel> {
+        return ExampleViewModel::class.java
     }
 
+    override fun openExample() {
+
+        // Using the generated Builder
+        val fragment = ExampleFragmentBuilder()
+            .build()
+
+        // Fragment Transaction
+        supportFragmentManager
+            .beginTransaction()
+            .add(viewDataBinding.root.id, fragment)
+            .commit()
+    }
 }

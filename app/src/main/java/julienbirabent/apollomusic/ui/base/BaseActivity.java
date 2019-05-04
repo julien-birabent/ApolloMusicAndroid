@@ -1,6 +1,7 @@
 package julienbirabent.apollomusic.ui.base;
 
 import android.annotation.TargetApi;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -8,17 +9,30 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import julienbirabent.apollomusic.Utils.NetworkUtils;
+import julienbirabent.apollomusic.viewmodel.ViewModelFactory;
+
+import javax.inject.Inject;
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
-        implements BaseFragment.Callback {
+        implements BaseFragment.Callback , HasSupportFragmentInjector {
 
-    private T mViewDataBinding;
-    private V mViewModel;
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentAndroidInjector;
+
+    @Inject
+    ViewModelFactory viewModelFactory;
+
+    protected T viewDataBinding;
+    protected V viewModel;
 
     /**
      * Override for set binding variable
@@ -39,7 +53,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
      *
      * @return view model instance
      */
-    public abstract V getViewModel();
+    public abstract Class<V> getViewModelClass();
 
     @Override
     public void onFragmentAttached() {
@@ -59,7 +73,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     }
 
     public T getViewDataBinding() {
-        return mViewDataBinding;
+        return viewDataBinding;
     }
 
     public void hideKeyboard() {
@@ -85,6 +99,11 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         AndroidInjection.inject(this);
     }
 
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentAndroidInjector;
+    }
+
     @TargetApi(Build.VERSION_CODES.M)
     public void requestPermissionsSafely(String[] permissions, int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -93,10 +112,11 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     }
 
     private void performDataBinding() {
-        mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
-        this.mViewModel = mViewModel == null ? getViewModel() : mViewModel;
-        mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
-        mViewDataBinding.executePendingBindings();
+        viewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
+        this.viewModel = viewModel == null ?
+                ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass()) : viewModel;
+        viewDataBinding.setVariable(getBindingVariable(), viewModel);
+        viewDataBinding.executePendingBindings();
     }
 }
 
