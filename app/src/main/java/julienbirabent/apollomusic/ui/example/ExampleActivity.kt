@@ -9,7 +9,6 @@ import julienbirabent.apollomusic.ui.base.BaseActivity
 
 class ExampleActivity : BaseActivity<ActivityExampleBinding, ExampleViewModel>(), ExampleNavigator {
 
-
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         viewModel.navigator = this
@@ -28,7 +27,6 @@ class ExampleActivity : BaseActivity<ActivityExampleBinding, ExampleViewModel>()
     }
 
     override fun openExample() {
-
         // Using the generated Builder
         val fragment = ExampleFragmentBuilder()
             .build()

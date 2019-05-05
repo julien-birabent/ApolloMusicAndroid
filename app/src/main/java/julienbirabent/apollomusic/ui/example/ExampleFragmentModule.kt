@@ -1,6 +1,7 @@
 package julienbirabent.apollomusic.ui.example
 
 import dagger.Module
+import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import julienbirabent.apollomusic.ui.example.ExampleFragment
 
@@ -8,5 +9,5 @@ import julienbirabent.apollomusic.ui.example.ExampleFragment
 abstract class ExampleFragmentModule {
 
     @ContributesAndroidInjector
-    internal abstract fun contributeExampleFragment(): ExampleFragment
+    abstract fun contributeExampleFragment(): ExampleFragment
 }

@@ -8,7 +8,7 @@ import julienbirabent.apollomusic.ui.example.ExampleFragmentModule
 @Module
 abstract class ActivityBuilderModule {
 
-   //example
+    //example
     @ContributesAndroidInjector(modules = arrayOf(ExampleFragmentModule::class))
     abstract fun bindExampleActivity(): ExampleActivity
 }

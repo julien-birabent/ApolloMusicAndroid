@@ -29,10 +29,10 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     DispatchingAndroidInjector<Fragment> fragmentAndroidInjector;
 
     @Inject
-    ViewModelFactory viewModelFactory;
+    public ViewModelFactory viewModelFactory;
 
     protected T viewDataBinding;
-    protected V viewModel;
+    public V viewModel;
 
     /**
      * Override for set binding variable

@@ -10,6 +10,6 @@ import kotlin.annotation.Target
 
 @MustBeDocumented
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(value=RetentionPolicy.RUNTIME)
 @MapKey
 internal annotation class ViewModelKey(val value: KClass<out ViewModel>)

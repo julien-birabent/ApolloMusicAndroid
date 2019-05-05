@@ -1,6 +1,7 @@
 package julienbirabent.apollomusic.ui.example
 
 import android.arch.lifecycle.ViewModelProviders
+import android.util.Log
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
@@ -11,8 +12,6 @@ import javax.inject.Inject
 
 @FragmentWithArgs
 class ExampleFragment : BaseFragment<FragmentExampleBinding, ExampleViewModel>() {
-    @Inject
-    lateinit var factory: ViewModelFactory
 
     override fun getBindingVariable(): Int {
         return BR.viewModel
@@ -23,7 +22,7 @@ class ExampleFragment : BaseFragment<FragmentExampleBinding, ExampleViewModel>()
     }
 
     override fun getViewModel(): ExampleViewModel {
-        return ViewModelProviders.of(baseActivity).get(ExampleViewModel::class.java)
+                return ViewModelProviders.of(baseActivity).get(ExampleViewModel::class.java)
     }
 
 }
