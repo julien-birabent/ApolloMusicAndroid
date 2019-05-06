@@ -2,12 +2,14 @@ package julienbirabent.apollomusic.ui.example
 
 import dagger.Module
 import dagger.Provides
-import dagger.android.ContributesAndroidInjector
-import julienbirabent.apollomusic.ui.example.ExampleFragment
+import javax.inject.Named
 
 @Module
-abstract class ExampleFragmentModule {
+class ExampleFragmentModule {
 
-    @ContributesAndroidInjector
-    abstract fun contributeExampleFragment(): ExampleFragment
+    @Provides
+    @Named("FragArgs")
+    fun provideExampleArgs() : String {
+        return "Im an example"
+    }
 }
