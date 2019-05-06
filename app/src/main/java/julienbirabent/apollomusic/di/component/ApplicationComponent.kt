@@ -6,6 +6,7 @@ import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import julienbirabent.apollomusic.ApolloMusicApplication
 import julienbirabent.apollomusic.di.module.ActivityBuilderModule
+import julienbirabent.apollomusic.di.module.AppModule
 import julienbirabent.apollomusic.di.module.ViewModelModule
 import javax.inject.Singleton
 
@@ -14,6 +15,7 @@ import javax.inject.Singleton
 @Component(
     modules =
     [AndroidSupportInjectionModule::class,
+        AppModule::class,
         ActivityBuilderModule::class,
         ViewModelModule::class
     ]
