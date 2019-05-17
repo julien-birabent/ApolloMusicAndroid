@@ -35,7 +35,7 @@ ext {
     dagger2Version = '2.17'
     retrofitVersion = '2.5.0'
     archLifecycleVersion = '1.1.1'
-    roomVersion='1.1.1'
+    roomVersion='2.1.0-alpha06'
     glideVersion='4.9.0'
 }
 
@@ -70,10 +70,15 @@ dependencies {
     /* Android Architecture Component - LiveData & ViewModel  */
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
 
-    /* Android Architecture Component - Room Persistance Lib  */
+    /* Android Architecture Component - Room Persistance Lib  *//*
     implementation "android.arch.persistence.room:runtime:$roomVersion"
     implementation "android.arch.persistence.room:rxjava2:$roomVersion"
-    annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"*/
+
+    // Room components
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
     /* Dagger2 - We are going to use dagger.android which includes
      * support for Activity and fragment injection so we need to include
