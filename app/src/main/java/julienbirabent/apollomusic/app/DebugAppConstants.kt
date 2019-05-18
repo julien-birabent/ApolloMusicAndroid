@@ -2,7 +2,7 @@ package julienbirabent.apollomusic.app
 
 import julienbirabent.apollomusic.BuildConfig
 
-class DebugAppConstants() : AppConstants {
+class DebugAppConstants : AppConstants {
 
     override fun baseUrl(): String {
         return BuildConfig.BASE_URL
@@ -20,4 +20,8 @@ class DebugAppConstants() : AppConstants {
         return 1
     }
 
+    override fun sharedPrefName(): String {
+        return "shared_prefs_debug"
+    }
 }
+

@@ -9,4 +9,6 @@ interface AppConstants {
     fun dbName():String
 
     fun dbVersion(): Int
+
+    fun sharedPrefName(): String
 }

@@ -1,4 +1,4 @@
-package julienbirabent.apollomusic.data.db
+package julienbirabent.apollomusic.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

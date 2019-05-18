@@ -8,14 +8,14 @@ import javax.inject.Named
 import javax.inject.Singleton
 import dagger.Provides
 import android.content.SharedPreferences
+import julienbirabent.apollomusic.app.AppConstants
+import julienbirabent.apollomusic.app.ReleaseAppConstants
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.thread.SchedulerProvider
 
 
 @Module
 class AppModule{
-
-    private val SHARED_PACKAGE = "base_shared_preferences"
 
     @Singleton
     @Provides
@@ -26,8 +26,8 @@ class AppModule{
 
     @Provides
     @Singleton
-    fun provideSharedPreferences(context: Context): SharedPreferences {
-        return context.getSharedPreferences(SHARED_PACKAGE, Context.MODE_PRIVATE)
+    fun provideSharedPreferences(context: Context, appConstants: AppConstants): SharedPreferences {
+        return context.getSharedPreferences(appConstants.sharedPrefName(), Context.MODE_PRIVATE)
     }
 
     @Singleton

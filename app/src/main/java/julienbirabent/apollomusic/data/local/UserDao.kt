@@ -1,7 +1,7 @@
 package julienbirabent.apollomusic.data.local
 
 import androidx.room.*
-import julienbirabent.apollomusic.data.db.User
+import julienbirabent.apollomusic.data.User
 
 @Dao
 interface UserDao {
