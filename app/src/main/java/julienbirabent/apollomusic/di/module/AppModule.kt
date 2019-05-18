@@ -18,6 +18,7 @@ class AppModule{
 
     private val SHARED_PACKAGE = "base_shared_preferences"
 
+    @Singleton
     @Provides
     @Named("ApplicationContext")
     fun provideContext(application: Application): Context {

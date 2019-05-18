@@ -1,7 +1,7 @@
 package julienbirabent.apollomusic.ui.base;
 
-import android.arch.lifecycle.ViewModel;
-import android.databinding.ObservableBoolean;
+import androidx.lifecycle.ViewModel;
+import androidx.databinding.ObservableBoolean;
 import io.reactivex.disposables.CompositeDisposable;
 
 import java.lang.ref.WeakReference;
