@@ -1,4 +1,4 @@
-package julienbirabent.apollomusic
+package julienbirabent.apollomusic.thread
 
 import io.reactivex.Scheduler
 

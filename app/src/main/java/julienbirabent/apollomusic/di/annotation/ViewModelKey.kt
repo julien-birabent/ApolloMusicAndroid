@@ -1,8 +1,7 @@
-package julienbirabent.apollomusic.di
+package julienbirabent.apollomusic.di.annotation
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey
-import java.lang.annotation.Documented
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 import kotlin.reflect.KClass

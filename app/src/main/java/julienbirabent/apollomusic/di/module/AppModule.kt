@@ -8,9 +8,8 @@ import javax.inject.Named
 import javax.inject.Singleton
 import dagger.Provides
 import android.content.SharedPreferences
-
-
-
+import julienbirabent.apollomusic.thread.AppSchedulerProvider
+import julienbirabent.apollomusic.thread.SchedulerProvider
 
 
 @Module
@@ -29,5 +28,11 @@ class AppModule{
     @Singleton
     fun provideSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(SHARED_PACKAGE, Context.MODE_PRIVATE)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSchedulerProvider(): SchedulerProvider {
+        return AppSchedulerProvider()
     }
 }

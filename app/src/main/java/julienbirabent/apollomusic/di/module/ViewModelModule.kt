@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import julienbirabent.apollomusic.di.ViewModelKey
+import julienbirabent.apollomusic.di.annotation.ViewModelKey
 import julienbirabent.apollomusic.ui.example.ExampleViewModel
 import julienbirabent.apollomusic.viewmodel.ViewModelFactory
 
