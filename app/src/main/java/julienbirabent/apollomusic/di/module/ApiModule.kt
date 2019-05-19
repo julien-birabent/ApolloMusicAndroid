@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import julienbirabent.apollomusic.app.AppConstants
+import julienbirabent.apollomusic.data.api.LiveDataCallAdapterFactory
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -27,6 +28,7 @@ class ApiModule {
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(appConstants.baseUrl())
             .client(client)
+            .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(scheduler.io()))
             .build()
     }
@@ -38,11 +40,7 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideInterceptor(): Interceptor {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BASIC
-        return interceptor
-    }
+    fun provideInterceptor(): Interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
 
     @Provides
     @Singleton

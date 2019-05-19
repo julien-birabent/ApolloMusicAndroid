@@ -1,5 +1,6 @@
 package julienbirabent.apollomusic.data.local
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import julienbirabent.apollomusic.data.User
 
@@ -10,7 +11,7 @@ interface UserDao {
     fun delete(user: User)
 
     @Query("SELECT * FROM users WHERE name LIKE :name LIMIT 1")
-    fun findByName(name: String): User
+    fun findByName(name: String): LiveData<User>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: User)

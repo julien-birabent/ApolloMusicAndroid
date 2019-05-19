@@ -10,6 +10,7 @@ import dagger.Provides
 import android.content.SharedPreferences
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.app.ReleaseAppConstants
+import julienbirabent.apollomusic.thread.AppExecutors
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.thread.SchedulerProvider
 
@@ -35,4 +36,8 @@ class AppModule{
     fun provideSchedulerProvider(): SchedulerProvider {
         return AppSchedulerProvider()
     }
+
+    @Singleton
+    @Provides
+    fun provideAppExecutor(): AppExecutors = AppExecutors()
 }
