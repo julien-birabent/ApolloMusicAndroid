@@ -100,4 +100,6 @@ dependencies {
 
     kapt 'com.hannesdorfmann.fragmentargs:annotation:4.0.0-RC1'
     kapt 'com.hannesdorfmann.fragmentargs:processor:4.0.0-RC1'
+
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }

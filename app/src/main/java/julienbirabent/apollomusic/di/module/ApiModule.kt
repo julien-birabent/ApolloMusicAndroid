@@ -5,8 +5,9 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import julienbirabent.apollomusic.app.AppConstants
-import julienbirabent.apollomusic.data.api.LiveDataCallAdapterFactory
-import julienbirabent.apollomusic.thread.AppSchedulerProvider
+import julienbirabent.apollomusic.data.api.network.LiveDataCallAdapterFactory
+import julienbirabent.apollomusic.data.api.services.ExampleService
+import julienbirabent.apollomusic.thread.SchedulerProvider
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,10 +23,15 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(appConstants: AppConstants, client: OkHttpClient, scheduler: AppSchedulerProvider): Retrofit {
+    fun provideRetrofit(
+        appConstants: AppConstants,
+        client: OkHttpClient,
+        gson: Gson,
+        scheduler: SchedulerProvider
+    ): Retrofit {
 
         return Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl(appConstants.baseUrl())
             .client(client)
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
@@ -35,12 +41,14 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideGson(): Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+    fun provideGson(): Gson = GsonBuilder()
+        .excludeFieldsWithoutExposeAnnotation()
+        .create()
 
 
     @Provides
     @Singleton
-    fun provideInterceptor(): Interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
+    fun provideInterceptor(): Interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     @Provides
     @Singleton
@@ -51,6 +59,12 @@ class ApiModule {
             .connectTimeout(15, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideExampleService(retrofit: Retrofit): ExampleService {
+        return retrofit.create(ExampleService::class.java)
     }
 
 }

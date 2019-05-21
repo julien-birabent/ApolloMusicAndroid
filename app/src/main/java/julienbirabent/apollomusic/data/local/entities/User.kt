@@ -1,4 +1,4 @@
-package julienbirabent.apollomusic.data
+package julienbirabent.apollomusic.data.local.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -12,9 +12,9 @@ class User {
     @ColumnInfo(name = "created_at")
     var createdAt: String? = null
 
-    @field:SerializedName("id")
-    @PrimaryKey
-    var id: Long? = null
+    @field:SerializedName("email")
+    @PrimaryKey(autoGenerate = true)
+    var email: String? = null
 
     @field:SerializedName("name")
     var name: String? = null
