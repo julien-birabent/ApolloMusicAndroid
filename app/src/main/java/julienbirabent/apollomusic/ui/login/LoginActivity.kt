@@ -1,13 +1,10 @@
 package julienbirabent.apollomusic.ui.login
 
-import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import julienbirabent.apollomusic.BR
@@ -25,13 +22,18 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
     }
 
     @Inject
-    lateinit var gso: GoogleSignInOptions
-    @Inject
     lateinit var gsc: GoogleSignInClient
 
     override fun signIn() {
         val signInIntent = gsc.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    override fun signOut() {
+        gsc.signOut()
+            .addOnCompleteListener(this) {
+                //TODO Logout
+            }
 
     }
 
@@ -50,13 +52,24 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
+            val idToken = account?.idToken
 
+
+            val acct = GoogleSignIn.getLastSignedInAccount(this)
+            if (acct != null) {
+                val personName = acct.displayName
+                val personGivenName = acct.givenName
+                val personFamilyName = acct.familyName
+                val personEmail = acct.email
+                val personId = acct.id
+                val personPhoto = acct.photoUrl
+            }
             // Signed in successfully, show authenticated UI.
 
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(FragmentActivity::class.simpleName, "signInResult:failed code=" + e.statusCode)
+            Log.e("LoginActivity", "signInResult:failed code=" + e.statusCode)
 
         }
 
