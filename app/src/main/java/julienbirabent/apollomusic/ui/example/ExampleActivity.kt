@@ -2,6 +2,8 @@ package julienbirabent.apollomusic.ui.example
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.data.repository.ExampleRepository
@@ -16,12 +18,22 @@ class ExampleActivity : BaseActivity<ActivityExampleBinding, ExampleViewModel>()
     @Inject
     lateinit var context : Context
 
-   /* @Inject
-    lateinit var exampleRepository: ExampleRepository*/
-
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         viewModel.navigator = this
+        viewModel.examples.observe(this, Observer { exampleList ->
+            viewDataBinding.exampleDisplay.text = ""
+            exampleList.forEach {
+                viewDataBinding.exampleDisplay.append("\n" + it.id.toString())
+            }
+        })
+
+        viewDataBinding.button2.setOnClickListener {
+            viewModel.findExampleById().observe(this, Observer {
+                Toast.makeText(context,  it.data.toString(),Toast.LENGTH_SHORT).show()
+            })
+        }
+
 
     }
 

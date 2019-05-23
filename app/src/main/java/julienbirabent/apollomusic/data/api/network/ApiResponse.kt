@@ -1,4 +1,4 @@
-package julienbirabent.apollomusic.data.api
+package julienbirabent.apollomusic.data.api.network
 
 /*
  * Copyright (C) 2017 The Android Open Source Project

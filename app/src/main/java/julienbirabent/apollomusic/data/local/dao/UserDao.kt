@@ -1,4 +1,4 @@
-package julienbirabent.apollomusic.data.local
+package julienbirabent.apollomusic.data.local.dao
 
 import androidx.room.*
 import julienbirabent.apollomusic.data.local.entities.User

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package julienbirabent.apollomusic.data.api
+package julienbirabent.apollomusic.data.api.network
 
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
@@ -93,7 +93,12 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                 is ApiErrorResponse -> {
                     onFetchFailed()
                     result.addSource(dbSource) { newData ->
-                        setValue(Resource.error(response.errorMessage, newData))
+                        setValue(
+                            Resource.error(
+                                response.errorMessage,
+                                newData
+                            )
+                        )
                     }
                 }
             }

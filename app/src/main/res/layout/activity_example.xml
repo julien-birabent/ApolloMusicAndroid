@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="julienbirabent.apollomusic.ui.example.ExampleViewModel" />
@@ -15,19 +15,40 @@
         android:layout_height="match_parent">
 
         <Button
-            android:text="Click me"
-            android:onClick="@{() -> viewModel.onClickButton()}"
+            android:id="@+id/button2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{() -> viewModel.onClickButton()}"
+            android:text="Get example with id"
+            app:layout_constraintBottom_toTopOf="@+id/button" />
+
+        <TextView
+            android:id="@+id/example_display"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/input"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:hint="Enter the id of an example"
+            android:text="@={viewModel.exampleId}"
+            app:layout_constraintBottom_toTopOf="@+id/button2"
+            app:layout_constraintTop_toBottomOf="@id/example_display" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.fetchAnExample()}"
             android:text="Get an example"
-            android:onClick="@{() -> viewModel.pingServer()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

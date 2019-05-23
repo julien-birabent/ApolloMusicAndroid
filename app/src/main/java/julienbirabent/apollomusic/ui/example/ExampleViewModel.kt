@@ -1,7 +1,8 @@
 package julienbirabent.apollomusic.ui.example
 
-import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import julienbirabent.apollomusic.data.api.network.Resource
 import julienbirabent.apollomusic.data.local.entities.Example
 import julienbirabent.apollomusic.data.repository.ExampleRepository
 import julienbirabent.apollomusic.ui.base.BaseViewModel
@@ -14,11 +15,21 @@ class ExampleViewModel @Inject constructor(private val exampleRepository: Exampl
 
     val examples: LiveData<List<Example>> = exampleRepository.getAllExamples()
 
+    val exampleId: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+
     fun onClickButton() {
         navigator?.openExample()
     }
 
-    fun pingServer() {
+    fun findExampleById(): LiveData<Resource<Example>> {
+        return exampleRepository.getExampleById(exampleId.value!!)
+    }
+
+    fun fetchAnExample() {
         exampleRepository.getAnExample()
     }
+
+
 }

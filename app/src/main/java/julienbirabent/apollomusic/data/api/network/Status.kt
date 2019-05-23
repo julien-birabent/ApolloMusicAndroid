@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package julienbirabent.apollomusic.data.api
+package julienbirabent.apollomusic.data.api.network
 
 /**
  * Status of a resource that is provided to the UI.
