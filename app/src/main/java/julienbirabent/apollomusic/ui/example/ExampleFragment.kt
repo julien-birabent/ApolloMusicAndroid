@@ -1,10 +1,11 @@
 package julienbirabent.apollomusic.ui.example
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import android.widget.Toast.makeText
+import androidx.lifecycle.Observer
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
@@ -24,6 +25,12 @@ class ExampleFragment: BaseFragment<FragmentExampleBinding, ExampleViewModel>() 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         makeText(baseActivity,args,Toast.LENGTH_LONG).show()
+
+        viewModel.examples.observe(viewLifecycleOwner, Observer { it ->
+            it.forEach {
+                Log.e("updating examples list", it.toString())
+            }
+        })
     }
 
     override fun getBindingVariable(): Int {

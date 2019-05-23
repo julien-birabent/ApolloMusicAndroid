@@ -1,11 +1,12 @@
 package julienbirabent.apollomusic.di.module
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import julienbirabent.apollomusic.di.ViewModelKey
+import julienbirabent.apollomusic.data.repository.ExampleRepository
+import julienbirabent.apollomusic.di.annotation.ViewModelKey
 import julienbirabent.apollomusic.ui.example.ExampleViewModel
 import julienbirabent.apollomusic.viewmodel.ViewModelFactory
 

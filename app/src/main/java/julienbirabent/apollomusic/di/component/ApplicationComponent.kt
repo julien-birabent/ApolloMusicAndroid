@@ -4,10 +4,9 @@ import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
-import julienbirabent.apollomusic.ApolloMusicApplication
-import julienbirabent.apollomusic.di.module.ActivityBuilderModule
-import julienbirabent.apollomusic.di.module.AppModule
-import julienbirabent.apollomusic.di.module.ViewModelModule
+import julienbirabent.apollomusic.app.ApolloMusicApplication
+import julienbirabent.apollomusic.app.AppConstants
+import julienbirabent.apollomusic.di.module.*
 import javax.inject.Singleton
 
 
@@ -17,7 +16,10 @@ import javax.inject.Singleton
     [AndroidSupportInjectionModule::class,
         AppModule::class,
         ActivityBuilderModule::class,
-        ViewModelModule::class
+        ViewModelModule::class,
+        DataModule::class/*,
+        DatabaseModule::class,
+        ApiModule::class*/
     ]
 )
 interface ApplicationComponent {
@@ -29,6 +31,9 @@ interface ApplicationComponent {
 
         @BindsInstance
         fun application(application: Application): Builder
+
+        @BindsInstance
+        fun appConstants(appConstants: AppConstants): Builder
 
         fun build(): ApplicationComponent
     }
