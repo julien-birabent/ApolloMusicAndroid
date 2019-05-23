@@ -8,6 +8,7 @@ import dagger.multibindings.IntoMap
 import julienbirabent.apollomusic.data.repository.ExampleRepository
 import julienbirabent.apollomusic.di.annotation.ViewModelKey
 import julienbirabent.apollomusic.ui.example.ExampleViewModel
+import julienbirabent.apollomusic.ui.login.LoginViewModel
 import julienbirabent.apollomusic.viewmodel.ViewModelFactory
 
 @Module
@@ -17,6 +18,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ExampleViewModel::class)
     abstract fun bindExampleViewModel(viewModel: ExampleViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel::class)
+    abstract fun bindLoginViewModel(viewModel: LoginViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory

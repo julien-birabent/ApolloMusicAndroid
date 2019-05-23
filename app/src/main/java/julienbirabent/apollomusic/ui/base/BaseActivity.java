@@ -53,7 +53,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
      *
      * @return view model instance
      */
-    public abstract Class<V> getViewModelClass();
+    protected abstract Class<V> getViewModelClass();
 
     @Override
     public void onFragmentAttached() {
@@ -117,6 +117,9 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         this.viewModel = viewModel == null ?
                 ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass()) : viewModel;
         viewDataBinding.setVariable(getBindingVariable(), viewModel);
+        if(this instanceof UINavigator){
+            viewModel.setNavigator(this);
+        }
         viewDataBinding.executePendingBindings();
     }
 }

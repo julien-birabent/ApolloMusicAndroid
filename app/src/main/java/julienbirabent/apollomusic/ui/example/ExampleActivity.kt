@@ -20,7 +20,7 @@ class ExampleActivity : BaseActivity<ActivityExampleBinding, ExampleViewModel>()
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        viewModel.navigator = this
+
         viewModel.examples.observe(this, Observer { exampleList ->
             viewDataBinding.exampleDisplay.text = ""
             exampleList.forEach {
@@ -33,8 +33,6 @@ class ExampleActivity : BaseActivity<ActivityExampleBinding, ExampleViewModel>()
                 Toast.makeText(context,  it.data.toString(),Toast.LENGTH_SHORT).show()
             })
         }
-
-
     }
 
     override fun getBindingVariable(): Int {

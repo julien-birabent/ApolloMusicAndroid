@@ -1,6 +1,8 @@
 package julienbirabent.apollomusic.ui.example
 
-interface ExampleNavigator {
+import julienbirabent.apollomusic.ui.base.UINavigator
+
+interface ExampleNavigator: UINavigator {
 
     fun openExample()
 }
