@@ -3,9 +3,7 @@ package julienbirabent.apollomusic.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -33,13 +31,35 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
     @Inject
     lateinit var gsc: GoogleSignInClient
 
+    /**
+     * Method called when the viewModel successfully handled the login
+     * Do the navigation here
+     */
+    override fun signInSuccessful() {
+        //TODO nav to Home
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewDataBinding.facebookSignInButton.setReadPermissions(Arrays.asList("email", "public_profile"))
-        viewDataBinding.facebookSignInButton.registerCallback(fcm, object : FacebookCallback<LoginResult> {
+        setupFacebookSignIn()
+        setupGoogleSignIn()
+    }
+
+    private fun setupGoogleSignIn() {
+        binding.googleSignInButton.setOnClickListener {
+            val signInIntent = gsc.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
+    }
+
+    private fun setupFacebookSignIn() {
+        binding.facebookSignInButton.setReadPermissions(Arrays.asList("email", "public_profile"))
+        binding.facebookSignInButton.registerCallback(fcm, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
-                val accessToken = result?.accessToken
-                Log.d("Facebook login", "Success")
+                result?.let {
+                    handleFacebookSignInResult(it)
+                    Log.d("Facebook login", "Success")
+                }
             }
 
             override fun onCancel() {
@@ -50,15 +70,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
                 Log.d("Facebook login", "Error : " + error?.message)
             }
         })
-    }
-
-    override fun signInGoogle() {
-        val signInIntent = gsc.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-
-    override fun signInFacebook() {
-
     }
 
     override fun signOut() {
@@ -75,31 +86,46 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleGoogleSignInResult(task)
         }
     }
 
+    private fun handleFacebookSignInResult(result: LoginResult) {
+
+        GraphRequest.newMeRequest(result.accessToken) { me, response ->
+            if (response.error != null) {
+                // handle error
+            } else {
+                FacebookUserAdapter(
+                    result.accessToken,
+                    Profile.getCurrentProfile(),
+                    me.optString("email")
+                ).apply {
+                    viewModel.signIn(this)
+                }
+                Log.d("Facebook login", "Success")
+            }
+        }.executeAsync()
+
+    }
+
     private fun handleGoogleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            val idToken = account?.idToken
-
             // Valider le token
 
-            val acct = GoogleSignIn.getLastSignedInAccount(this)
-            if (acct != null) {
-                val personName = acct.displayName
-                val personGivenName = acct.givenName
-                val personFamilyName = acct.familyName
-                val personEmail = acct.email
-                val personId = acct.id
-                val personPhoto = acct.photoUrl
+            if (account != null && account.id != null) {
+                with(GoogleSignIn.getLastSignedInAccount(this)) {
+                    this?.let {
+                        GoogleUserAdapter(it)
+                    }
+                }.apply {
+                    Log.d("Google login", "Success")
+                    this?.let { viewModel.signIn(it) }
+                }
             }
             // Signed in successfully, show authenticated UI.
-
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -109,6 +135,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
 
     }
 
+    //region BaseActivity overrides
     override fun getBindingVariable(): Int {
         return BR.viewModel
     }
@@ -120,5 +147,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
     override fun getViewModelClass(): Class<LoginViewModel> {
         return LoginViewModel::class.java
     }
+//endregion
 
 }

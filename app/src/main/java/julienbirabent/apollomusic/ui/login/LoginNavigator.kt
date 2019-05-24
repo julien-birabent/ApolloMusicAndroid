@@ -4,9 +4,7 @@ import julienbirabent.apollomusic.ui.base.UINavigator
 
 interface LoginNavigator: UINavigator {
 
-    fun signInGoogle()
-
-    fun signInFacebook()
+    fun signInSuccessful()
 
     fun signOut()
 }

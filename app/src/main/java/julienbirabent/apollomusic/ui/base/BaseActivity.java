@@ -31,7 +31,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     @Inject
     public ViewModelFactory viewModelFactory;
 
-    protected T viewDataBinding;
+    protected T binding;
     public V viewModel;
 
     /**
@@ -72,8 +72,8 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         performDataBinding();
     }
 
-    public T getViewDataBinding() {
-        return viewDataBinding;
+    public T getBinding() {
+        return binding;
     }
 
     public void hideKeyboard() {
@@ -112,15 +112,15 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     }
 
     private void performDataBinding() {
-        viewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
-        viewDataBinding.setLifecycleOwner(this);
+        binding = DataBindingUtil.setContentView(this, getLayoutId());
+        binding.setLifecycleOwner(this);
         this.viewModel = viewModel == null ?
                 ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass()) : viewModel;
-        viewDataBinding.setVariable(getBindingVariable(), viewModel);
+        binding.setVariable(getBindingVariable(), viewModel);
         if(this instanceof UINavigator){
             viewModel.setNavigator(this);
         }
-        viewDataBinding.executePendingBindings();
+        binding.executePendingBindings();
     }
 }
 

@@ -19,7 +19,7 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://apollo-music-backend.herokuapp.com\"")
+            buildConfigField("String", "BASE_URL", "\"https://apollo-music-backend-dev.herokuapp.com\"")
             buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
         }
 

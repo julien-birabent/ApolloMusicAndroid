@@ -6,11 +6,9 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
-import julienbirabent.apollomusic.data.repository.ExampleRepository
 import julienbirabent.apollomusic.databinding.ActivityExampleBinding
 import julienbirabent.apollomusic.ui.base.BaseActivity
 import javax.inject.Inject
-import javax.inject.Named
 
 
 class ExampleActivity : BaseActivity<ActivityExampleBinding, ExampleViewModel>(), ExampleNavigator {
@@ -22,13 +20,13 @@ class ExampleActivity : BaseActivity<ActivityExampleBinding, ExampleViewModel>()
         super.onPostCreate(savedInstanceState)
 
         viewModel.examples.observe(this, Observer { exampleList ->
-            viewDataBinding.exampleDisplay.text = ""
+            binding.exampleDisplay.text = ""
             exampleList.forEach {
-                viewDataBinding.exampleDisplay.append("\n" + it.id.toString())
+                binding.exampleDisplay.append("\n" + it.id.toString())
             }
         })
 
-        viewDataBinding.button2.setOnClickListener {
+        binding.button2.setOnClickListener {
             viewModel.findExampleById().observe(this, Observer {
                 Toast.makeText(context,  it.data.toString(),Toast.LENGTH_SHORT).show()
             })
@@ -55,7 +53,7 @@ class ExampleActivity : BaseActivity<ActivityExampleBinding, ExampleViewModel>()
         // Fragment Transaction
         supportFragmentManager
             .beginTransaction()
-            .add(viewDataBinding.root.id, fragment)
+            .add(binding.root.id, fragment)
             .commit()
     }
 }

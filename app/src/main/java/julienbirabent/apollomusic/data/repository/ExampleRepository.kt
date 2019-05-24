@@ -3,13 +3,11 @@ package julienbirabent.apollomusic.data.repository
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
-import io.reactivex.Single
-import io.reactivex.functions.Consumer
 import julienbirabent.apollomusic.data.api.network.NetworkBoundResource
 import julienbirabent.apollomusic.data.api.network.Resource
 import julienbirabent.apollomusic.data.api.services.ExampleService
 import julienbirabent.apollomusic.data.local.dao.ExampleDao
-import julienbirabent.apollomusic.data.local.entities.Example
+import julienbirabent.apollomusic.data.local.entities.ExampleEntity
 import julienbirabent.apollomusic.thread.AppExecutors
 import julienbirabent.apollomusic.thread.SchedulerProvider
 import javax.inject.Inject
@@ -32,7 +30,7 @@ class ExampleRepository @Inject constructor(
                 it.body()?.let { example ->
                     exampleDao.insert(example)
 
-                    Log.e("LOL", "Example insertion completed")
+                    Log.e("LOL", "ExampleEntity insertion completed")
                 }
             }
             .subscribeOn(scheduler.io())
@@ -41,13 +39,13 @@ class ExampleRepository @Inject constructor(
 
     }
 
-    fun getExampleById(id: String): LiveData<Resource<Example>> {
-        return object : NetworkBoundResource<Example, Example>(appExecutors) {
-            override fun saveCallResult(item: Example) {
+    fun getExampleById(id: String): LiveData<Resource<ExampleEntity>> {
+        return object : NetworkBoundResource<ExampleEntity, ExampleEntity>(appExecutors) {
+            override fun saveCallResult(item: ExampleEntity) {
                 exampleDao.insert(item)
             }
 
-            override fun shouldFetch(data: Example?) = data == null
+            override fun shouldFetch(data: ExampleEntity?) = data == null
 
             override fun loadFromDb() = exampleDao.loadSingle(id)
 
@@ -55,5 +53,5 @@ class ExampleRepository @Inject constructor(
         }.asLiveData()
     }
 
-    fun getAllExamples(): LiveData<List<Example>> = exampleDao.loadAllExamples()
+    fun getAllExamples(): LiveData<List<ExampleEntity>> = exampleDao.loadAllExamples()
 }
