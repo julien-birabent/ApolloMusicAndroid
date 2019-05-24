@@ -1,5 +1,6 @@
 package julienbirabent.apollomusic.data.local.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import julienbirabent.apollomusic.data.local.entities.User
 
@@ -12,6 +13,6 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: User)
 
-/*    @Query("SELECT * FROM users WHERE email IN (:userIds)")
-    fun loadAllByIds(userIds: List<Int>): List<User>*/
+    @Query("SELECT * FROM users WHERE id = :id ")
+    fun getUserWithId(id: String): LiveData<User>
 }

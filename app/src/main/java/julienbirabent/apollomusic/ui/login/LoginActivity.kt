@@ -1,7 +1,12 @@
 package julienbirabent.apollomusic.ui.login
 
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -11,6 +16,7 @@ import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.ActivityLoginBinding
 import julienbirabent.apollomusic.ui.base.BaseActivity
+import java.util.*
 import javax.inject.Inject
 
 
@@ -22,11 +28,37 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
     }
 
     @Inject
+    lateinit var fcm: CallbackManager
+
+    @Inject
     lateinit var gsc: GoogleSignInClient
 
-    override fun signIn() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewDataBinding.facebookSignInButton.setReadPermissions(Arrays.asList("email", "public_profile"))
+        viewDataBinding.facebookSignInButton.registerCallback(fcm, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult?) {
+                val accessToken = result?.accessToken
+                Log.d("Facebook login", "Success")
+            }
+
+            override fun onCancel() {
+                Log.d("Facebook login", "Cancel")
+            }
+
+            override fun onError(error: FacebookException?) {
+                Log.d("Facebook login", "Error : " + error?.message)
+            }
+        })
+    }
+
+    override fun signInGoogle() {
         val signInIntent = gsc.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    override fun signInFacebook() {
+
     }
 
     override fun signOut() {
@@ -38,6 +70,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        fcm.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
@@ -45,15 +78,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
+            handleGoogleSignInResult(task)
         }
     }
 
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+    private fun handleGoogleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
             val idToken = account?.idToken
 
+            // Valider le token
 
             val acct = GoogleSignIn.getLastSignedInAccount(this)
             if (acct != null) {

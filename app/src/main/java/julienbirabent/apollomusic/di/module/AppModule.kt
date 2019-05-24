@@ -3,6 +3,7 @@ package julienbirabent.apollomusic.di.module
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -44,7 +45,7 @@ class AppModule {
     @Provides
     fun provideGoogleSignInOptions(context: Context): GoogleSignInOptions =
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.server_client_id))
+            .requestIdToken(context.getString(R.string.web_client_id))
             .requestEmail()
             .build()
 
@@ -52,4 +53,9 @@ class AppModule {
     @Provides
     fun provideGoogleSignInClient(context: Context, gso : GoogleSignInOptions): GoogleSignInClient =
         GoogleSignIn.getClient(context, gso)
+
+    @Singleton
+    @Provides
+    fun provideFacebookCallbackManager(): CallbackManager = CallbackManager.Factory.create()
 }
+

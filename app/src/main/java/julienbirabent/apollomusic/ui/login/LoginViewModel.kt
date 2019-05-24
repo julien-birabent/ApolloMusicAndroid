@@ -1,6 +1,8 @@
 package julienbirabent.apollomusic.ui.login
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import julienbirabent.apollomusic.data.local.entities.User
 import julienbirabent.apollomusic.ui.base.BaseViewModel
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -9,13 +11,22 @@ import javax.inject.Singleton
 class LoginViewModel @Inject constructor() :
     BaseViewModel<LoginNavigator>(){
 
-    fun signIn(){
+    val user : MutableLiveData<User> by lazy {
+        MutableLiveData<User>()
+    }
+
+    fun signInGoogle(){
         Log.d("SignInCall VM", "Trying to signin")
-        navigator.signIn()
+        navigator.signInGoogle()
+    }
+
+    fun signInFacebook(): Unit{
+        navigator.signInFacebook()
     }
 
     fun signOut(){
         navigator.signOut()
     }
+    
 
 }

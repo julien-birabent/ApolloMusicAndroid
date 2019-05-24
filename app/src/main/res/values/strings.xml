@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ApolloMusic</string>
     <string name="server_client_id">186716735653-ch5u81p9838b0kfhv752793q4hrh7356.apps.googleusercontent.com</string>
+    <string name="web_client_id">186716735653-ch5u81p9838b0kfhv752793q4hrh7356.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">419692385478398</string>
+    <string name="fb_login_protocol_scheme">fb419692385478398</string>
 </resources>

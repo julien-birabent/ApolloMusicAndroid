@@ -4,6 +4,12 @@ import androidx.databinding.BindingAdapter
 import com.google.android.gms.common.SignInButton
 
 @BindingAdapter("android:onClick")
-fun bindSignInClick(button: SignInButton, method: () -> Unit) {
+fun bindSignInGoogleClick(button: SignInButton, method: () -> Unit) {
     button.setOnClickListener { method.invoke() }
 }
+
+/*
+@BindingAdapter("android:onClick")
+fun bindSignInFacebookClick(button: com.facebook.login.widget.LoginButton, method: () -> Unit) {
+    button.setOnClickListener { method.invoke() }
+}*/
