@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.facebook.*
+import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -58,7 +59,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
 
     private fun setupFacebookSignIn() {
         binding.facebookSignInButton.setReadPermissions(Arrays.asList("email", "public_profile"))
-        binding.facebookSignInButton.registerCallback(fcm, object : FacebookCallback<LoginResult> {
+        LoginManager.getInstance().registerCallback(fcm, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
                 result?.let {
                     handleFacebookSignInResult(it)

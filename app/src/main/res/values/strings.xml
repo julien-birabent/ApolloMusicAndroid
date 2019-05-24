@@ -3,4 +3,8 @@
     <string name="web_client_id">155971439093-p2ubs9c0jvjuo6r9s3nv4nf91gdqsfl5.apps.googleusercontent.com</string>
     <string name="facebook_app_id">3099470110066765</string>
     <string name="fb_login_protocol_scheme">fb3099470110066765</string>
+
+    <string name="login_with_google">Login with Google</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+
 </resources>
