@@ -4,6 +4,7 @@
 
     <data>
 
+        <import type="julienbirabent.apollomusic.ui.login.LoginType" />
         <variable
             name="viewModel"
             type="julienbirabent.apollomusic.ui.login.LoginViewModel" />

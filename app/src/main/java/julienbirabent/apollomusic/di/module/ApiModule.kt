@@ -44,6 +44,7 @@ class ApiModule {
     @Singleton
     fun provideGson(): Gson = GsonBuilder()
         .excludeFieldsWithoutExposeAnnotation()
+        .setLenient()
         .create()
 
 

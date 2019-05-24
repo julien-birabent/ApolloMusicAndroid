@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name">ApolloMusic</string>
-    <string name="server_client_id">186716735653-ch5u81p9838b0kfhv752793q4hrh7356.apps.googleusercontent.com</string>
-    <string name="web_client_id">186716735653-ch5u81p9838b0kfhv752793q4hrh7356.apps.googleusercontent.com</string>
-    <string name="facebook_app_id">419692385478398</string>
-    <string name="fb_login_protocol_scheme">fb419692385478398</string>
+    <string name="app_name">Apollo Music</string>
+    <string name="web_client_id">155971439093-p2ubs9c0jvjuo6r9s3nv4nf91gdqsfl5.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">3099470110066765</string>
+    <string name="fb_login_protocol_scheme">fb3099470110066765</string>
 </resources>

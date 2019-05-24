@@ -4,24 +4,24 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 
 @Entity(tableName = "users")
 data class UserEntity(
 
-    @Expose
     @PrimaryKey var id: String,
+
+    // for keeping the id given by facebook or google
+    var externalId: String,
 
     @Expose
     @ColumnInfo var email: String?,
 
     @Expose
-    @ColumnInfo(name = "first_name") var firstName: String?,
+    @SerializedName("username")
+    @ColumnInfo(name = "first_name") var userName: String?,
 
-    @Expose
-    @ColumnInfo(name = "last_name") var lastName: String?,
-
-    @Expose
     var photoUrl: String?,
 
     @ColumnInfo(name = "login_type") var loginType: String?
