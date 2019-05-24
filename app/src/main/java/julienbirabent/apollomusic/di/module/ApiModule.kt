@@ -6,7 +6,8 @@ import dagger.Module
 import dagger.Provides
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.network.LiveDataCallAdapterFactory
-import julienbirabent.apollomusic.data.api.services.ExampleService
+import julienbirabent.apollomusic.data.api.services.ExampleAPI
+import julienbirabent.apollomusic.data.api.services.UserAPI
 import julienbirabent.apollomusic.thread.SchedulerProvider
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -63,8 +64,13 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideExampleService(retrofit: Retrofit): ExampleService {
-        return retrofit.create(ExampleService::class.java)
+    fun provideExampleApi(retrofit: Retrofit): ExampleAPI {
+        return retrofit.create(ExampleAPI::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideUserApi(retrofit: Retrofit): UserAPI {
+        return retrofit.create(UserAPI::class.java)
+    }
 }

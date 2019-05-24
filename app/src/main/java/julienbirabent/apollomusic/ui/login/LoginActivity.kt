@@ -77,7 +77,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
             .addOnCompleteListener(this) {
                 //TODO Logout
             }
-
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

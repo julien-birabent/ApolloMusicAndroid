@@ -5,11 +5,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import julienbirabent.apollomusic.data.api.network.NetworkBoundResource
 import julienbirabent.apollomusic.data.api.network.Resource
-import julienbirabent.apollomusic.data.api.services.ExampleService
+import julienbirabent.apollomusic.data.api.services.ExampleAPI
 import julienbirabent.apollomusic.data.local.dao.ExampleDao
 import julienbirabent.apollomusic.data.local.entities.ExampleEntity
-import julienbirabent.apollomusic.thread.AppExecutors
-import julienbirabent.apollomusic.thread.SchedulerProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,14 +15,11 @@ import javax.inject.Singleton
 @Singleton
 class ExampleRepository @Inject constructor(
     private val exampleDao: ExampleDao,
-    private val exampleService: ExampleService,
-    private val appExecutors: AppExecutors,
-    private val scheduler: SchedulerProvider
-) {
+    private val exampleService: ExampleAPI
+): BaseRepository() {
 
     @SuppressLint("CheckResult")
     fun getAnExample() {
-
         exampleService.getSingleExample()
             .doOnNext {
                 it.body()?.let { example ->
