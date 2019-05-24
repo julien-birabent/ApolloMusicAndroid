@@ -1,8 +1,17 @@
 package julienbirabent.apollomusic.data.repository
 
 import android.content.SharedPreferences
+import android.util.Log
+import androidx.lifecycle.LiveData
+import julienbirabent.apollomusic.data.api.network.ApiResponse
+import julienbirabent.apollomusic.data.api.network.NetworkBoundResource
+import julienbirabent.apollomusic.data.api.network.Resource
 import julienbirabent.apollomusic.data.api.services.UserAPI
 import julienbirabent.apollomusic.data.local.dao.UserDao
+import julienbirabent.apollomusic.data.local.entities.UserEntity
+import julienbirabent.apollomusic.data.local.model.User
+import java.lang.Exception
+import java.security.InvalidParameterException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,10 +24,44 @@ class UserRepository @Inject constructor(
         val key_user_id = "key_user_id"
     }
 
+    fun getUser(user: User): LiveData<Resource<UserEntity>> {
+        return object : NetworkBoundResource<UserEntity, UserEntity>(appExecutors) {
+            override fun saveCallResult(item: UserEntity) {
+                with(item){
+                    loginType = user.loginType?.name
+                    email = user.email
+                    firstName = user.firstName
+                    lastName = user.lastName
+                    photoUrl = user.photoUrl
+                    id = user.id
+                }
+                userDao.insert(item)
+            }
+
+            override fun shouldFetch(data: UserEntity?): Boolean {
+                return data == null
+            }
+
+            override fun loadFromDb(): LiveData<UserEntity> {
+                return userDao.getUserWithId(user.id).apply {
+                    try{
+                        this.value?.id?.let { setUserId(it) }
+                    }catch( e: InvalidParameterException){
+                        Log.e(this::class.java.name, e.printStackTrace().toString())
+                    }
+                }
+            }
+            override fun createCall(): LiveData<ApiResponse<UserEntity>> {
+                return userAPI.getUser(user.id)
+            }
+        }.asLiveData()
+    }
+
     /**
      * When user is logged in, we use this method to keep track of which user in the db is logged id
      */
-    private fun setUserId(id: String) {
+    private fun setUserId(id: String?){
+        if (id == null) throw InvalidParameterException("cannot set the value null for the user id")
         with(sharedPreferences.edit()) {
             putString(key_user_id, id)
             apply()

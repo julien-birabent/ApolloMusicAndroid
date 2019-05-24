@@ -39,6 +39,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
         //TODO nav to Home
     }
 
+    override fun signInError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupFacebookSignIn()
