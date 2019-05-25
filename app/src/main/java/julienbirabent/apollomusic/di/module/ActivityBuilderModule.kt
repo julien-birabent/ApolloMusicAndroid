@@ -5,6 +5,7 @@ import dagger.android.ContributesAndroidInjector
 import julienbirabent.apollomusic.ui.example.ExampleActivity
 import julienbirabent.apollomusic.ui.example.ExampleFragmentProvider
 import julienbirabent.apollomusic.ui.login.LoginActivity
+import julienbirabent.apollomusic.ui.splash.SplashScreenActivity
 
 @Module(includes = arrayOf(DataModule::class))
 abstract class ActivityBuilderModule {
@@ -14,4 +15,7 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindLoginActivity(): LoginActivity
+
+    @ContributesAndroidInjector
+    abstract fun bindSplashActivity(): SplashScreenActivity
 }

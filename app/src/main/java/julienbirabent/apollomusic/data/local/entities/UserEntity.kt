@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import julienbirabent.apollomusic.ui.login.LoginType
 
 
 @Entity(tableName = "users")
@@ -24,5 +25,5 @@ data class UserEntity(
 
     var photoUrl: String?,
 
-    @ColumnInfo(name = "login_type") var loginType: String?
+    @ColumnInfo(name = "login_type") var loginType: LoginType
 )

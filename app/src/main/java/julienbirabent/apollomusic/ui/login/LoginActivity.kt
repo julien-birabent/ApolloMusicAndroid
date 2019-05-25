@@ -37,7 +37,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
      * Do the navigation here
      */
     override fun signInSuccessful() {
-        //TODO nav to Home
+        //TODO nav to Hom
     }
 
     override fun signInError() {
@@ -58,7 +58,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
     }
 
     private fun setupFacebookSignIn() {
-        binding.facebookSignInButton.setReadPermissions(Arrays.asList("email", "public_profile"))
         LoginManager.getInstance().registerCallback(fcm, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
                 result?.let {
@@ -75,13 +74,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
                 Log.d("Facebook login", "Error : " + error?.message)
             }
         })
-    }
-
-    override fun signOut() {
-        gsc.signOut()
-            .addOnCompleteListener(this) {
-                //TODO Logout
-            }
+        binding.facebookSignInButton.setOnClickListener {
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"))
+        }
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

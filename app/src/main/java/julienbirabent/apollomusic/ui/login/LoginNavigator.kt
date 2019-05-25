@@ -7,6 +7,5 @@ interface LoginNavigator: UINavigator {
     fun signInSuccessful()
 
     fun signInError()
-
-    fun signOut()
+    
 }

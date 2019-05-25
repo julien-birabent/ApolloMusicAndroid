@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
 import io.reactivex.Observable
+import julienbirabent.apollomusic.Utils.AbsentLiveData
 import julienbirabent.apollomusic.Utils.asSingleEvent
 import julienbirabent.apollomusic.data.api.network.ApiResponse
 import julienbirabent.apollomusic.data.api.network.NetworkBoundResource
@@ -30,6 +31,15 @@ class UserRepository @Inject constructor(
         return userAPI.login(loginType)
     }
 
+    fun getCurrentLoggedUser() : LiveData<UserEntity> {
+        val userId = getLoggedUserId()
+        return if(userId != null){
+            userDao.getUserWithId(userId)
+        }else{
+            AbsentLiveData.create()
+        }
+    }
+
     fun getUser(user: User): LiveData<Resource<UserEntity>> {
         return object : NetworkBoundResource<UserEntity, UserEntity>(appExecutors) {
             override fun saveCallResult(item: UserEntity) {
@@ -37,9 +47,9 @@ class UserRepository @Inject constructor(
                     /**
                      * The server response should provide a UserEntity with username, email and id filled
                      */
-                    loginType = user.loginType?.name
+                    /*loginType = user.loginType?.name
                     userName = user.firstName
-                    photoUrl = user.photoUrl
+                    photoUrl = user.photoUrl*/
                 }
                 userDao.insert(item)
             }
