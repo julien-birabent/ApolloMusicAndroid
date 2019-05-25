@@ -1,6 +1,7 @@
 package julienbirabent.apollomusic.ui.base;
 
 import android.annotation.TargetApi;
+import android.util.Log;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import androidx.databinding.DataBindingUtil;
@@ -69,6 +70,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         performDependencyInjection();
         super.onCreate(savedInstanceState);
+        Log.d("Activity launched : "+this.getLocalClassName(), "event : onCreate");
         performDataBinding();
     }
 

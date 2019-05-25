@@ -8,5 +8,4 @@ import javax.inject.Singleton
 class HomeViewModel @Inject constructor() : BaseViewModel<HomeNavigator>(){
 
 
-
 }
