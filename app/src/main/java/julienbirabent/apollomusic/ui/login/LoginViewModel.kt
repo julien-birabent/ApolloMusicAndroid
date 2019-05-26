@@ -1,10 +1,12 @@
 package julienbirabent.apollomusic.ui.login
 
 import android.util.Log
+import io.reactivex.functions.Consumer
 import julienbirabent.apollomusic.data.local.model.User
 import julienbirabent.apollomusic.data.repository.UserRepository
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.ui.base.BaseViewModel
+import org.reactivestreams.Subscriber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,15 +33,15 @@ class LoginViewModel @Inject constructor(
         }*/
     }
 
-    fun login(loginType: LoginType) {
-        userRepo.login(loginType.name.toLowerCase())
+    fun login(user: User) {
+        userRepo.login(user)
             .subscribeOn(scheduler.io())
-            .doOnNext {
-                Log.d("Login", "Login success")
+            .doOnSuccess() {
+                Log.d("LoginViewModel", "Login success")
+                navigator.signInSuccessful()
             }.doOnError {
-                Log.d("Login", "Login error")
-            }.doOnComplete {
-                Log.d("Login", "Login complete")
+                Log.d("LoginViewModel", "Login error")
+                navigator.signInError()
             }
             .observeOn(scheduler.ui())
             .subscribe()

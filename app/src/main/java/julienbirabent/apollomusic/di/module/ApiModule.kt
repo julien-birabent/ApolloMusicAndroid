@@ -5,7 +5,8 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import julienbirabent.apollomusic.app.AppConstants
-import julienbirabent.apollomusic.data.api.network.LiveDataCallAdapterFactory
+import julienbirabent.apollomusic.data.api.network.DataTypeAdapterFactory
+import julienbirabent.apollomusic.data.api.network.livedataconverter.LiveDataCallAdapterFactory
 import julienbirabent.apollomusic.data.api.services.ExampleAPI
 import julienbirabent.apollomusic.data.api.services.UserAPI
 import julienbirabent.apollomusic.thread.SchedulerProvider
@@ -32,11 +33,11 @@ class ApiModule {
     ): Retrofit {
 
         return Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl(appConstants.baseUrl())
             .client(client)
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(scheduler.io()))
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
@@ -44,6 +45,7 @@ class ApiModule {
     @Singleton
     fun provideGson(): Gson = GsonBuilder()
         .excludeFieldsWithoutExposeAnnotation()
+        .registerTypeAdapterFactory(DataTypeAdapterFactory())
         .setLenient()
         .create()
 

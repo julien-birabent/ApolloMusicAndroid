@@ -3,10 +3,10 @@ package julienbirabent.apollomusic.data.repository
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
-import io.reactivex.Observable
+import io.reactivex.Single
 import julienbirabent.apollomusic.Utils.AbsentLiveData
 import julienbirabent.apollomusic.Utils.asSingleEvent
-import julienbirabent.apollomusic.data.api.network.ApiResponse
+import julienbirabent.apollomusic.data.api.network.livedataconverter.ApiResponse
 import julienbirabent.apollomusic.data.api.network.NetworkBoundResource
 import julienbirabent.apollomusic.data.api.network.Resource
 import julienbirabent.apollomusic.data.api.services.UserAPI
@@ -27,15 +27,24 @@ class UserRepository @Inject constructor(
         val key_user_id = "key_user_id"
     }
 
-    fun login(loginType: String): Observable<Response<UserEntity>> {
-        return userAPI.login(loginType)
+    fun login(user: User): Single<Response<UserEntity>> {
+        return with(userAPI.login(user.token)) {
+            subscribeOn(scheduler.io())
+                .observeOn(scheduler.ui())
+                .doOnSuccess() {
+                    Log.d("UserRepo", "Login success")
+                }.doOnError {
+                    Log.d("UserRepo", "Login error")
+                }
+
+        }
     }
 
-    fun getCurrentLoggedUser() : LiveData<UserEntity> {
+    fun getCurrentLoggedUser(): LiveData<UserEntity> {
         val userId = getLoggedUserId()
-        return if(userId != null){
+        return if (userId != null) {
             userDao.getUserWithId(userId)
-        }else{
+        } else {
             AbsentLiveData.create()
         }
     }

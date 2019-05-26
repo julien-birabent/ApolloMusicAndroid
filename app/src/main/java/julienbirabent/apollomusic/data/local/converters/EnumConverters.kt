@@ -1,9 +1,10 @@
-package julienbirabent.apollomusic.data.local
+package julienbirabent.apollomusic.data.local.converters
 
 import androidx.room.TypeConverter
 import julienbirabent.apollomusic.ui.login.LoginType
 
-class RoomConverters {
+
+class EnumConverters {
     companion object{
         @JvmStatic
         @TypeConverter

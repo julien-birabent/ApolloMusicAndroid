@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package julienbirabent.apollomusic.data.api.network
+package julienbirabent.apollomusic.data.api.network.livedataconverter
 
 import androidx.lifecycle.LiveData
 import retrofit2.CallAdapter

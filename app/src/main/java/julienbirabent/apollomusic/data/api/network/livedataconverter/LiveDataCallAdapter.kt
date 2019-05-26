@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package julienbirabent.apollomusic.data.api.network
+package julienbirabent.apollomusic.data.api.network.livedataconverter
 
 
 import androidx.lifecycle.LiveData
@@ -42,11 +42,19 @@ class LiveDataCallAdapter<R>(private val responseType: Type) :
                 if (started.compareAndSet(false, true)) {
                     call.enqueue(object : Callback<R> {
                         override fun onResponse(call: Call<R>, response: Response<R>) {
-                            postValue(ApiResponse.create(response))
+                            postValue(
+                                ApiResponse.create(
+                                    response
+                                )
+                            )
                         }
 
                         override fun onFailure(call: Call<R>, throwable: Throwable) {
-                            postValue(ApiResponse.create(throwable))
+                            postValue(
+                                ApiResponse.create(
+                                    throwable
+                                )
+                            )
                         }
                     })
                 }

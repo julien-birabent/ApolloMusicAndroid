@@ -14,11 +14,17 @@ import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.thread.AppExecutors
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.thread.SchedulerProvider
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Singleton
 
 
 @Module
 class AppModule {
+
+    @Singleton
+    @Provides
+    fun provideDateFormatter(): SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
 
     @Singleton
     @Provides
@@ -51,7 +57,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideGoogleSignInClient(context: Context, gso : GoogleSignInOptions): GoogleSignInClient =
+    fun provideGoogleSignInClient(context: Context, gso: GoogleSignInOptions): GoogleSignInClient =
         GoogleSignIn.getClient(context, gso)
 
     @Singleton

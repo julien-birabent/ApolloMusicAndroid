@@ -41,7 +41,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
     }
 
     override fun signInError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,7 +101,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
                     Profile.getCurrentProfile(),
                     me.optString("email")
                 ).apply {
-                    viewModel.signIn(this)
+                    viewModel.login(this)
                 }
                 Log.d("Facebook login", "Success")
             }
@@ -121,7 +121,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
                     }
                 }.apply {
                     Log.d("Google login", "Success")
-                    this?.let { viewModel.signIn(it) }
+                    this?.let { viewModel.login(it) }
                 }
             }
             // Signed in successfully, show authenticated UI.
