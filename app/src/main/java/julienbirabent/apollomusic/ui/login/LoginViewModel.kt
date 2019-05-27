@@ -36,15 +36,14 @@ class LoginViewModel @Inject constructor(
     fun login(user: User) {
         userRepo.login(user)
             .subscribeOn(scheduler.io())
-            .doOnSuccess() {
+            .observeOn(scheduler.ui())
+            .subscribe({
                 Log.d("LoginViewModel", "Login success")
                 navigator.signInSuccessful()
-            }.doOnError {
+            }, {
                 Log.d("LoginViewModel", "Login error")
                 navigator.signInError()
-            }
-            .observeOn(scheduler.ui())
-            .subscribe()
+            })
     }
 
     fun signOut() {

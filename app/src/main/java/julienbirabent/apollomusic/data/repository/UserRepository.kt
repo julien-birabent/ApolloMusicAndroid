@@ -6,9 +6,9 @@ import androidx.lifecycle.LiveData
 import io.reactivex.Single
 import julienbirabent.apollomusic.Utils.AbsentLiveData
 import julienbirabent.apollomusic.Utils.asSingleEvent
-import julienbirabent.apollomusic.data.api.network.livedataconverter.ApiResponse
 import julienbirabent.apollomusic.data.api.network.NetworkBoundResource
 import julienbirabent.apollomusic.data.api.network.Resource
+import julienbirabent.apollomusic.data.api.network.livedataconverter.ApiResponse
 import julienbirabent.apollomusic.data.api.services.UserAPI
 import julienbirabent.apollomusic.data.local.dao.UserDao
 import julienbirabent.apollomusic.data.local.entities.UserEntity
@@ -24,19 +24,31 @@ class UserRepository @Inject constructor(
 ) : BaseRepository() {
 
     internal companion object {
-        val key_user_id = "key_user_id"
+        const val key_user_id = "key_user_id"
     }
 
     fun login(user: User): Single<Response<UserEntity>> {
         return with(userAPI.login(user.token)) {
             subscribeOn(scheduler.io())
-                .observeOn(scheduler.ui())
                 .doOnSuccess() {
                     Log.d("UserRepo", "Login success")
-                }.doOnError {
-                    Log.d("UserRepo", "Login error")
+                    appExecutors.diskIO().execute {
+                        if (it.isSuccessful && it.body() != null) {
+                            it.body()?.let { userEntity ->
+                                userEntity.loginType = user.loginType!!
+                                userEntity.userName = user.firstName + " " + user.lastName
+                                userEntity.photoUrl = user.photoUrl
+                                userEntity.externalId = user.id
+                                userEntity.email = userEntity.email
+                                userDao.upsert(userEntity)
+                            }
+                        }
+                    }
                 }
-
+                .observeOn(scheduler.ui())
+                .doOnError {
+                    Log.d("UserRepo", "Login error : " + it.message)
+                }
         }
     }
 

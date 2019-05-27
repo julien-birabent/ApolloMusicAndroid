@@ -24,6 +24,7 @@ data class UserEntity(
     @SerializedName("token")
     var token : Token,
 
+    @Expose
     @ColumnInfo var email: String?,
 
     @ColumnInfo(name = "username") var userName: String?,

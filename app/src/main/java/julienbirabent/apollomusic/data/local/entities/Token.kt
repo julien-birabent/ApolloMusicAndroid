@@ -13,6 +13,9 @@ data class Token(
     var userId: String,
     @Expose
     @SerializedName("created")
-    var created: Date
+    var created: Date,
 
+    @Expose
+    @SerializedName("ttl")
+    var ttl: Long
 )

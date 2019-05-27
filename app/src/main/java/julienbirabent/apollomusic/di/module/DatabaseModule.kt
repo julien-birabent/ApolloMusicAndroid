@@ -9,28 +9,32 @@ import julienbirabent.apollomusic.data.local.AppDatabase
 import julienbirabent.apollomusic.data.local.dao.ExampleDao
 import julienbirabent.apollomusic.data.local.dao.UserDao
 import julienbirabent.apollomusic.di.annotation.DatabaseInfo
+import java.text.SimpleDateFormat
 import javax.inject.Singleton
 
 @Module
-class DatabaseModule{
+class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@DatabaseInfo dbName: String, context: Context): AppDatabase {
+    fun provideAppDatabase(@DatabaseInfo dbName: String, context: Context, dateFormat: SimpleDateFormat): AppDatabase {
         return Room.databaseBuilder(context, AppDatabase::class.java, dbName)
             .fallbackToDestructiveMigration()
             .build()
+            .apply {
+                AppDatabase.dateFormat = dateFormat
+            }
     }
 
     @Provides
     @DatabaseInfo
-    fun provideDbName(appConstants: AppConstants): String{
+    fun provideDbName(appConstants: AppConstants): String {
         return appConstants.dbName()
     }
 
     @Provides
     @DatabaseInfo
-    fun provideDbVersion(appConstants: AppConstants): Int{
+    fun provideDbVersion(appConstants: AppConstants): Int {
         return appConstants.dbVersion()
     }
 
