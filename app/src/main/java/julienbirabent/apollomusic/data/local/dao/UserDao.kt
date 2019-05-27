@@ -20,11 +20,13 @@ abstract class UserDao {
     @Delete
     abstract fun delete(user: UserEntity)
 
-    fun upsert(entity: UserEntity) {
+    fun upsert(entity: UserEntity) : String? {
         val id = insert(entity)
         // insert return -1 if the user is already in the database
         if (id == (-1).toLong()) {
             update(entity)
+            return entity.id
         }
+        return null
     }
 }

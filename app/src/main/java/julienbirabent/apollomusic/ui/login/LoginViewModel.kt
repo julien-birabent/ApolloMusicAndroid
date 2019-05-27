@@ -34,9 +34,13 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login(user: User) {
-        userRepo.login(user)
+        setIsLoading(true)
+        compositeDisposable.add(userRepo.login(user)
             .subscribeOn(scheduler.io())
             .observeOn(scheduler.ui())
+            .doOnSubscribe {
+                setIsLoading(false)
+            }
             .subscribe({
                 Log.d("LoginViewModel", "Login success")
                 navigator.signInSuccessful()
@@ -44,11 +48,6 @@ class LoginViewModel @Inject constructor(
                 Log.d("LoginViewModel", "Login error")
                 navigator.signInError()
             })
+        )
     }
-
-    fun signOut() {
-
-    }
-
-
 }

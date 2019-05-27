@@ -14,6 +14,7 @@ import julienbirabent.apollomusic.data.local.dao.UserDao
 import julienbirabent.apollomusic.data.local.entities.UserEntity
 import julienbirabent.apollomusic.data.local.model.User
 import retrofit2.Response
+import java.io.IOException
 import java.security.InvalidParameterException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -40,13 +41,23 @@ class UserRepository @Inject constructor(
                                 userEntity.photoUrl = user.photoUrl
                                 userEntity.externalId = user.id
                                 userEntity.email = userEntity.email
-                                userDao.upsert(userEntity)
+                                userDao.upsert(userEntity).also {
+                                    try{
+                                        invalidateSession()
+                                        setUserId(it)
+                                    }catch (e: InvalidParameterException){
+                                        //TODO(handle error)
+                                    }
+                                }
                             }
                         }
                     }
                 }
                 .observeOn(scheduler.ui())
                 .doOnError {
+                    if(it is IOException){
+                        Log.d("UserRepo", "Login error (IOException) : " + it.message)
+                    }
                     Log.d("UserRepo", "Login error : " + it.message)
                 }
         }

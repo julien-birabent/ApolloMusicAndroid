@@ -1,10 +1,10 @@
 package julienbirabent.apollomusic.binding
 
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.google.android.gms.common.SignInButton
-import julienbirabent.apollomusic.R
 
 
 @BindingAdapter("android:onClick")
@@ -17,6 +17,11 @@ fun loadImageUrl(view: ImageView, url: String?) {
     if (url != null && url != "")
         Glide.with(view.context)
             .load(url)
-            .placeholder(R.drawable.image_placeholder)
+            .placeholder(julienbirabent.apollomusic.R.drawable.image_placeholder)
             .into(view)
+}
+
+@BindingAdapter("android:visibility")
+fun setVisibility(view: View, value: Boolean) {
+    view.visibility = if (value) View.VISIBLE else View.GONE
 }
