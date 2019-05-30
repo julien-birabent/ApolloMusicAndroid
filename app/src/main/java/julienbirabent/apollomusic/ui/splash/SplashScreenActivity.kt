@@ -58,7 +58,7 @@ class SplashScreenActivity : BaseActivity<ActivitySplashBinding, SplashViewModel
     private fun goToHomeScreen() {
         launchActivity<HomeActivity> {}
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
-        //finish()
+        finish()
     }
 
     //region Base Activity Implements

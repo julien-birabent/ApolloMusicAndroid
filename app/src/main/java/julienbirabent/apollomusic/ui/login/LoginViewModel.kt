@@ -17,30 +17,11 @@ class LoginViewModel @Inject constructor(
 ) :
     BaseViewModel<LoginNavigator>() {
 
-    fun signIn(user: User) {
-        /*userRepo.getUser(user).observeForever {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    setIsLoading(false)
-                    navigator.signInSuccessful()
-                }
-                Status.ERROR -> {
-                    navigator.signInError()
-                    setIsLoading(false)
-                }
-                Status.LOADING -> setIsLoading(true)
-            }
-        }*/
-    }
-
     fun login(user: User) {
         setIsLoading(true)
         compositeDisposable.add(userRepo.login(user)
             .subscribeOn(scheduler.io())
             .observeOn(scheduler.ui())
-            .doOnSubscribe {
-                setIsLoading(false)
-            }
             .subscribe({
                 Log.d("LoginViewModel", "Login success")
                 navigator.signInSuccessful()

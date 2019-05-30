@@ -14,7 +14,9 @@ import com.google.android.gms.tasks.Task
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.ActivityLoginBinding
+import julienbirabent.apollomusic.extensions.launchActivity
 import julienbirabent.apollomusic.ui.base.BaseActivity
+import julienbirabent.apollomusic.ui.home.HomeActivity
 import java.util.*
 import javax.inject.Inject
 
@@ -37,7 +39,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
      * Do the navigation here
      */
     override fun signInSuccessful() {
-        //TODO nav to Hom
+        launchActivity<HomeActivity> {}
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+        finish()
     }
 
     override fun signInError() {

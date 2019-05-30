@@ -14,9 +14,9 @@ interface UserAPI {
 
     //TODO() complete UserApi endpoints when available
     @GET("users/{id}")
-    fun getUser(@Path("user") id : String) : LiveData<ApiResponse<UserEntity>>
+    fun getUser(@Path("user") id: String): LiveData<ApiResponse<UserEntity>>
 
     @FormUrlEncoded
     @POST("/api/profiles/tokenSignin")
-    fun login(@Field("token") token : String?) : Single<Response<UserEntity>>
+    fun login(@Field("provider") tokenOfProvider: String?): Single<Response<UserEntity>>
 }

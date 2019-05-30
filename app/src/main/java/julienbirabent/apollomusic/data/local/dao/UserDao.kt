@@ -25,8 +25,7 @@ abstract class UserDao {
         // insert return -1 if the user is already in the database
         if (id == (-1).toLong()) {
             update(entity)
-            return entity.id
         }
-        return null
+        return entity.id
     }
 }
