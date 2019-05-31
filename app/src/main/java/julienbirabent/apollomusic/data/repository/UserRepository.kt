@@ -5,10 +5,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import io.reactivex.Single
 import julienbirabent.apollomusic.Utils.AbsentLiveData
-import julienbirabent.apollomusic.Utils.asSingleEvent
-import julienbirabent.apollomusic.data.api.network.NetworkBoundResource
-import julienbirabent.apollomusic.data.api.network.Resource
-import julienbirabent.apollomusic.data.api.network.livedataconverter.ApiResponse
 import julienbirabent.apollomusic.data.api.services.UserAPI
 import julienbirabent.apollomusic.data.local.dao.UserDao
 import julienbirabent.apollomusic.data.local.entities.UserEntity
@@ -26,10 +22,11 @@ class UserRepository @Inject constructor(
 
     internal companion object {
         const val key_user_id = "key_user_id"
+        const val key_server_token = "key_server_token"
     }
 
     fun login(user: User): Single<Response<UserEntity>> {
-        return with(userAPI.login(user.token)) {
+        return with(userAPI.login(user.token, user.loginType?.name?.toLowerCase())) {
             subscribeOn(scheduler.io())
                 .doOnSuccess() {
                     Log.d("UserRepo", "Login success")
@@ -44,7 +41,9 @@ class UserRepository @Inject constructor(
                                 userDao.upsert(userEntity).also {
                                     try{
                                         invalidateSession()
-                                        setUserId(it)
+                                        if (it != null) {
+                                            setUserIdAndToken(it, userEntity.token.token)
+                                        }
                                     }catch (e: InvalidParameterException){
                                         //TODO(handle error)
                                     }
@@ -72,47 +71,13 @@ class UserRepository @Inject constructor(
         }
     }
 
-    fun getUser(user: User): LiveData<Resource<UserEntity>> {
-        return object : NetworkBoundResource<UserEntity, UserEntity>(appExecutors) {
-            override fun saveCallResult(item: UserEntity) {
-                with(item) {
-                    /**
-                     * The server response should provide a UserEntity with username, email and id filled
-                     */
-                    /*loginType = user.loginType?.name
-                    userName = user.firstName
-                    photoUrl = user.photoUrl*/
-                }
-                userDao.insert(item)
-            }
-
-            override fun shouldFetch(data: UserEntity?): Boolean {
-                return data == null
-            }
-
-            override fun loadFromDb(): LiveData<UserEntity> {
-                return userDao.getUserWithId(user.id).apply {
-                    try {
-                        this.value?.id?.let { setUserId(it) }
-                    } catch (e: InvalidParameterException) {
-                        Log.e(this::class.java.name, e.printStackTrace().toString())
-                    }
-                }
-            }
-
-            override fun createCall(): LiveData<ApiResponse<UserEntity>> {
-                return userAPI.getUser(user.id)
-            }
-        }.asLiveData().asSingleEvent()
-    }
-
     /**
      * When user is logged in, we use this method to keep track of which user in the db is logged id
      */
-    private fun setUserId(id: String?) {
-        if (id == null) throw InvalidParameterException("cannot set the value null for the user id")
+    private fun setUserIdAndToken(id: String, token: String) {
         with(sharedPreferences.edit()) {
             putString(key_user_id, id)
+            putString(key_server_token, token)
             apply()
         }
     }
@@ -121,12 +86,18 @@ class UserRepository @Inject constructor(
         return sharedPreferences.getString(key_user_id, null)
     }
 
+    private fun getServerToken(): String? {
+        return sharedPreferences.getString(key_server_token, null)
+    }
+
+
     /**
      * When we log out a user, we clear the id in shared preferences
      */
     private fun invalidateSession() {
         with(sharedPreferences.edit()) {
             putString(key_user_id, null)
+            putString(key_server_token, null)
             apply()
         }
     }
