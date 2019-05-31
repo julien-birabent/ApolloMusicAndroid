@@ -22,13 +22,12 @@ class UserRepository @Inject constructor(
 
     internal companion object {
         const val key_user_id = "key_user_id"
-        const val key_server_token = "key_server_token"
     }
 
     fun login(user: User): Single<Response<UserEntity>> {
         return with(userAPI.login(user.token, user.loginType?.name?.toLowerCase())) {
             subscribeOn(scheduler.io())
-                .doOnSuccess() {
+                .doOnSuccess {
                     Log.d("UserRepo", "Login success")
                     appExecutors.diskIO().execute {
                         if (it.isSuccessful && it.body() != null) {
@@ -42,7 +41,7 @@ class UserRepository @Inject constructor(
                                     try{
                                         invalidateSession()
                                         if (it != null) {
-                                            setUserIdAndToken(it, userEntity.token.token)
+                                            setUserId(it)
                                         }
                                     }catch (e: InvalidParameterException){
                                         //TODO(handle error)
@@ -74,10 +73,9 @@ class UserRepository @Inject constructor(
     /**
      * When user is logged in, we use this method to keep track of which user in the db is logged id
      */
-    private fun setUserIdAndToken(id: String, token: String) {
+    private fun setUserId(id: String) {
         with(sharedPreferences.edit()) {
             putString(key_user_id, id)
-            putString(key_server_token, token)
             apply()
         }
     }
@@ -86,18 +84,12 @@ class UserRepository @Inject constructor(
         return sharedPreferences.getString(key_user_id, null)
     }
 
-    private fun getServerToken(): String? {
-        return sharedPreferences.getString(key_server_token, null)
-    }
-
-
     /**
      * When we log out a user, we clear the id in shared preferences
      */
     private fun invalidateSession() {
         with(sharedPreferences.edit()) {
             putString(key_user_id, null)
-            putString(key_server_token, null)
             apply()
         }
     }
