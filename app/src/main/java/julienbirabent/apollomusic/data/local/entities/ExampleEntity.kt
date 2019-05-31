@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "examples")
-data class Example(
+data class ExampleEntity(
 
     @PrimaryKey(autoGenerate = true) val id: Int?,
     @Expose

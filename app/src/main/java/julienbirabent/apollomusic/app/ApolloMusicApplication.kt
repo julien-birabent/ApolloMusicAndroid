@@ -25,8 +25,6 @@ class ApolloMusicApplication : Application(), HasActivityInjector {
             .appConstants(getAppConstants())
             .build()
             .inject(this)
-
-
     }
 
     override fun activityInjector(): AndroidInjector<Activity> = activityDispatchingInjector

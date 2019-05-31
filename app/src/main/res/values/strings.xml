@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">ApolloMusic</string>
+    <string name="app_name">Apollo Music</string>
+    <string name="web_client_id">155971439093-785ga9sio6omm2e31odnlf4avdd4arma.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">3099470110066765</string>
+    <string name="fb_login_protocol_scheme">fb3099470110066765</string>
+
+    <string name="login_with_google">Login with Google</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="login_welcome_title">Welcome to Apollo Music</string>
+
 </resources>

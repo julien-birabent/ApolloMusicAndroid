@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference;
 
 public abstract class BaseViewModel<N> extends ViewModel {
 
-    private final ObservableBoolean mIsLoading = new ObservableBoolean();
+    private final ObservableBoolean isLoading = new ObservableBoolean();
 
     private CompositeDisposable mCompositeDisposable;
 
@@ -29,11 +29,11 @@ public abstract class BaseViewModel<N> extends ViewModel {
     }
 
     public ObservableBoolean getIsLoading() {
-        return mIsLoading;
+        return isLoading;
     }
 
     public void setIsLoading(boolean isLoading) {
-        mIsLoading.set(isLoading);
+        this.isLoading.set(isLoading);
     }
 
     public N getNavigator() {

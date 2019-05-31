@@ -8,10 +8,6 @@ class DebugAppConstants : AppConstants {
         return BuildConfig.BASE_URL
     }
 
-    override fun apiKey(): String {
-        return BuildConfig.API_KEY
-    }
-
     override fun dbName(): String {
         return "apollo_database_debug"
     }

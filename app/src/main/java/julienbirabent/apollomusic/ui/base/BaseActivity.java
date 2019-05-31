@@ -1,6 +1,7 @@
 package julienbirabent.apollomusic.ui.base;
 
 import android.annotation.TargetApi;
+import android.util.Log;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import androidx.databinding.DataBindingUtil;
@@ -31,7 +32,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     @Inject
     public ViewModelFactory viewModelFactory;
 
-    protected T viewDataBinding;
+    protected T binding;
     public V viewModel;
 
     /**
@@ -53,7 +54,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
      *
      * @return view model instance
      */
-    public abstract Class<V> getViewModelClass();
+    protected abstract Class<V> getViewModelClass();
 
     @Override
     public void onFragmentAttached() {
@@ -69,11 +70,12 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         performDependencyInjection();
         super.onCreate(savedInstanceState);
+        Log.d("Activity launched : "+this.getLocalClassName(), "event : onCreate");
         performDataBinding();
     }
 
-    public T getViewDataBinding() {
-        return viewDataBinding;
+    public T getBinding() {
+        return binding;
     }
 
     public void hideKeyboard() {
@@ -112,12 +114,15 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     }
 
     private void performDataBinding() {
-        viewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
-        viewDataBinding.setLifecycleOwner(this);
+        binding = DataBindingUtil.setContentView(this, getLayoutId());
+        binding.setLifecycleOwner(this);
         this.viewModel = viewModel == null ?
                 ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass()) : viewModel;
-        viewDataBinding.setVariable(getBindingVariable(), viewModel);
-        viewDataBinding.executePendingBindings();
+        binding.setVariable(getBindingVariable(), viewModel);
+        if(this instanceof UINavigator){
+            viewModel.setNavigator(this);
+        }
+        binding.executePendingBindings();
     }
 }
 
