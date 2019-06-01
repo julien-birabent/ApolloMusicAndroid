@@ -13,5 +13,7 @@
     <string name="home_menu_social_title">Social</string>
     <string name="home_menu_stats_title">Stats</string>
 
+    <string name="toolbar_title_practice">Practice</string>
+
 
 </resources>

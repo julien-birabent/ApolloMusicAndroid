@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.databinding.ViewDataBinding
 
 inline fun <reified T : Any> Activity.launchActivity(
     requestCode: Int = -1,

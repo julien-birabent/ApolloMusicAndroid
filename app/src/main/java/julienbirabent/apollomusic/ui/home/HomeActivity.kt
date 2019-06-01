@@ -16,6 +16,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, HomeViewModel>(), HomeNav
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         setupNavigation()
+        setSupportActionBar(binding.toolbar)
     }
 
     private fun setupNavigation() {
