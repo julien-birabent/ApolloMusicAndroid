@@ -1,11 +1,33 @@
 package julienbirabent.apollomusic.ui.home
 
+import android.os.Bundle
+import android.os.PersistableBundle
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
+import julienbirabent.apollomusic.databinding.ActivityHomeBinding
 import julienbirabent.apollomusic.ui.base.BaseActivity
 
-class HomeActivity : BaseActivity<julienbirabent.apollomusic.databinding.ActivityHomeBinding,HomeViewModel>(), HomeNavigator{
+class HomeActivity : BaseActivity<ActivityHomeBinding, HomeViewModel>(), HomeNavigator {
 
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+        setupNavigation()
+    }
+
+    private fun setupNavigation() {
+        val navController = findNavController(R.id.mainNavigationFragment)
+        setupActionBarWithNavController(navController)
+        binding.navigation.setupWithNavController(navController)
+    }
+
+
+    override fun onSupportNavigateUp() = findNavController(R.id.mainNavigationFragment).navigateUp()
+
+    //<editor-fold desc="Base activity heritage">
     override fun getBindingVariable(): Int {
         return BR.viewModel
     }
@@ -17,4 +39,5 @@ class HomeActivity : BaseActivity<julienbirabent.apollomusic.databinding.Activit
     override fun getViewModelClass(): Class<HomeViewModel> {
         return HomeViewModel::class.java
     }
+    //</editor-fold>
 }

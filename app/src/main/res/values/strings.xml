@@ -8,4 +8,10 @@
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="login_welcome_title">Welcome to Apollo Music</string>
 
+    <string name="home_menu_practice_title">Home</string>
+    <string name="home_menu_create_title">Create</string>
+    <string name="home_menu_social_title">Social</string>
+    <string name="home_menu_stats_title">Stats</string>
+
+
 </resources>

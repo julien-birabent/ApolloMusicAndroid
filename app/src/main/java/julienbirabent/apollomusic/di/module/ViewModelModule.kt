@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import julienbirabent.apollomusic.data.repository.ExampleRepository
 import julienbirabent.apollomusic.di.annotation.ViewModelKey
 import julienbirabent.apollomusic.ui.example.ExampleViewModel
 import julienbirabent.apollomusic.ui.home.HomeViewModel
 import julienbirabent.apollomusic.ui.login.LoginViewModel
+import julienbirabent.apollomusic.ui.practice.PracticeListViewModel
 import julienbirabent.apollomusic.ui.splash.SplashViewModel
 import julienbirabent.apollomusic.viewmodel.ViewModelFactory
 
@@ -35,6 +35,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
     abstract fun bindHomeViewModel(viewModel: HomeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PracticeListViewModel::class)
+    abstract fun bindPracticeListViewModel(viewModel: PracticeListViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory

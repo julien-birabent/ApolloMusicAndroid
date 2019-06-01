@@ -25,9 +25,11 @@ class LoginViewModel @Inject constructor(
             .subscribe({
                 Log.d("LoginViewModel", "Login success")
                 navigator.signInSuccessful()
+                setIsLoading(false)
             }, {
                 Log.d("LoginViewModel", "Login error")
                 navigator.signInError()
+                setIsLoading(false)
             })
         )
     }

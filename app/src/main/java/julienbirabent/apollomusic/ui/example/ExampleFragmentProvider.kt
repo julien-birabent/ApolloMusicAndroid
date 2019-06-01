@@ -7,6 +7,6 @@ import javax.inject.Named
 @Module
 abstract class ExampleFragmentProvider {
 
-    @ContributesAndroidInjector(modules = arrayOf(ExampleFragmentModule::class))
+    @ContributesAndroidInjector(modules = [ExampleFragmentModule::class])
     abstract fun contributeExampleFragment(): ExampleFragment
 }

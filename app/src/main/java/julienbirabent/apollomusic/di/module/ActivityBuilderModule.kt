@@ -6,12 +6,14 @@ import julienbirabent.apollomusic.ui.example.ExampleActivity
 import julienbirabent.apollomusic.ui.example.ExampleFragmentProvider
 import julienbirabent.apollomusic.ui.home.HomeActivity
 import julienbirabent.apollomusic.ui.login.LoginActivity
+import julienbirabent.apollomusic.ui.practice.PracticeFragmentProvider
+import julienbirabent.apollomusic.ui.practice.PracticeListFragment
 import julienbirabent.apollomusic.ui.splash.SplashScreenActivity
 
-@Module(includes = arrayOf(DataModule::class))
+@Module(includes = [DataModule::class])
 abstract class ActivityBuilderModule {
 
-    @ContributesAndroidInjector(modules = arrayOf(ExampleFragmentProvider::class))
+    @ContributesAndroidInjector(modules = [ExampleFragmentProvider::class])
     abstract fun bindExampleActivity(): ExampleActivity
 
     @ContributesAndroidInjector
@@ -20,6 +22,6 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector
     abstract fun bindSplashActivity(): SplashScreenActivity
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [PracticeFragmentProvider::class])
     abstract fun bindHomeActivity(): HomeActivity
 }
