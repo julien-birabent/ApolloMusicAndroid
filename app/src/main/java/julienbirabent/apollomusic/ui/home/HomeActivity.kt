@@ -12,11 +12,10 @@ import julienbirabent.apollomusic.ui.base.BaseActivity
 
 class HomeActivity : BaseActivity<ActivityHomeBinding, HomeViewModel>(), HomeNavigator {
 
-
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        setupNavigation()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setSupportActionBar(binding.toolbar)
+        setupNavigation()
     }
 
     private fun setupNavigation() {

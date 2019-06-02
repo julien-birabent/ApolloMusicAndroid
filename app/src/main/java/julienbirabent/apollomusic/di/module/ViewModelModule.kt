@@ -9,7 +9,8 @@ import julienbirabent.apollomusic.di.annotation.ViewModelKey
 import julienbirabent.apollomusic.ui.example.ExampleViewModel
 import julienbirabent.apollomusic.ui.home.HomeViewModel
 import julienbirabent.apollomusic.ui.login.LoginViewModel
-import julienbirabent.apollomusic.ui.practice.PracticeListViewModel
+import julienbirabent.apollomusic.ui.practice.create.PracticeCreateViewModel
+import julienbirabent.apollomusic.ui.practice.list.PracticeListViewModel
 import julienbirabent.apollomusic.ui.splash.SplashViewModel
 import julienbirabent.apollomusic.viewmodel.ViewModelFactory
 
@@ -40,6 +41,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PracticeListViewModel::class)
     abstract fun bindPracticeListViewModel(viewModel: PracticeListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PracticeCreateViewModel::class)
+    abstract fun bindPracticeCreateViewModel(viewModel: PracticeCreateViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory

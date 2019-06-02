@@ -7,7 +7,6 @@ import julienbirabent.apollomusic.ui.example.ExampleFragmentProvider
 import julienbirabent.apollomusic.ui.home.HomeActivity
 import julienbirabent.apollomusic.ui.login.LoginActivity
 import julienbirabent.apollomusic.ui.practice.PracticeFragmentProvider
-import julienbirabent.apollomusic.ui.practice.PracticeListFragment
 import julienbirabent.apollomusic.ui.splash.SplashScreenActivity
 
 @Module(includes = [DataModule::class])

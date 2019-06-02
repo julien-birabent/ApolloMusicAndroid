@@ -14,6 +14,7 @@
     <string name="home_menu_stats_title">Stats</string>
 
     <string name="toolbar_title_practice">Practice</string>
-
+    <string name="toolbar_title_create_practice">Create a practice</string>
+    <string name="menu_save_practice">Save</string>
 
 </resources>

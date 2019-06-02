@@ -1,19 +1,24 @@
-package julienbirabent.apollomusic.ui.practice
+package julienbirabent.apollomusic.ui.practice.list
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.FragmentPracticeListBinding
 import julienbirabent.apollomusic.ui.base.BaseFragment
-import julienbirabent.apollomusic.ui.example.ExampleViewModel
 
-class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeListViewModel>(), PracticeListNavigator
-{
+class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeListViewModel>(),
+    PracticeListNavigator {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewDataBinding.createPractice.setOnClickListener {
+            findNavController().navigate(R.id.action_actionHome_to_practiceCreateFragment)
+        }
+
+    }
 
     override fun getBindingVariable(): Int {
         return BR.viewModel
