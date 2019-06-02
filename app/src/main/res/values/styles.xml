@@ -14,6 +14,14 @@
         <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
     </style>
 
+    <style name="FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="fabSize">normal</item>
+        <item name="android:tint">@android:color/white</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:src">@android:drawable/ic_input_add</item>
+    </style>
+
     <style name="BaseLoginButton">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:elevation">0dp</item>
