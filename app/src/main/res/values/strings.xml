@@ -19,5 +19,6 @@
     <string name="dates_for_this_practice">Dates for this practice</string>
     <string name="practice_objectives_header">Your objectives</string>
     <string name="practice_notes_header">Notes</string>
+    <string name="no_date_added_yet">No date has been added for this practice yet</string>
 
 </resources>
