@@ -50,4 +50,14 @@
         <item name="android:drawableLeft">@drawable/ic_google_logo</item>
         <item name="android:text">@string/login_with_google</item>
     </style>
+
+    <style name="Widget.MaterialComponents.CardView.MyApp">
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardBackgroundColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.CardView.MyApp.Ripple">
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+    </style>
 </resources>

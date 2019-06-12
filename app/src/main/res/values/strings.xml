@@ -16,5 +16,8 @@
     <string name="toolbar_title_practice">Practice</string>
     <string name="toolbar_title_create_practice">Create a practice</string>
     <string name="menu_save_practice">Save</string>
+    <string name="dates_for_this_practice">Dates for this practice</string>
+    <string name="practice_objectives_header">Your objectives</string>
+    <string name="practice_notes_header">Notes</string>
 
 </resources>
