@@ -15,6 +15,7 @@ import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import dagger.android.support.AndroidSupportInjection;
 import julienbirabent.apollomusic.viewmodel.ViewModelFactory;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -85,9 +86,13 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
+        setBindingVariables(mViewDataBinding);
         mViewDataBinding.setLifecycleOwner(this);
         mViewDataBinding.executePendingBindings();
+    }
+
+    protected void setBindingVariables(@NotNull ViewDataBinding binding){
+        mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
     }
 
     public BaseActivity getBaseActivity() {

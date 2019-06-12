@@ -5,11 +5,15 @@
     <data>
 
         <variable
+            name="dateAdapter"
+            type="julienbirabent.apollomusic.ui.adapters.DateAdapter" />
+
+        <variable
             name="viewModel"
             type="julienbirabent.apollomusic.ui.practice.create.PracticeCreateViewModel" />
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -30,19 +34,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/date_card_container"
-                style="@style/Widget.MaterialComponents.CardView.MyApp"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+            <!--<androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="24dp"
+                app:srcCompat="@drawable/ic_calendar" />-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/date_list"
+                setAdapter="@{dateAdapter}"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:maxHeight="200dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_header">
+                app:layout_constraintTop_toBottomOf="@id/date_header">
 
-            </androidx.cardview.widget.CardView>
+            </androidx.recyclerview.widget.RecyclerView>
 
             <View
                 android:id="@+id/date_separator"
@@ -54,7 +64,7 @@
                 android:background="@color/text_header_1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_card_container" />
+                app:layout_constraintTop_toBottomOf="@+id/date_list" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/objective_header"
@@ -133,9 +143,9 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_edittext"
-                android:padding="8dp"
                 android:hint="You can type some notes here"
                 android:inputType="textImeMultiLine"
+                android:padding="8dp"
                 android:textColor="@color/text_header_1"
                 android:textColorHint="@color/com_facebook_button_background_color_selected"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -143,5 +153,5 @@
                 app:layout_constraintTop_toBottomOf="@+id/notes_header" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>
