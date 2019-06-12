@@ -26,9 +26,9 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     ViewModelFactory viewModelFactory;
 
     private BaseActivity mActivity;
-    private View mRootView;
-    private T mViewDataBinding;
-    private V mViewModel;
+    private View rootView;
+    private T binding;
+    private V viewModel;
 
     /**
      * Override for set binding variable
@@ -66,15 +66,15 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         performDependencyInjection();
         super.onCreate(savedInstanceState);
         FragmentArgs.inject(this);
-        mViewModel = getViewModel();
+        viewModel = getViewModel();
         setHasOptionsMenu(false);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        mRootView = mViewDataBinding.getRoot();
-        return mRootView;
+        binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+        rootView = binding.getRoot();
+        return rootView;
     }
 
     @Override
@@ -86,13 +86,16 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setBindingVariables(mViewDataBinding);
-        mViewDataBinding.setLifecycleOwner(this);
-        mViewDataBinding.executePendingBindings();
+        setBindingVariables(binding);
+        binding.setLifecycleOwner(this);
+        if (this instanceof UINavigator) {
+            viewModel.setNavigator(this);
+        }
+        binding.executePendingBindings();
     }
 
     protected void setBindingVariables(@NotNull ViewDataBinding binding){
-        mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
+        this.binding.setVariable(getBindingVariable(), viewModel);
     }
 
     public BaseActivity getBaseActivity() {
@@ -100,7 +103,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     }
 
     public T getViewDataBinding() {
-        return mViewDataBinding;
+        return binding;
     }
 
     public void hideKeyboard() {

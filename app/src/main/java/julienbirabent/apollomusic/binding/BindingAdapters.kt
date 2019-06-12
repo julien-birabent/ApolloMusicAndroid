@@ -35,3 +35,8 @@ fun loadImageUrl(view: ImageView, url: String?) {
 fun setVisibility(view: View, value: Boolean) {
     view.visibility = if (value) View.VISIBLE else View.GONE
 }
+
+@BindingAdapter("android:animatedVisibility")
+fun setAnimatedVisibility(target: View, isVisible: Boolean) {
+    target.visibility = if (isVisible) View.VISIBLE else View.GONE
+}

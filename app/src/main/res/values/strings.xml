@@ -21,4 +21,8 @@
     <string name="practice_notes_header">Notes</string>
     <string name="no_date_added_yet">No date has been added for this practice yet</string>
 
+    <string name="dialog_done">Done</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_select_practice_dates_title">Select the dates for this practice</string>
+
 </resources>

@@ -20,7 +20,7 @@ class PracticeCreateViewModel @Inject constructor() :
     val dateActionItemCallback: ActionItem<Date> = object :
         ActionItem<Date> {
         override fun modifyItem(item: Date) {
-            modifyDate(item)
+            navigator?.goToSimpleSelectionCalendar(item)
         }
 
         override fun deleteItem(item: Date) {
@@ -28,11 +28,25 @@ class PracticeCreateViewModel @Inject constructor() :
         }
     }
 
+    fun openMultiSelectionCalendar(){
+        navigator?.goToMultiSelectionCalendar()
+    }
+
+    fun addDatesToPractice(dates: List<Date>){
+        practiceDates.value?.addAll(dates)
+        practiceDates.value = practiceDates.value
+    }
+
+    fun replaceDate(previousDate : Date, newDate: Date){
+        deleteDate(previousDate)
+        addDate(newDate)
+    }
+
     /**
      * For testing purpose
      */
     fun getPracticesDates(): MutableLiveData<MutableList<Date>> {
-        practiceDates.value = mutableListOf(Date(), Date(), Date(), Date(), Date(), Date(), Date(), Date(), Date())
+        practiceDates.value = mutableListOf()
         return practiceDates
     }
 
@@ -40,9 +54,14 @@ class PracticeCreateViewModel @Inject constructor() :
 
     }
 
+    private fun addDate(date : Date){
+        practiceDates.value?.add(date)
+        practiceDates.value = practiceDates.value
+    }
+
     private fun deleteDate(date: Date) {
         practiceDates.value?.remove(date)
-        practiceDates.postValue(practiceDates.value)
+        practiceDates.value = practiceDates.value
     }
 
 }
