@@ -64,26 +64,21 @@
                 android:onClick="@{() -> viewModel.openMultiSelectionCalendar()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:foreground="?selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_calendar" />
-
-            <LinearLayout
-                android:id="@+id/date_list_container"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/practice_list_dates_height"
-                android:layout_marginTop="8dp"
-                android:animatedVisibility="@{viewModel.datesEmpty}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/calendar">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/date_list"
+                    android:layout_marginTop="8dp"
+                    android:animatedVisibility="@{viewModel.datesEmpty}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/calendar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     app:setAdapter="@{dateAdapter}">
                 </androidx.recyclerview.widget.RecyclerView>
-            </LinearLayout>
-            
+
             <View
                 android:id="@+id/date_separator"
                 android:layout_width="match_parent"
@@ -94,7 +89,7 @@
                 android:background="@color/text_header_1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_list_container" />
+                app:layout_constraintTop_toBottomOf="@+id/date_list" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/objective_header"

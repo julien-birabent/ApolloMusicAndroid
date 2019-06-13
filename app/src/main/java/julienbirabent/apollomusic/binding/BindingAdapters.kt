@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 
 @BindingAdapter("app:setAdapter")
 fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>) {
-    recyclerView.setHasFixedSize(true)
+    recyclerView.setHasFixedSize(false)
     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     recyclerView.itemAnimator = DefaultItemAnimator()
     recyclerView.adapter = adapter
