@@ -7,12 +7,16 @@ import julienbirabent.apollomusic.data.local.converters.DateConverters
 import julienbirabent.apollomusic.data.local.converters.EnumConverters
 import julienbirabent.apollomusic.data.local.converters.ListConverter
 import julienbirabent.apollomusic.data.local.dao.ExampleDao
+import julienbirabent.apollomusic.data.local.dao.ObjectiveCriteriaJoinDao
+import julienbirabent.apollomusic.data.local.dao.ObjectiveExerciseJoinDao
 import julienbirabent.apollomusic.data.local.dao.UserDao
 import julienbirabent.apollomusic.data.local.entities.*
 import java.text.SimpleDateFormat
 
 @Database(
-    entities = [UserEntity::class, ExampleEntity::class, PracticeEntity::class, ObjectiveEntity::class, ExerciseEntity::class, CriteriaEntity::class],
+    entities = [UserEntity::class, ExampleEntity::class, PracticeEntity::class,
+        ObjectiveEntity::class, ExerciseEntity::class, CriteriaEntity::class,
+        ObjectiveExerciseJoin::class, ObjectiveCriteriaJoin::class],
     version = 1
 )
 @TypeConverters(EnumConverters::class, DateConverters::class, ListConverter::class)
@@ -24,4 +28,6 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun exampleDao(): ExampleDao
+    abstract fun objectiveCriteriaJoinDao(): ObjectiveCriteriaJoinDao
+    abstract fun objectiveExerciseJoinDao(): ObjectiveExerciseJoinDao
 }
