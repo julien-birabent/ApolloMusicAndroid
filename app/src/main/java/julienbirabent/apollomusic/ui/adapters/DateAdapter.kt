@@ -9,4 +9,10 @@ class DateAdapter(callback: ActionItem<Date>) :
     override fun getLayoutId(position: Int, obj: Date): Int {
         return R.layout.view_date_row
     }
+
+    override fun getDiffUtilCallback(oldList: List<Date>, newList: List<Date>): BaseDiffCallback<Date> {
+        return BaseDiffCallback(oldList, newList, ({
+            it.time
+        }))
+    }
 }

@@ -19,19 +19,17 @@
     <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@drawable/bg_card_light</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowTitleStyle">@style/CustomDialogTitle</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:colorAccent">#FFFFFF</item>
     </style>
 
-    <style name="CustomDialogTitle" parent="@android:style/TextAppearance.DialogWindowTitle">
+    <style name="DialogWindowTitle">
         <item name="android:gravity">center_horizontal|center_vertical</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@android:color/white</item>
-    </style>
-
-    <style name="DialogWindowTitle">
         <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/text_size_med</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:scrollHorizontally">true</item>
         <item name="android:textAppearance">@android:style/TextAppearance.DialogWindowTitle</item>
     </style>

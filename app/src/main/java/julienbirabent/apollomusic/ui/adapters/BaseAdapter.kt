@@ -1,30 +1,46 @@
 package julienbirabent.apollomusic.ui.adapters
 
-import android.telecom.Call
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 
-abstract class BaseAdapter<Model, Callback> :
-    RecyclerView.Adapter<DataBindingViewHolder<Model, Callback>> {
+abstract class BaseAdapter<Model, Callback>(callback: Callback) :
+    RecyclerView.Adapter<DataBindingViewHolder<Model, Callback>>() {
 
-    private lateinit var listItems: List<Model>
-    private var callback: Callback? = null
+    private var listItems: List<Model>
+    private var callback: Callback? = callback
 
-    constructor(callback: Callback) {
-        this.callback = callback
-    }
-
-    constructor() {
+    init {
         listItems = emptyList()
     }
 
-    fun setItems(listItems: List<Model>) {
+    private fun setItems(listItems: List<Model>) {
         this.listItems = listItems
         notifyDataSetChanged()
+    }
+
+     open fun getDiffUtilCallback(oldList: List<Model>, newList: List<Model>) : BaseDiffCallback<Model>{
+        return BaseDiffCallback(oldList, newList, ({
+            it as Any
+        }))
+    }
+
+    fun updateList(newList: List<Model>) {
+
+        val diffUtil = getDiffUtilCallback(listItems, newList)
+        if(diffUtil!=null){
+            diffUtil?.let {
+                DiffUtil.calculateDiff(getDiffUtilCallback(listItems, newList))
+            }.let {
+                it.dispatchUpdatesTo(this)
+            }
+        }else{
+            setItems(newList)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBindingViewHolder<Model, Callback> {

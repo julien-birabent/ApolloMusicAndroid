@@ -7,12 +7,16 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.common.SignInButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DefaultItemAnimator
+
+
 
 
 @BindingAdapter("app:setAdapter")
 fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>) {
     recyclerView.setHasFixedSize(true)
     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
+    recyclerView.itemAnimator = DefaultItemAnimator()
     recyclerView.adapter = adapter
 }
 

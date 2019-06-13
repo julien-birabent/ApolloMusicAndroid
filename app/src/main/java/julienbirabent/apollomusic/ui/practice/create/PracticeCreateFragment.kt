@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -44,13 +45,16 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
             null,
             false
         )
+        val title = layoutInflater.inflate(R.layout.view_dialog_title,null) as TextView
+        title.text = resources.getText(R.string.dialog_select_practice_dates_title)
+
         calendar.add(Calendar.YEAR, 1)
         calendarView.calendar.init(Date(), calendar.time).withSelectedDate(date)
             .inMode(CalendarPickerView.SelectionMode.SINGLE)
         calendar.time = Date()
 
         val datePickerDialog = AlertDialog.Builder(baseActivity, R.style.AlertDialogTheme)
-            .setTitle(R.string.dialog_select_practice_dates_title)
+            .setCustomTitle(title)
             .setView(calendarView.root)
             .setNegativeButton(R.string.dialog_cancel) { dialogInterface: DialogInterface, _ ->
                 dialogInterface.dismiss()
@@ -73,6 +77,9 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
             null,
             false
         )
+        val title = layoutInflater.inflate(R.layout.view_dialog_title,null) as TextView
+        title.text = resources.getText(R.string.dialog_select_practice_dates_title)
+
         calendar.add(Calendar.YEAR, 1)
         calendarView.calendar.init(Date(), calendar.time)
             .inMode(CalendarPickerView.SelectionMode.MULTIPLE)
@@ -82,6 +89,7 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
 
         val datePickerDialog = AlertDialog.Builder(baseActivity, R.style.AlertDialogTheme)
             .setTitle(R.string.dialog_select_practice_dates_title)
+            .setCustomTitle(title)
             .setView(calendarView.root)
             .setNegativeButton(R.string.dialog_cancel) { dialogInterface: DialogInterface, _ ->
                 dialogInterface.dismiss()
@@ -109,7 +117,7 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         setHasOptionsMenu(true)
 
         viewModel.getPracticesDates().observe(viewLifecycleOwner, Observer {
-            dateAdapter.setItems(it)
+            dateAdapter.updateList(it)
         })
     }
 
