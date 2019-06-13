@@ -11,8 +11,10 @@ class DateAdapter(callback: ActionItem<Date>) :
     }
 
     override fun getDiffUtilCallback(oldList: List<Date>, newList: List<Date>): BaseDiffCallback<Date> {
-        return BaseDiffCallback(oldList, newList, ({
-            it.time
-        }))
+        return BaseDiffCallback(oldList, newList, areItemsTheSame = { oldItem, newItem ->
+            oldItem.hashCode() == newItem.hashCode()
+        }, areContentTheSame = { oldItem, newItem ->
+            oldItem.time == newItem.time
+        })
     }
 }

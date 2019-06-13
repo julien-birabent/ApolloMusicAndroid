@@ -26,8 +26,8 @@ import javax.inject.Inject
 
 class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, PracticeCreateViewModel>(),
     PracticeCreateNavigator {
-    private lateinit var dateAdapter: DateAdapter
 
+    private lateinit var dateAdapter: DateAdapter
     @Inject
     lateinit var calendar: Calendar
 

@@ -50,10 +50,6 @@ class PracticeCreateViewModel @Inject constructor() :
         return practiceDates
     }
 
-    private fun modifyDate(date: Date) {
-
-    }
-
     private fun addDate(date : Date){
         practiceDates.value?.add(date)
         practiceDates.value = practiceDates.value

@@ -11,37 +11,42 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseAdapter<Model, Callback>(callback: Callback) :
     RecyclerView.Adapter<DataBindingViewHolder<Model, Callback>>() {
 
-    private var listItems: List<Model>
+    private var listItems: MutableList<Model>
     private var callback: Callback? = callback
 
     init {
-        listItems = emptyList()
+        listItems = mutableListOf()
     }
 
     private fun setItems(listItems: List<Model>) {
-        this.listItems = listItems
+        this.listItems = listItems.toMutableList()
         notifyDataSetChanged()
     }
 
-     open fun getDiffUtilCallback(oldList: List<Model>, newList: List<Model>) : BaseDiffCallback<Model>{
-        return BaseDiffCallback(oldList, newList, ({
-            it as Any
-        }))
+    /**
+     * Child classes can override this method to implement their own logic for the diffcallback
+     * They can also return null if they don<t need it
+     */
+    open fun getDiffUtilCallback(oldList: List<Model>, newList: List<Model>): BaseDiffCallback<Model>? {
+        return BaseDiffCallback(oldList, newList, areItemsTheSame = { oldItem, newItem ->
+            oldItem == newItem
+        }, areContentTheSame = { oldItem, newItem ->
+            oldItem == newItem
+        })
     }
 
     fun updateList(newList: List<Model>) {
-
-        val diffUtil = getDiffUtilCallback(listItems, newList)
-        if(diffUtil!=null){
-            diffUtil?.let {
-                DiffUtil.calculateDiff(getDiffUtilCallback(listItems, newList))
-            }.let {
-                it.dispatchUpdatesTo(this)
-            }
-        }else{
+        val diffUtil = getDiffUtilCallback(this.listItems, newList)
+        if (diffUtil != null) {
+            val result = DiffUtil.calculateDiff(diffUtil)
+            result.dispatchUpdatesTo(this)
+            this.listItems.clear()
+            this.listItems.addAll(newList)
+        } else {
             setItems(newList)
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBindingViewHolder<Model, Callback> {
         return getViewHolder(parent, viewType)
