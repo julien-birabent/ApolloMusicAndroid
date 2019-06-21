@@ -6,10 +6,7 @@ import androidx.room.TypeConverters
 import julienbirabent.apollomusic.data.local.converters.DateConverters
 import julienbirabent.apollomusic.data.local.converters.EnumConverters
 import julienbirabent.apollomusic.data.local.converters.ListConverter
-import julienbirabent.apollomusic.data.local.dao.ExampleDao
-import julienbirabent.apollomusic.data.local.dao.ObjectiveCriteriaJoinDao
-import julienbirabent.apollomusic.data.local.dao.ObjectiveExerciseJoinDao
-import julienbirabent.apollomusic.data.local.dao.UserDao
+import julienbirabent.apollomusic.data.local.dao.*
 import julienbirabent.apollomusic.data.local.entities.*
 import java.text.SimpleDateFormat
 
@@ -28,6 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun exampleDao(): ExampleDao
+    abstract fun practiceDao(): PracticeDao
     abstract fun objectiveCriteriaJoinDao(): ObjectiveCriteriaJoinDao
     abstract fun objectiveExerciseJoinDao(): ObjectiveExerciseJoinDao
 }

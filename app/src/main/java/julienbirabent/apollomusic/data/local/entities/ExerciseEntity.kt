@@ -20,7 +20,7 @@ data class ExerciseEntity(
 
     @Expose
     @SerializedName("id")
-    @PrimaryKey(autoGenerate = true) var id: Int,
+    @PrimaryKey var id: Int,
 
     @Expose
     @SerializedName("profileId")

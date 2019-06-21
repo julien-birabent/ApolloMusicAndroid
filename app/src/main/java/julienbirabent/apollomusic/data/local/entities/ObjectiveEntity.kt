@@ -13,14 +13,15 @@ import com.google.gson.annotations.SerializedName
         entity = PracticeEntity::class,
         parentColumns = ["id"],
         childColumns = ["practiceId"],
-        onDelete = ForeignKey.CASCADE
+        onDelete = ForeignKey.CASCADE,
+        onUpdate = ForeignKey.CASCADE
     )]
 )
 data class ObjectiveEntity(
 
     @Expose
     @SerializedName("id")
-    @PrimaryKey(autoGenerate = true) var id: Int,
+    @PrimaryKey var id: Int,
 
     @Expose
     @SerializedName("objectif")

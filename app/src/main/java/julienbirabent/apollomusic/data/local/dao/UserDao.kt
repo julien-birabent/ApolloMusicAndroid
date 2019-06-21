@@ -9,7 +9,7 @@ import julienbirabent.apollomusic.data.local.entities.UserEntity
 abstract class UserDao {
 
     @Query("SELECT * FROM users WHERE id = :id ")
-    abstract fun getUserWithId(id: String): LiveData<UserEntity>
+    abstract fun getUserById(id: String): LiveData<UserEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract fun insert(entity: UserEntity): Long
