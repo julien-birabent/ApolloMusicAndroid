@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#3F51B5</color>
     <color name="colorAccent">#4A148C</color>
     <color name="colorAccentDark">#AAAAAA</color>
+    <color name="white_almost">#E0E4F0</color>
     <color name="saumon">#DB473A</color>
     <color name="mer_clair">#4267B2</color>
     <color name="text_header_1">#252525</color>

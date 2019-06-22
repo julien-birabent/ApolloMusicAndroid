@@ -28,5 +28,10 @@
     <string name="exercise">Exercise</string>
     <string name="custom_objective_type">Custom</string>
     <string name="custom_objective_hint">Enter the name of your custom objective</string>
+    <string name="criteria_improve_title">On which criteria you wish to improve ?</string>
+    <string name="add_a_custom_criteria_to_the_list">Add a custom criteria to the list</string>
+    <string name="objective_create_custom_header_hint">Or you can define your own custom objective to achieve by typing it in the text field below</string>
+    <string name="next_step">Next step</string>
+    <string name="pick_an_exercise">Pick an exercise you want to practice</string>
 
 </resources>
