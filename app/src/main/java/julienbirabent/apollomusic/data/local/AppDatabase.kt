@@ -26,6 +26,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun exampleDao(): ExampleDao
     abstract fun practiceDao(): PracticeDao
+    abstract fun objectiveDao(): ObjectiveDao
     abstract fun objectiveCriteriaJoinDao(): ObjectiveCriteriaJoinDao
     abstract fun objectiveExerciseJoinDao(): ObjectiveExerciseJoinDao
 }

@@ -24,5 +24,9 @@
     <string name="dialog_done">Done</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_select_practice_dates_title">Select the dates for this practice</string>
+    <string name="choose_the_objective_s_type">Choose the objective\'s type</string>
+    <string name="exercise">Exercise</string>
+    <string name="custom_objective_type">Custom</string>
+    <string name="custom_objective_hint">Enter the name of your custom objective</string>
 
 </resources>

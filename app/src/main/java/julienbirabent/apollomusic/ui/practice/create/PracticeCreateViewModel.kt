@@ -14,6 +14,8 @@ import javax.inject.Singleton
 class PracticeCreateViewModel @Inject constructor() :
     BaseViewModel<PracticeCreateNavigator>() {
 
+    val practiceNotes = MutableLiveData<String>()
+
     private var practiceDates = MutableLiveData<MutableList<Date>>()
     val datesEmpty: LiveData<Boolean> = Transformations.map(practiceDates) { it.size > 0 }
 

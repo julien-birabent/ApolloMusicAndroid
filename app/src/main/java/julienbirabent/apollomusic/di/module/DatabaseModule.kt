@@ -61,6 +61,10 @@ class DatabaseModule {
 
     @Singleton
     @Provides
+    fun objectiveDao(appDatabase: AppDatabase): ObjectiveDao = appDatabase.objectiveDao()
+
+    @Singleton
+    @Provides
     fun provideExampleDao(appDatabase: AppDatabase): ExampleDao {
         return appDatabase.exampleDao()
     }

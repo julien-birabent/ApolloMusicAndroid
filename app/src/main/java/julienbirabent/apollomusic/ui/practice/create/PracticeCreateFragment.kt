@@ -31,7 +31,7 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
     @Inject
     lateinit var calendar: Calendar
 
-    override fun onAttach(activity: Activity?) {
+    override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         if (activity is HomeActivity) {
             activity.hideBottomNavigation(true)
@@ -45,7 +45,7 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
             null,
             false
         )
-        val title = layoutInflater.inflate(R.layout.view_dialog_title,null) as TextView
+        val title = layoutInflater.inflate(R.layout.view_dialog_title, null) as TextView
         title.text = resources.getText(R.string.dialog_select_practice_dates_title)
 
         calendar.add(Calendar.YEAR, 1)
@@ -77,7 +77,7 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
             null,
             false
         )
-        val title = layoutInflater.inflate(R.layout.view_dialog_title,null) as TextView
+        val title = layoutInflater.inflate(R.layout.view_dialog_title, null) as TextView
         title.text = resources.getText(R.string.dialog_select_practice_dates_title)
 
         calendar.add(Calendar.YEAR, 1)
@@ -121,10 +121,9 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.create_practice_menu, menu);
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.create_practice_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
-
     }
 
     override fun goToSimpleSelectionCalendar(date: Date) {
@@ -150,7 +149,7 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
     }
 
     override fun getViewModel(): PracticeCreateViewModel {
-        return ViewModelProviders.of(baseActivity).get(PracticeCreateViewModel::class.java)
+        return ViewModelProviders.of(this, viewModelFactory).get(PracticeCreateViewModel::class.java)
     }
 
     companion object {

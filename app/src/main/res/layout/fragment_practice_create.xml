@@ -6,6 +6,7 @@
     <data>
 
         <import type="julienbirabent.apollomusic.ui.adapters.DateAdapter" />
+        <import type="julienbirabent.apollomusic.ui.practice.create.PracticeCreateViewModel" />
 
         <variable
             name="dateAdapter"
@@ -171,6 +172,7 @@
                 android:hint="You can type some notes here"
                 android:inputType="textImeMultiLine"
                 android:padding="8dp"
+                android:text="@={viewModel.practiceNotes}"
                 android:textColor="@color/text_header_1"
                 android:textColorHint="@color/com_facebook_button_background_color_selected"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -2,7 +2,6 @@ package julienbirabent.apollomusic.ui.base;
 
 import android.content.Context;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -20,15 +19,15 @@ import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;
 
 @FragmentWithArgs
-public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
+public abstract class BaseFragment<Binding extends androidx.databinding.ViewDataBinding, VM extends BaseViewModel> extends Fragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
 
     private BaseActivity mActivity;
     private View rootView;
-    private T binding;
-    private V viewModel;
+    private Binding binding;
+    private VM viewModel;
 
     /**
      * Override for set binding variable
@@ -49,10 +48,10 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
      *
      * @return view model instance
      */
-    public abstract V getViewModel();
+    public abstract VM getViewModel();
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
@@ -94,7 +93,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         binding.executePendingBindings();
     }
 
-    protected void setBindingVariables(@NotNull ViewDataBinding binding){
+    protected void setBindingVariables(@NotNull androidx.databinding.ViewDataBinding binding){
         this.binding.setVariable(getBindingVariable(), viewModel);
     }
 
@@ -102,7 +101,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         return mActivity;
     }
 
-    public T getViewDataBinding() {
+    public Binding getViewDataBinding() {
         return binding;
     }
 
@@ -124,6 +123,10 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
     private void performDependencyInjection() {
         AndroidSupportInjection.inject(this);
+    }
+
+    protected ViewModelFactory getViewModelFactory() {
+        return viewModelFactory;
     }
 
     public interface Callback {

@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/actionHome"
         android:name="julienbirabent.apollomusic.ui.practice.list.PracticeListFragment"
-        android:label="@string/toolbar_title_practice" >
+        android:label="@string/toolbar_title_practice">
         <action
             android:id="@+id/action_actionHome_to_practiceCreateFragment"
             app:destination="@id/practiceCreateFragment"
@@ -21,6 +21,15 @@
     <fragment
         android:id="@+id/practiceCreateFragment"
         android:name="julienbirabent.apollomusic.ui.practice.create.PracticeCreateFragment"
-        android:label="@string/toolbar_title_create_practice" />
+        android:label="@string/toolbar_title_create_practice">
+        <action
+            android:id="@+id/action_practiceCreateFragment_to_objectiveCreateFragment"
+            app:destination="@id/objectiveCreateFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/objectiveCreateFragment"
+        android:name="julienbirabent.apollomusic.ui.objective.ObjectiveCreateFragment"
+        android:label="ObjectiveCreateFragment" />
 
 </navigation>

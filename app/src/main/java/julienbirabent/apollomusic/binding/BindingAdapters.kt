@@ -2,14 +2,14 @@ package julienbirabent.apollomusic.binding
 
 import android.view.View
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
-import com.google.android.gms.common.SignInButton
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.DefaultItemAnimator
-
-
+import com.bumptech.glide.Glide
+import com.google.android.gms.common.SignInButton
 
 
 @BindingAdapter("app:setAdapter")
@@ -17,6 +17,16 @@ fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: RecyclerView.Ad
     recyclerView.setHasFixedSize(false)
     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     recyclerView.itemAnimator = DefaultItemAnimator()
+    val divider = DividerItemDecoration(
+        recyclerView.context,
+        (recyclerView.layoutManager as LinearLayoutManager).orientation
+    )
+    ContextCompat.getDrawable(recyclerView.context, julienbirabent.apollomusic.R.drawable.line_divider)?.let {
+        divider.setDrawable(
+            it
+        )
+    }
+    recyclerView.addItemDecoration(divider)
     recyclerView.adapter = adapter
 }
 
