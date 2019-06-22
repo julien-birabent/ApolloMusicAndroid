@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.squareup.timessquare.CalendarPickerView
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
@@ -26,8 +27,8 @@ import javax.inject.Inject
 
 class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, PracticeCreateViewModel>(),
     PracticeCreateNavigator {
-
     private lateinit var dateAdapter: DateAdapter
+
     @Inject
     lateinit var calendar: Calendar
 
@@ -112,6 +113,10 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         }
     }
 
+    override fun goToCreateObjectivePage() {
+        findNavController().navigate(R.id.action_practiceCreateFragment_to_objectiveCreateFragment)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
@@ -119,6 +124,10 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         viewModel.getPracticesDates().observe(viewLifecycleOwner, Observer {
             dateAdapter.updateList(it)
         })
+
+        viewDataBinding.addObjectiveButton.setOnClickListener {
+            viewModel.goToCreateObjectivePage()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

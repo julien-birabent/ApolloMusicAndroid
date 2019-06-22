@@ -8,4 +8,6 @@ interface PracticeCreateNavigator: UINavigator{
     fun goToMultiSelectionCalendar()
 
     fun goToSimpleSelectionCalendar(date : Date)
+
+    fun goToCreateObjectivePage()
 }

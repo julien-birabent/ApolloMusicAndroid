@@ -23,6 +23,10 @@
         android:name="julienbirabent.apollomusic.ui.practice.create.PracticeCreateFragment"
         android:label="@string/toolbar_title_create_practice">
         <action
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_practiceCreateFragment_to_objectiveCreateFragment"
             app:destination="@id/objectiveCreateFragment" />
     </fragment>

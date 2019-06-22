@@ -34,6 +34,10 @@ class PracticeCreateViewModel @Inject constructor() :
         navigator?.goToMultiSelectionCalendar()
     }
 
+    fun goToCreateObjectivePage(){
+        navigator?.goToCreateObjectivePage()
+    }
+
     fun addDatesToPractice(dates: List<Date>){
         practiceDates.value?.addAll(dates)
         practiceDates.value = practiceDates.value
