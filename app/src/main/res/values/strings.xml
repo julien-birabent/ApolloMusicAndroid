@@ -33,5 +33,7 @@
     <string name="objective_create_custom_header_hint">Or you can define your own custom objective to achieve by typing it in the text field below</string>
     <string name="next_step">Next step</string>
     <string name="pick_an_exercise">Pick an exercise you want to practice</string>
+    <string name="criteria_selection_toolbar_label">Criteria selection</string>
+    <string name="done">Done</string>
 
 </resources>

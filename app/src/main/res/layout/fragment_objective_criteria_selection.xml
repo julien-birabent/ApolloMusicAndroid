@@ -9,11 +9,16 @@
         <variable
             name="viewModel"
             type="julienbirabent.apollomusic.ui.objective.ObjectiveCreateViewModel" />
+
+        <variable
+            name="adapter"
+            type="julienbirabent.apollomusic.ui.adapters.criteria.CriteriaSelectionAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/create_objective_criteria_header"
@@ -37,25 +42,28 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/materialButton"
+            app:setAdapter="@{adapter}"
+            app:layout_constraintBottom_toTopOf="@+id/add_custom_criteria_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/create_objective_criteria_header">
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/add_custom_criteria_button"
             style="@style/MaterialButtonOutlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/add_a_custom_criteria_to_the_list"
+            android:background="@color/green_fresh_herb"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:text="@string/done"
             android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_med"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

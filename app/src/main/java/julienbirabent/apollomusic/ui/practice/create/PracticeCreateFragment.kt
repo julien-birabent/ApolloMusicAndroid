@@ -160,9 +160,4 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
     override fun getViewModel(): PracticeCreateViewModel {
         return ViewModelProviders.of(this, viewModelFactory).get(PracticeCreateViewModel::class.java)
     }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = PracticeCreateFragment()
-    }
 }

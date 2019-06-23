@@ -58,6 +58,13 @@
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
+    <style name="CheckBoxBase" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:colorControlNormal">#ffd600</item>
+        <item name="android:colorControlActivated">#0091ea</item>
+        <item name="android:colorControlHighlight">#c51162</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+    </style>
+
     <style name="FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="fabSize">normal</item>

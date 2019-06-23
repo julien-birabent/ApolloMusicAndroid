@@ -23,17 +23,29 @@
         android:name="julienbirabent.apollomusic.ui.practice.create.PracticeCreateFragment"
         android:label="@string/toolbar_title_create_practice">
         <action
+            android:id="@+id/action_practiceCreateFragment_to_objectiveCreateFragment"
+            app:destination="@id/objectiveCreateFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right"
-            android:id="@+id/action_practiceCreateFragment_to_objectiveCreateFragment"
-            app:destination="@id/objectiveCreateFragment" />
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
         android:id="@+id/objectiveCreateFragment"
         android:name="julienbirabent.apollomusic.ui.objective.ObjectiveCreateFragment"
-        android:label="ObjectiveCreateFragment" />
+        android:label="">
+        <action
+            android:id="@+id/action_objectiveCreateFragment_to_objectiveCriteriaSelectionFragment"
+            app:destination="@id/objectiveCriteriaSelectionFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/objectiveCriteriaSelectionFragment"
+        android:name="julienbirabent.apollomusic.ui.objective.criteria.ObjectiveCriteriaSelectionFragment"
+        android:label="@string/criteria_selection_toolbar_label" />
 
 </navigation>

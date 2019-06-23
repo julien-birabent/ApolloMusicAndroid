@@ -2,10 +2,9 @@ package julienbirabent.apollomusic.binding
 
 import android.view.View
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
+import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,16 +16,6 @@ fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: RecyclerView.Ad
     recyclerView.setHasFixedSize(false)
     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     recyclerView.itemAnimator = DefaultItemAnimator()
-    val divider = DividerItemDecoration(
-        recyclerView.context,
-        (recyclerView.layoutManager as LinearLayoutManager).orientation
-    )
-    ContextCompat.getDrawable(recyclerView.context, julienbirabent.apollomusic.R.drawable.line_divider)?.let {
-        divider.setDrawable(
-            it
-        )
-    }
-    recyclerView.addItemDecoration(divider)
     recyclerView.adapter = adapter
 }
 
@@ -35,6 +24,16 @@ fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: RecyclerView.Ad
 fun bindSignInGoogleClick(button: SignInButton, method: () -> Unit) {
     button.setOnClickListener { method.invoke() }
 }
+
+@BindingAdapter("android:onClick")
+fun bindCardViewOnClick(view: CardView, method: () -> Unit) {
+    view.setOnClickListener { method.invoke() }
+}
+
+/*@BindingAdapter("android:onClick")
+fun bindSignInGoogleClick(view: View, method: () -> Unit) {
+    view.setOnClickListener { method.invoke() }
+}*/
 
 @BindingAdapter("url")
 fun loadImageUrl(view: ImageView, url: String?) {

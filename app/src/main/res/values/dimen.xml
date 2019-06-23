@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <integer name="anim_slide_duration">350</integer>
+
     <dimen name="login_button_radius_corner">27dp</dimen>
     <dimen name="login_button_padding">8dp</dimen>
 
