@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.FragmentObjectiveCriteriaSelectionBinding
+import julienbirabent.apollomusic.extensions.showInputDialog
 import julienbirabent.apollomusic.ui.adapters.criteria.CriteriaSelectionAdapter
 import julienbirabent.apollomusic.ui.base.BaseFragment
 import julienbirabent.apollomusic.ui.objective.ObjectiveCreateNavigator
@@ -29,6 +30,23 @@ class ObjectiveCriteriaSelectionFragment :
         viewModel.criteriaList.observe(viewLifecycleOwner, Observer {
             criteriaAdapter.updateList(it)
         })
+
+        viewDataBinding.addCriteriaButton.setOnClickListener {
+            activity?.showInputDialog(
+                getString(R.string.dialog_add_criteria_title),
+                getString(R.string.dialog_add_criteria_message),
+                this::onConfirmAddCriteria
+            )
+        }
+    }
+
+    private fun onConfirmAddCriteria(criteriaString: String): Boolean {
+        return if (viewModel.isCriteriaInputValid(criteriaString)) {
+            viewModel.createCriteria(criteriaString)
+            true
+        } else {
+            false
+        }
     }
 
     override fun setBindingVariables(binding: ViewDataBinding) {

@@ -54,7 +54,7 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
             .inMode(CalendarPickerView.SelectionMode.SINGLE)
         calendar.time = Date()
 
-        val datePickerDialog = AlertDialog.Builder(baseActivity, R.style.AlertDialogTheme)
+        val datePickerDialog = AlertDialog.Builder(baseActivity, R.style.AlertDialogTheme_Blue)
             .setCustomTitle(title)
             .setView(calendarView.root)
             .setNegativeButton(R.string.dialog_cancel) { dialogInterface: DialogInterface, _ ->
@@ -88,7 +88,7 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
 
         calendar.time = Date()
 
-        val datePickerDialog = AlertDialog.Builder(baseActivity, R.style.AlertDialogTheme)
+        val datePickerDialog = AlertDialog.Builder(baseActivity, R.style.AlertDialogTheme_Blue)
             .setTitle(R.string.dialog_select_practice_dates_title)
             .setCustomTitle(title)
             .setView(calendarView.root)

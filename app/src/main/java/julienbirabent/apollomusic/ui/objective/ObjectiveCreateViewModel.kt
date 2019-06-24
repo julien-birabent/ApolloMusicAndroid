@@ -19,8 +19,8 @@ class ObjectiveCreateViewModel @Inject constructor() :
     val criteriaCallback: CriteriaSelectionCallback = object :
         CriteriaSelectionCallback {
 
-        override fun onCriteriaSelected(criteria: CriteriaEntity, isSelected: Boolean) {
-            if (criteria == criteriaSelected.value || !isSelected) {
+        override fun onCriteriaSelected(criteria: CriteriaEntity) {
+            if (criteria == criteriaSelected.value) {
                 criteriaSelected.value = null
             } else {
                 criteriaSelected.value = criteria
@@ -50,15 +50,21 @@ class ObjectiveCreateViewModel @Inject constructor() :
     private fun updateCriteriaListStates() {
         criteriaList.value?.let {
             for (criteria in it) {
-                if (criteriaSelected.value != null) {
-                    criteria.checked.set(criteria.item == criteriaSelected.value)
-                }
+                criteria.checked.set(criteria.item == criteriaSelected.value)
             }
         }
     }
 
     fun goToCriteriaSelection() {
         navigator.goToCriteriaSelection()
+    }
+
+    fun isCriteriaInputValid(criteriaString: String): Boolean {
+        return criteriaString.isNotEmpty()
+    }
+
+    fun createCriteria(criteriaString: String) {
+
     }
 }
 

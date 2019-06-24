@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme.Blue</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:editTextColor">@color/text_header_1</item>
@@ -19,11 +19,18 @@
         <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
     </style>
 
-    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@drawable/bg_card_light</item>
+    <style name="AlertDialogTheme.Blue" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@drawable/bg_card_dark</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:colorAccent">#FFFFFF</item>
+    </style>
+
+    <style name="AlertDialogTheme.White" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@drawable/bg_card_white</item>
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+        <item name="android:textColor">@color/text_header_2</item>
+        <item name="android:colorAccent">@color/colorPrimaryDark</item>
     </style>
 
     <style name="DialogWindowTitle">
@@ -31,7 +38,7 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textSize">@dimen/text_size_med</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:scrollHorizontally">true</item>
         <item name="android:textAppearance">@android:style/TextAppearance.DialogWindowTitle</item>
