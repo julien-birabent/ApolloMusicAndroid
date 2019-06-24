@@ -12,6 +12,7 @@ import javax.inject.Singleton
 class ObjectiveCreateViewModel @Inject constructor() :
     BaseViewModel<ObjectiveCreateNavigator>() {
 
+    //region Criterias variables
     val criteriaSelected: MutableLiveData<CriteriaEntity> = MutableLiveData()
     val criteriaList: MutableLiveData<MutableList<CheckedWrapper<CriteriaEntity>>> = MutableLiveData()
 
@@ -27,13 +28,20 @@ class ObjectiveCreateViewModel @Inject constructor() :
             updateCriteriaListStates()
         }
     }
+    //endregion
 
     init {
         criteriaList.postValue(
             listOf(
                 CheckedWrapper(CriteriaEntity(0, 0, "FakeCriteria1")),
                 CheckedWrapper(CriteriaEntity(1, 0, "FakeCriteria2")),
-                CheckedWrapper(CriteriaEntity(2, 0, "FakeCriteria3"))
+                CheckedWrapper(CriteriaEntity(2, 0, "FakeCriteria3")),
+                CheckedWrapper(CriteriaEntity(3, 0, "FakeCriteria1")),
+                CheckedWrapper(CriteriaEntity(4, 0, "FakeCriteria2")),
+                CheckedWrapper(CriteriaEntity(5, 0, "FakeCriteria3")),
+                CheckedWrapper(CriteriaEntity(6, 0, "FakeCriteria1")),
+                CheckedWrapper(CriteriaEntity(7, 0, "FakeCriteria2")),
+                CheckedWrapper(CriteriaEntity(8, 0, "FakeCriteria3"))
             ).toMutableList()
         )
         criteriaSelected.postValue(null)

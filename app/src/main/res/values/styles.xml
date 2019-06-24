@@ -73,9 +73,28 @@
         <item name="android:src">@android:drawable/ic_input_add</item>
     </style>
 
-    <style name="MaterialButtonOutlined" parent="Widget.AppCompat.Button.Colored">
+    <style name="ColoredButtonBase" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textAllCaps">false</item>
-        <item name="android:colorButtonNormal">@android:color/white</item>
+        <item name="android:colorAccent">@color/colorPrimary</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/text_header_2</item>
+        <item name="android:foreground">?selectableItemBackgroundBorderless</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">16dp</item>
+    </style>
+
+    <style name="ColoredButtonBase.FlatGreen">
+        <item name="android:background">@drawable/bg_green_flat_button_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
+        <item name="android:drawableTint">@color/white_almost</item>
+    </style>
+
+    <style name="ColoredButtonBase.FlatBlue">
+        <item name="android:background">@drawable/bg_blue_flat_button_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
+        <item name="android:drawableTint">@color/white_almost</item>
     </style>
 
     <style name="BaseLoginButton">
