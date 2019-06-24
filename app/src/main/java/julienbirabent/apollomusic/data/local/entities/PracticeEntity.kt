@@ -38,5 +38,5 @@ data class PracticeEntity(
     var date: Date?,
 
     @ColumnInfo(name = "pending")
-    var pendingForSyncWithServer: Boolean
+    var pendingForSync: Boolean
 )

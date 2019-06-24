@@ -9,6 +9,9 @@ import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 abstract class CriteriaDao : BaseDao<CriteriaEntity> {
 
     @Query("SELECT * FROM criteria WHERE id= :profileId OR id= :adminProfileId")
-    abstract fun getCriteriasByUser(profileId: String, adminProfileId: String): LiveData<List<CriteriaEntity>>
+    abstract fun getCriteriasByUser(profileId: String, adminProfileId: Int): LiveData<List<CriteriaEntity>>
+
+    @Query("select * from criteria where id = :id")
+    abstract fun getCriteriaByInternalId(id: Long): CriteriaEntity
 
 }

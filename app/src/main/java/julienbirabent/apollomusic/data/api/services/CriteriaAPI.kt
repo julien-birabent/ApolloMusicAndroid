@@ -1,0 +1,20 @@
+package julienbirabent.apollomusic.data.api.services
+
+import io.reactivex.Single
+import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
+import retrofit2.Response
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
+import javax.inject.Singleton
+
+@Singleton
+interface CriteriaAPI {
+
+    @FormUrlEncoded
+    @POST("/api/criteria")
+    fun postCriteria(
+        @Field("criteria") criteria: String?,
+        @Field("profileId") profileId: Int?
+    ): Single<Response<CriteriaEntity>>
+}

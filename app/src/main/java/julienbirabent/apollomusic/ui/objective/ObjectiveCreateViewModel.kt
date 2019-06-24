@@ -1,5 +1,6 @@
 package julienbirabent.apollomusic.ui.objective
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.repository.CriteriaRepository
@@ -15,7 +16,8 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
 
     //region Criterias variables
     val criteriaSelected: MutableLiveData<CriteriaEntity> = MutableLiveData()
-    val criteriaList: MutableLiveData<MutableList<CheckedWrapper<CriteriaEntity>>> = MutableLiveData()
+    private var _criteriaList: LiveData<List<CriteriaEntity>> = criteriaRepo.getCriteriasList()
+    lateinit var criteriaList: MutableLiveData<MutableList<CheckedWrapper<CriteriaEntity>>>
 
     val criteriaCallback: CriteriaSelectionCallback = object :
         CriteriaSelectionCallback {
@@ -32,19 +34,19 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
     //endregion
 
     init {
-        criteriaList.postValue(
+        /*criteriaList.postValue(
             listOf(
-                CheckedWrapper(CriteriaEntity(0, 0, "FakeCriteria1")),
-                CheckedWrapper(CriteriaEntity(1, 0, "FakeCriteria2")),
-                CheckedWrapper(CriteriaEntity(2, 0, "FakeCriteria3")),
-                CheckedWrapper(CriteriaEntity(3, 0, "FakeCriteria1")),
-                CheckedWrapper(CriteriaEntity(4, 0, "FakeCriteria2")),
-                CheckedWrapper(CriteriaEntity(5, 0, "FakeCriteria3")),
-                CheckedWrapper(CriteriaEntity(6, 0, "FakeCriteria1")),
-                CheckedWrapper(CriteriaEntity(7, 0, "FakeCriteria2")),
-                CheckedWrapper(CriteriaEntity(8, 0, "FakeCriteria3"))
+                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria2", false)),
+                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria2", false)),
+                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria3", false)),
+                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria1", false)),
+                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria2", false)),
+                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria3", false)),
+                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria1", false)),
+                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria2", false)),
+                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria3", false))
             ).toMutableList()
-        )
+        )*/
         criteriaSelected.postValue(null)
     }
 
@@ -65,7 +67,7 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
     }
 
     fun createCriteria(criteriaString: String) {
-
+        criteriaRepo.persistCriteria(criteriaString)
     }
 }
 

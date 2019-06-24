@@ -19,5 +19,9 @@ class DebugAppConstants : AppConstants {
     override fun sharedPrefName(): String {
         return "shared_prefs_debug"
     }
+
+    override fun adminProfileI(): Int {
+        return 0
+    }
 }
 
