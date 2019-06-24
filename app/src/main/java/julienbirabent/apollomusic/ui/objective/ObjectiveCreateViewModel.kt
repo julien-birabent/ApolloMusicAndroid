@@ -2,6 +2,7 @@ package julienbirabent.apollomusic.ui.objective
 
 import androidx.lifecycle.MutableLiveData
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
+import julienbirabent.apollomusic.data.repository.CriteriaRepository
 import julienbirabent.apollomusic.ui.adapters.CheckedWrapper
 import julienbirabent.apollomusic.ui.adapters.criteria.CriteriaSelectionCallback
 import julienbirabent.apollomusic.ui.base.BaseViewModel
@@ -9,7 +10,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ObjectiveCreateViewModel @Inject constructor() :
+class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: CriteriaRepository) :
     BaseViewModel<ObjectiveCreateNavigator>() {
 
     //region Criterias variables

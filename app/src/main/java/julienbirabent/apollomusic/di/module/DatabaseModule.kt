@@ -65,6 +65,10 @@ class DatabaseModule {
 
     @Singleton
     @Provides
+    fun criteriaDao(appDatabase: AppDatabase): CriteriaDao = appDatabase.criteriaDao()
+
+    @Singleton
+    @Provides
     fun provideExampleDao(appDatabase: AppDatabase): ExampleDao {
         return appDatabase.exampleDao()
     }

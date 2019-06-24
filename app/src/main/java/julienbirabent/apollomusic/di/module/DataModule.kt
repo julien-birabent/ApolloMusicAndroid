@@ -1,20 +1,20 @@
 package julienbirabent.apollomusic.di.module
 
 import dagger.Module
+import dagger.Provides
+import julienbirabent.apollomusic.data.repository.CriteriaRepository
+import julienbirabent.apollomusic.data.repository.UserRepository
+import javax.inject.Singleton
 
 
 @Module(includes = [DatabaseModule::class, ApiModule::class])
-class DataModule{
+class DataModule {
 
-
-    //Inject Repositories here
-    /*@Singleton
+    @Singleton
     @Provides
-    fun provideExampleRepository(exampleDao: ExampleDao,
-                                 exampleService: ExampleAPI,
-                                 appExecutors: AppExecutors,
-                                 schedulerProvider: SchedulerProvider
-    ) : ExampleRepository{
-        return ExampleRepository(exampleDao, exampleService,appExecutors,schedulerProvider)
-    }*/
+    fun provideCriteriaRepository(
+        userRepository: UserRepository
+    ): CriteriaRepository {
+        return CriteriaRepository(userRepository)
+    }
 }
