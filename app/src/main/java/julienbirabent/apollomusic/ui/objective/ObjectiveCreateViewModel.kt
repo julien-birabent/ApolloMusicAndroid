@@ -2,7 +2,9 @@ package julienbirabent.apollomusic.ui.objective
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
+import julienbirabent.apollomusic.data.local.entities.UserEntity
 import julienbirabent.apollomusic.data.repository.CriteriaRepository
 import julienbirabent.apollomusic.ui.adapters.CheckedWrapper
 import julienbirabent.apollomusic.ui.adapters.criteria.CriteriaSelectionCallback
@@ -14,10 +16,30 @@ import javax.inject.Singleton
 class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: CriteriaRepository) :
     BaseViewModel<ObjectiveCreateNavigator>() {
 
+    private val currentUser: LiveData<UserEntity> = criteriaRepo.currentUserLiveData
+
     //region Criterias variables
     val criteriaSelected: MutableLiveData<CriteriaEntity> = MutableLiveData()
-    private var _criteriaList: LiveData<List<CriteriaEntity>> = criteriaRepo.getCriteriasList()
-    lateinit var criteriaList: MutableLiveData<MutableList<CheckedWrapper<CriteriaEntity>>>
+    private var _criteriaList: LiveData<List<CriteriaEntity>> = Transformations.switchMap(currentUser) {
+        currentUser.value?.id?.let { it1 -> criteriaRepo.getCriteriaList(it1) }
+    }
+    private var criteriaList: LiveData<MutableList<CheckedWrapper<CriteriaEntity>>> = Transformations.map(
+        _criteriaList
+    ) {
+        val list = mutableListOf<CheckedWrapper<CriteriaEntity>>()
+        if (it != null) {
+            for (criteria in it) {
+                val newCriteriaWrapper = CheckedWrapper(criteria)
+                if (criteria == criteriaSelected.value) {
+                    newCriteriaWrapper.checked.set(true)
+                } else {
+                    newCriteriaWrapper.checked.set(false)
+                }
+                list.add(newCriteriaWrapper)
+            }
+        }
+        list
+    }
 
     val criteriaCallback: CriteriaSelectionCallback = object :
         CriteriaSelectionCallback {
@@ -34,20 +56,12 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
     //endregion
 
     init {
-        /*criteriaList.postValue(
-            listOf(
-                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria2", false)),
-                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria2", false)),
-                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria3", false)),
-                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria1", false)),
-                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria2", false)),
-                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria3", false)),
-                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria1", false)),
-                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria2", false)),
-                CheckedWrapper(CriteriaEntity(-1, 0, "FakeCriteria3", false))
-            ).toMutableList()
-        )*/
+
         criteriaSelected.postValue(null)
+    }
+
+    fun getCriteriaList(): LiveData<MutableList<CheckedWrapper<CriteriaEntity>>> {
+        return criteriaList
     }
 
     private fun updateCriteriaListStates() {

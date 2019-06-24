@@ -20,17 +20,10 @@ class CriteriaRepository @Inject constructor(
     private val appConstants: AppConstants
 ) : BaseRepository() {
 
-    private val currentUserLiveData: LiveData<UserEntity> = userRepo.getCurrentLoggedUser()
-    private lateinit var currentUser: UserEntity
+    val currentUserLiveData: LiveData<UserEntity> = userRepo.getCurrentLoggedUser()
 
-    init {
-        currentUserLiveData.observeForever {
-            currentUser = it
-        }
-    }
-
-    fun getCriteriasList(): LiveData<List<CriteriaEntity>> {
-        return criteriaDao.getCriteriasByUser(currentUser.id, appConstants.adminProfileI())
+    fun getCriteriaList(profileId: String): LiveData<List<CriteriaEntity>> {
+        return criteriaDao.getCriteriaByUserLive(profileId.toInt(), adminProfileId = appConstants.adminProfileI())
     }
 
     fun persistCriteria(criteria: String) {

@@ -27,7 +27,7 @@ class ObjectiveCriteriaSelectionFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.criteriaList.observe(viewLifecycleOwner, Observer {
+        viewModel.getCriteriaList().observe(viewLifecycleOwner, Observer {
             criteriaAdapter.updateList(it)
         })
 
