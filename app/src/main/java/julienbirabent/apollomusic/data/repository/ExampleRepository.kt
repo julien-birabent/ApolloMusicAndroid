@@ -8,6 +8,8 @@ import julienbirabent.apollomusic.data.api.network.Resource
 import julienbirabent.apollomusic.data.api.services.ExampleAPI
 import julienbirabent.apollomusic.data.local.dao.ExampleDao
 import julienbirabent.apollomusic.data.local.entities.ExampleEntity
+import julienbirabent.apollomusic.thread.AppExecutors
+import julienbirabent.apollomusic.thread.SchedulerProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,8 +17,10 @@ import javax.inject.Singleton
 @Singleton
 class ExampleRepository @Inject constructor(
     private val exampleDao: ExampleDao,
-    private val exampleService: ExampleAPI
-): BaseRepository() {
+    private val exampleService: ExampleAPI,
+    private val appExecutors: AppExecutors,
+    private val scheduler: SchedulerProvider
+) {
 
     @SuppressLint("CheckResult")
     fun getAnExample() {

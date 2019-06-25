@@ -1,6 +1,7 @@
 package julienbirabent.apollomusic.ui.objective
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
@@ -17,6 +18,9 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
     BaseViewModel<ObjectiveCreateNavigator>() {
 
     private val currentUser: LiveData<UserEntity> = criteriaRepo.currentUserLiveData
+
+    val customObjectiveString: MutableLiveData<String> = MutableLiveData()
+    val canGoToCriteriaSelection: MediatorLiveData<Boolean> = MediatorLiveData()
 
     //region Criterias variables
     val criteriaSelected: MutableLiveData<CriteriaEntity> = MutableLiveData()
@@ -58,6 +62,11 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
     init {
 
         criteriaSelected.postValue(null)
+        canGoToCriteriaSelection.postValue(false)
+
+        canGoToCriteriaSelection.addSource(customObjectiveString) {
+            canGoToCriteriaSelection.postValue(it.isNotEmpty())
+        }
     }
 
     fun getCriteriaList(): LiveData<MutableList<CheckedWrapper<CriteriaEntity>>> {

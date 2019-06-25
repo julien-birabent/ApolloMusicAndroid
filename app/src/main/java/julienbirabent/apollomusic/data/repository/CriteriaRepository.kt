@@ -1,13 +1,19 @@
 package julienbirabent.apollomusic.data.repository
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
+import io.reactivex.Observable
 import io.reactivex.Single
+import julienbirabent.apollomusic.app.ApolloMusicApplication
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.services.CriteriaAPI
 import julienbirabent.apollomusic.data.local.dao.CriteriaDao
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.UserEntity
+import julienbirabent.apollomusic.thread.AppExecutors
+import julienbirabent.apollomusic.thread.SchedulerProvider
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,15 +23,25 @@ class CriteriaRepository @Inject constructor(
     private val userRepo: UserRepository,
     private val criteriaDao: CriteriaDao,
     private val criteriaAPI: CriteriaAPI,
-    private val appConstants: AppConstants
-) : BaseRepository() {
+    private val appConstants: AppConstants,
+    private val appExecutors: AppExecutors,
+    private val scheduler: SchedulerProvider
+) {
 
     val currentUserLiveData: LiveData<UserEntity> = userRepo.getCurrentLoggedUser()
 
     init {
         onConnectionAvailableEmitter()?.subscribe {
-            fetchCriteriaList(userRepo.getLoggedUserId())
+            //fetchCriteriaList(userRepo.getLoggedUserId())
         }
+    }
+
+    @SuppressLint("CheckResult")
+    fun onConnectionAvailableEmitter(): Observable<Boolean>? {
+        return ReactiveNetwork.observeNetworkConnectivity(ApolloMusicApplication.applicationContext())
+            .flatMapSingle { ReactiveNetwork.checkInternetConnectivity() }
+            .subscribeOn(scheduler.io())
+            .observeOn(scheduler.ui())
     }
 
     private fun fetchCriteriaList(loggedUserId: String?): Single<List<CriteriaEntity>> {

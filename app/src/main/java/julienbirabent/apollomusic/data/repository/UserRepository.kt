@@ -1,17 +1,16 @@
 package julienbirabent.apollomusic.data.repository
 
-import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
-import io.reactivex.Observable
 import io.reactivex.Single
 import julienbirabent.apollomusic.Utils.AbsentLiveData
 import julienbirabent.apollomusic.data.api.services.UserAPI
 import julienbirabent.apollomusic.data.local.dao.UserDao
 import julienbirabent.apollomusic.data.local.entities.UserEntity
 import julienbirabent.apollomusic.data.local.model.User
+import julienbirabent.apollomusic.thread.AppExecutors
+import julienbirabent.apollomusic.thread.SchedulerProvider
 import retrofit2.Response
 import java.io.IOException
 import java.security.InvalidParameterException
@@ -20,8 +19,10 @@ import javax.inject.Singleton
 
 @Singleton
 class UserRepository @Inject constructor(
-    private val userAPI: UserAPI, private val userDao: UserDao, private val sharedPreferences: SharedPreferences
-) : BaseRepository() {
+    private val userAPI: UserAPI, private val userDao: UserDao, private val sharedPreferences: SharedPreferences,
+    private val appExecutors: AppExecutors,
+    private val scheduler: SchedulerProvider
+) {
 
     internal companion object {
         const val key_user_id = "key_user_id"

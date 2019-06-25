@@ -2,12 +2,10 @@ package julienbirabent.apollomusic.app
 
 import android.app.Activity
 import android.app.Application
-import android.os.Debug
-import androidx.fragment.app.Fragment
+import android.content.Context
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import dagger.android.support.HasSupportFragmentInjector
 import julienbirabent.apollomusic.BuildConfig
 import julienbirabent.apollomusic.di.component.DaggerApplicationComponent
 import javax.inject.Inject
@@ -17,6 +15,18 @@ class ApolloMusicApplication : Application(), HasActivityInjector {
 
     @Inject
     lateinit var activityDispatchingInjector: DispatchingAndroidInjector<Activity>
+
+    init {
+        instance = this
+    }
+
+    companion object {
+        private var instance: ApolloMusicApplication? = null
+
+        fun applicationContext() : Context {
+            return instance!!.applicationContext
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -29,7 +39,8 @@ class ApolloMusicApplication : Application(), HasActivityInjector {
 
     override fun activityInjector(): AndroidInjector<Activity> = activityDispatchingInjector
 
-    private fun getAppConstants():AppConstants{
+    private fun getAppConstants(): AppConstants {
         return if (BuildConfig.DEBUG) DebugAppConstants() else ReleaseAppConstants()
     }
+
 }

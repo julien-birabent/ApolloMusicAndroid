@@ -113,7 +113,8 @@
                         android:layout_height="match_parent"
                         android:inputType="textImeMultiLine"
                         android:lines="2"
-                        android:padding="8dp" />
+                        android:padding="8dp"
+                        android:text="@={viewModel.customObjectiveString}" />
 
                     <requestFocus />
 
@@ -128,6 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
+            android:enabled="@{viewModel.canGoToCriteriaSelection}"
             android:onClick="@{ () -> viewModel.goToCriteriaSelection()}"
             android:text="@string/next_step" />
     </LinearLayout>
