@@ -22,8 +22,23 @@ class CriteriaRepository @Inject constructor(
 
     val currentUserLiveData: LiveData<UserEntity> = userRepo.getCurrentLoggedUser()
 
+    init {
+        onConnectionAvailableEmitter()?.subscribe {
+            fetchCriteriaList(userRepo.getLoggedUserId())
+        }
+    }
+
+    private fun fetchCriteriaList(loggedUserId: String?): Single<List<CriteriaEntity>> {
+        //TODO() call server pour fetch les critere du user connecté
+        // Mettre à jours la BD avec les criteres
+        return Single.just(null)
+    }
+
     fun getCriteriaList(profileId: String): LiveData<List<CriteriaEntity>> {
-        return criteriaDao.getCriteriaByUserLive(profileId.toInt(), adminProfileId = appConstants.adminProfileI())
+        return criteriaDao.getCriteriaListByUserLive(
+            profileId.toInt(),
+            adminProfileId = appConstants.adminProfileI()
+        )
     }
 
     fun persistCriteria(criteria: String) {

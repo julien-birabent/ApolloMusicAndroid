@@ -61,7 +61,7 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
     }
 
     fun getCriteriaList(): LiveData<MutableList<CheckedWrapper<CriteriaEntity>>> {
-        return criteriaList
+        return this.criteriaList
     }
 
     private fun updateCriteriaListStates() {

@@ -1,8 +1,11 @@
 package julienbirabent.apollomusic.data.repository
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
+import io.reactivex.Observable
 import io.reactivex.Single
 import julienbirabent.apollomusic.Utils.AbsentLiveData
 import julienbirabent.apollomusic.data.api.services.UserAPI
@@ -38,12 +41,12 @@ class UserRepository @Inject constructor(
                                 userEntity.externalId = user.id
                                 userEntity.email = userEntity.email
                                 userDao.upsert(userEntity).also {
-                                    try{
+                                    try {
                                         invalidateSession()
                                         if (it != null) {
                                             setUserId(it)
                                         }
-                                    }catch (e: InvalidParameterException){
+                                    } catch (e: InvalidParameterException) {
                                         //TODO(handle error)
                                     }
                                 }
@@ -53,7 +56,7 @@ class UserRepository @Inject constructor(
                 }
                 .observeOn(scheduler.ui())
                 .doOnError {
-                    if(it is IOException){
+                    if (it is IOException) {
                         Log.d("UserRepo", "Login error (IOException) : " + it.message)
                     }
                     Log.d("UserRepo", "Login error : " + it.message)
@@ -80,7 +83,7 @@ class UserRepository @Inject constructor(
         }
     }
 
-    private fun getLoggedUserId(): String? {
+    fun getLoggedUserId(): String? {
         return sharedPreferences.getString(key_user_id, null)
     }
 

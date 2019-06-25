@@ -3,6 +3,7 @@ package julienbirabent.apollomusic.data.local.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import julienbirabent.apollomusic.data.local.entities.UserEntity
 
 
@@ -11,6 +12,9 @@ abstract class UserDao {
 
     @Query("SELECT * FROM users WHERE id = :id ")
     abstract fun getUserById(id: String): LiveData<UserEntity>
+
+    @Query("SELECT * FROM users WHERE id = :id ")
+    abstract fun getUserByIdObservable(id: String): Observable<UserEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insert(entity: UserEntity): Long

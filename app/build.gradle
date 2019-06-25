@@ -45,6 +45,7 @@ ext {
     roomVersion = '2.1.0-beta01'
     glideVersion = '4.9.0'
     lottieVersion = '3.0.3'
+    reactiveNetworkVersion = '3.0.3'
 }
 
 dependencies {
@@ -91,6 +92,7 @@ dependencies {
 
     // Room components
     implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-rxjava2:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
@@ -116,4 +118,6 @@ dependencies {
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
     debugImplementation 'com.idescout.sql:sqlscout-server:4.1'
     releaseImplementation 'com.idescout.sql:sqlscout-server-noop:4.1'
+
+    implementation "com.github.pwittchen:reactivenetwork-rx2:$reactiveNetworkVersion"
 }
