@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="julienbirabent.apollomusic.data.local.entities.CriteriaEntity" />
+
+        <import type="julienbirabent.apollomusic.ui.adapters.CheckedWrapper" />
+
+        <import type="julienbirabent.apollomusic.ui.adapters.criteria.CriteriaSelectionCallback" />
+
+        <variable
+            name="item"
+            type="CheckedWrapper&lt;CriteriaEntity&gt;" />
+
+        <variable
+            name="callback"
+            type="julienbirabent.apollomusic.ui.adapters.criteria.CriteriaSelectionCallback" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        style="@style/CardViewBase.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/criteria_line"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@{item.item.criteria}"
+                android:textColor="@color/text_header_2"
+                android:textSize="@dimen/text_size_med"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/criteria_check"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/criteria_check"
+                style="@style/CheckBoxBase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={item.checked}"
+                android:onClick="@{()-> callback.onCriteriaSelected(item.item)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

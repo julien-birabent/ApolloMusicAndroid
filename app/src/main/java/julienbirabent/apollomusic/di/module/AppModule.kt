@@ -28,6 +28,10 @@ class AppModule {
 
     @Singleton
     @Provides
+    fun provideCalendar(): Calendar = Calendar.getInstance()
+
+    @Singleton
+    @Provides
     fun provideContext(application: Application): Context {
         return application
     }

@@ -7,6 +7,7 @@ import dagger.Provides
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.network.DataTypeAdapterFactory
 import julienbirabent.apollomusic.data.api.network.livedataconverter.LiveDataCallAdapterFactory
+import julienbirabent.apollomusic.data.api.services.CriteriaAPI
 import julienbirabent.apollomusic.data.api.services.ExampleAPI
 import julienbirabent.apollomusic.data.api.services.UserAPI
 import julienbirabent.apollomusic.thread.SchedulerProvider
@@ -75,5 +76,11 @@ class ApiModule {
     @Singleton
     fun provideUserApi(retrofit: Retrofit): UserAPI {
         return retrofit.create(UserAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCriteriaApi(retrofit: Retrofit): CriteriaAPI {
+        return retrofit.create(CriteriaAPI::class.java)
     }
 }

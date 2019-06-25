@@ -66,7 +66,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(),
             override fun onSuccess(result: LoginResult?) {
                 result?.let {
                     handleFacebookSignInResult(it)
-                    Log.d("Facebook login", "Success")
                 }
             }
 

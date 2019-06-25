@@ -2,7 +2,6 @@ package julienbirabent.apollomusic.ui.base;
 
 import android.content.Context;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -15,19 +14,20 @@ import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import dagger.android.support.AndroidSupportInjection;
 import julienbirabent.apollomusic.viewmodel.ViewModelFactory;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
 @FragmentWithArgs
-public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
+public abstract class BaseFragment<Binding extends androidx.databinding.ViewDataBinding, VM extends BaseViewModel> extends Fragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
 
     private BaseActivity mActivity;
-    private View mRootView;
-    private T mViewDataBinding;
-    private V mViewModel;
+    private View rootView;
+    private Binding binding;
+    private VM viewModel;
 
     /**
      * Override for set binding variable
@@ -48,10 +48,10 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
      *
      * @return view model instance
      */
-    public abstract V getViewModel();
+    public abstract VM getViewModel();
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
@@ -65,15 +65,15 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         performDependencyInjection();
         super.onCreate(savedInstanceState);
         FragmentArgs.inject(this);
-        mViewModel = getViewModel();
+        viewModel = getViewModel();
         setHasOptionsMenu(false);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        mRootView = mViewDataBinding.getRoot();
-        return mRootView;
+        binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+        rootView = binding.getRoot();
+        return rootView;
     }
 
     @Override
@@ -85,17 +85,24 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
-        mViewDataBinding.setLifecycleOwner(this);
-        mViewDataBinding.executePendingBindings();
+        setBindingVariables(binding);
+        binding.setLifecycleOwner(this);
+        if (this instanceof UINavigator) {
+            viewModel.setNavigator(this);
+        }
+        binding.executePendingBindings();
+    }
+
+    protected void setBindingVariables(@NotNull androidx.databinding.ViewDataBinding binding){
+        this.binding.setVariable(getBindingVariable(), viewModel);
     }
 
     public BaseActivity getBaseActivity() {
         return mActivity;
     }
 
-    public T getViewDataBinding() {
-        return mViewDataBinding;
+    public Binding getViewDataBinding() {
+        return binding;
     }
 
     public void hideKeyboard() {
@@ -116,6 +123,10 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
     private void performDependencyInjection() {
         AndroidSupportInjection.inject(this);
+    }
+
+    protected ViewModelFactory getViewModelFactory() {
+        return viewModelFactory;
     }
 
     public interface Callback {

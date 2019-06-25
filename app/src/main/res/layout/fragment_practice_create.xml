@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="julienbirabent.apollomusic.ui.adapters.DateAdapter" />
+        <import type="julienbirabent.apollomusic.ui.practice.create.PracticeCreateViewModel" />
+
+        <variable
+            name="dateAdapter"
+            type="julienbirabent.apollomusic.ui.adapters.DateAdapter" />
+
+        <variable
+            name="viewModel"
+            type="julienbirabent.apollomusic.ui.practice.create.PracticeCreateViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/content_padding_simple">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/date_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/dates_for_this_practice"
+                android:textColor="@color/text_header_1"
+                android:textSize="@dimen/text_size_med"
+                app:layout_constraintEnd_toStartOf="@+id/calendar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/empty_date_list_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:animatedVisibility="@{!viewModel.datesEmpty}"
+                android:padding="8dp"
+                android:text="@string/no_date_added_yet"
+                android:textAlignment="center"
+                android:textColor="@color/text_header_2"
+                app:layout_constraintBottom_toTopOf="@id/date_separator"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/calendar" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/calendar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:onClick="@{() -> viewModel.openMultiSelectionCalendar()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:foreground="?selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_calendar" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/date_list"
+                    android:layout_marginTop="8dp"
+                    android:animatedVisibility="@{viewModel.datesEmpty}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:setAdapter="@{dateAdapter}">
+                </androidx.recyclerview.widget.RecyclerView>
+
+            <View
+                android:id="@+id/date_separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/text_header_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_list" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/objective_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/practice_objectives_header"
+                android:textColor="@color/text_header_1"
+                android:textSize="@dimen/text_size_med"
+                app:layout_constraintEnd_toStartOf="@+id/add_objective_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_separator" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add_objective_button"
+                android:layout_width="@dimen/rounded_square_button_size"
+                android:layout_height="@dimen/rounded_square_button_size"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_card_button_ripple"
+                android:foreground="@drawable/ic_add_black_24dp"
+                android:foregroundTint="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_separator" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/objectives_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_objective_button">
+
+                <include
+                    layout="@layout/view_objective_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/add_objective_button" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:id="@+id/objective_separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/text_header_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/objectives_container" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/notes_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/practice_notes_header"
+                android:textColor="@color/text_header_1"
+                android:textSize="@dimen/text_size_med"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/objective_separator" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_edittext"
+                android:hint="You can type some notes here"
+                android:inputType="textImeMultiLine"
+                android:padding="8dp"
+                android:text="@={viewModel.practiceNotes}"
+                android:textColor="@color/text_header_1"
+                android:textColorHint="@color/com_facebook_button_background_color_selected"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/notes_header" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

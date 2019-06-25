@@ -12,7 +12,7 @@ public abstract class BaseViewModel<N> extends ViewModel {
 
     private CompositeDisposable mCompositeDisposable;
 
-    private WeakReference<N> mNavigator;
+    private WeakReference<N> navigator;
 
     public BaseViewModel() {
         this.mCompositeDisposable = new CompositeDisposable();
@@ -37,10 +37,10 @@ public abstract class BaseViewModel<N> extends ViewModel {
     }
 
     public N getNavigator() {
-        return mNavigator.get();
+        return navigator.get();
     }
 
     public void setNavigator(N navigator) {
-        this.mNavigator = new WeakReference<>(navigator);
+        this.navigator = new WeakReference<>(navigator);
     }
 }

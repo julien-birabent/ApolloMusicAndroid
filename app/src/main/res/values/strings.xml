@@ -8,4 +8,36 @@
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="login_welcome_title">Welcome to Apollo Music</string>
 
+    <string name="home_menu_practice_title">Home</string>
+    <string name="home_menu_create_title">Create</string>
+    <string name="home_menu_social_title">Social</string>
+    <string name="home_menu_stats_title">Stats</string>
+
+    <string name="toolbar_title_practice">Practice</string>
+    <string name="toolbar_title_create_practice">Create a practice</string>
+    <string name="menu_save_practice">Save</string>
+    <string name="dates_for_this_practice">Dates for this practice</string>
+    <string name="practice_objectives_header">Your objectives</string>
+    <string name="practice_notes_header">Notes</string>
+    <string name="no_date_added_yet">No date has been added for this practice yet</string>
+
+    <string name="dialog_done">Done</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_select_practice_dates_title">Select the dates for this practice</string>
+    <string name="choose_the_objective_s_type">Choose the objective\'s type</string>
+    <string name="exercise">Exercise</string>
+    <string name="custom_objective_type">Custom</string>
+    <string name="custom_objective_hint">Enter the name of your custom objective</string>
+    <string name="criteria_improve_title">On which criteria you wish to improve ?</string>
+    <string name="add_a_custom_criteria_to_the_list">Add a custom criteria to the list</string>
+    <string name="objective_create_custom_header_hint">Or you can define your own custom objective to achieve by typing it in the text field below</string>
+    <string name="next_step">Next step</string>
+    <string name="pick_an_exercise">Pick an exercise you want to practice</string>
+    <string name="criteria_selection_toolbar_label">Criteria selection</string>
+    <string name="done">Done</string>
+
+    <string name="dialog_add_criteria_title">Add a criteria</string>
+    <string name="dialog_add_criteria_message">You can add your own criteria by typing in the text field below.</string>
+    <string name="default_input_hint">Type here</string>
+
 </resources>

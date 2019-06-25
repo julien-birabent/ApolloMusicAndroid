@@ -64,7 +64,7 @@ class UserRepository @Inject constructor(
     fun getCurrentLoggedUser(): LiveData<UserEntity> {
         val userId = getLoggedUserId()
         return if (userId != null) {
-            userDao.getUserWithId(userId)
+            userDao.getUserById(userId)
         } else {
             AbsentLiveData.create()
         }

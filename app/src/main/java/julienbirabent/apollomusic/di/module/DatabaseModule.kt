@@ -6,8 +6,7 @@ import dagger.Module
 import dagger.Provides
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.local.AppDatabase
-import julienbirabent.apollomusic.data.local.dao.ExampleDao
-import julienbirabent.apollomusic.data.local.dao.UserDao
+import julienbirabent.apollomusic.data.local.dao.*
 import julienbirabent.apollomusic.di.annotation.DatabaseInfo
 import java.text.SimpleDateFormat
 import javax.inject.Singleton
@@ -43,6 +42,30 @@ class DatabaseModule {
     fun provideUserDao(appDatabase: AppDatabase): UserDao {
         return appDatabase.userDao()
     }
+
+    @Singleton
+    @Provides
+    fun provideObjectiveCriteriaJoinDao(appDatabase: AppDatabase): ObjectiveCriteriaJoinDao {
+        return appDatabase.objectiveCriteriaJoinDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideObjectiveExerciseJoinDao(appDatabase: AppDatabase): ObjectiveExerciseJoinDao {
+        return appDatabase.objectiveExerciseJoinDao()
+    }
+
+    @Singleton
+    @Provides
+    fun practiceDao(appDatabase: AppDatabase): PracticeDao = appDatabase.practiceDao()
+
+    @Singleton
+    @Provides
+    fun objectiveDao(appDatabase: AppDatabase): ObjectiveDao = appDatabase.objectiveDao()
+
+    @Singleton
+    @Provides
+    fun criteriaDao(appDatabase: AppDatabase): CriteriaDao = appDatabase.criteriaDao()
 
     @Singleton
     @Provides

@@ -1,19 +1,19 @@
 package julienbirabent.apollomusic.ui.base;
 
 import android.annotation.TargetApi;
-import android.util.Log;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -24,7 +24,7 @@ import julienbirabent.apollomusic.viewmodel.ViewModelFactory;
 import javax.inject.Inject;
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
-        implements BaseFragment.Callback , HasSupportFragmentInjector {
+        implements BaseFragment.Callback, HasSupportFragmentInjector {
 
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentAndroidInjector;
@@ -70,7 +70,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         performDependencyInjection();
         super.onCreate(savedInstanceState);
-        Log.d("Activity launched : "+this.getLocalClassName(), "event : onCreate");
+        Log.d("Activity launched : " + this.getLocalClassName(), "event : onCreate");
         performDataBinding();
     }
 
@@ -119,7 +119,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         this.viewModel = viewModel == null ?
                 ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass()) : viewModel;
         binding.setVariable(getBindingVariable(), viewModel);
-        if(this instanceof UINavigator){
+        if (this instanceof UINavigator) {
             viewModel.setNavigator(this);
         }
         binding.executePendingBindings();

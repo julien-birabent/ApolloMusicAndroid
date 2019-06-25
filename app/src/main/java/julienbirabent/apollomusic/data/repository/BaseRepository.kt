@@ -6,12 +6,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-abstract class BaseRepository{
+open class BaseRepository @Inject constructor() {
 
     @Inject
-    protected lateinit var  appExecutors: AppExecutors
+     lateinit var appExecutors: AppExecutors
     @Inject
-    protected lateinit var  scheduler: SchedulerProvider
+     lateinit var scheduler: SchedulerProvider
 
 }
 

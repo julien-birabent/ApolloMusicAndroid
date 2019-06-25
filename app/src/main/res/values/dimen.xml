@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="login_button_radius_corner">27dp</dimen>
-    <dimen name="login_button_padding">16dp</dimen>
+    <integer name="anim_slide_duration">350</integer>
 
+    <dimen name="login_button_radius_corner">27dp</dimen>
+    <dimen name="login_button_padding">8dp</dimen>
+
+    <dimen name="text_size_very_small">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_med">18sp</dimen>
     <dimen name="text_size_big">24sp</dimen>
+
+    <dimen name="content_padding_simple">8dp</dimen>
+    <dimen name="content_padding_dpuble">16dp</dimen>
+
+    <dimen name="card_corner_radius">7dp</dimen>
+
+    <dimen name="rounded_square_button_size">38dp</dimen>
 </resources>
