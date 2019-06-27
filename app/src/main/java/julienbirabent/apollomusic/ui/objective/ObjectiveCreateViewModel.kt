@@ -8,7 +8,7 @@ import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.UserEntity
 import julienbirabent.apollomusic.data.repository.CriteriaRepository
 import julienbirabent.apollomusic.ui.adapters.CheckedWrapper
-import julienbirabent.apollomusic.ui.adapters.criteria.CriteriaSelectionCallback
+import julienbirabent.apollomusic.ui.adapters.ItemSelectionCallback
 import julienbirabent.apollomusic.ui.base.BaseViewModel
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -45,14 +45,14 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
         list
     }
 
-    val criteriaCallback: CriteriaSelectionCallback = object :
-        CriteriaSelectionCallback {
+    val criteriaCallback: ItemSelectionCallback<CriteriaEntity> = object :
+        ItemSelectionCallback<CriteriaEntity> {
 
-        override fun onCriteriaSelected(criteria: CriteriaEntity) {
-            if (criteria == criteriaSelected.value) {
+        override fun onItemSelected(item: CriteriaEntity) {
+            if (item == criteriaSelected.value) {
                 criteriaSelected.value = null
             } else {
-                criteriaSelected.value = criteria
+                criteriaSelected.value = item
             }
             updateCriteriaListStates()
         }

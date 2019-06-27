@@ -15,14 +15,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.alespero.expandablecardview.ExpandableCardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:icon="@drawable/ic_add_black_24dp"
+            app:inner_view="@layout/view_objective_card"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:startExpanded="false"
+            app:title="Test cardview expandable">
+
+        </com.alespero.expandablecardview.ExpandableCardView>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/done_button"
             style="@style/ColoredButtonBase.FlatGreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
-            android:drawableStart="@drawable/ic_transparent_24dp"
-            android:text="@string/done"
+            android:text="@string/confirm"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

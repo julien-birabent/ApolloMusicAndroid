@@ -8,7 +8,7 @@
 
         <import type="julienbirabent.apollomusic.ui.adapters.CheckedWrapper" />
 
-        <import type="julienbirabent.apollomusic.ui.adapters.criteria.CriteriaSelectionCallback" />
+        <import type="julienbirabent.apollomusic.ui.adapters.ItemSelectionCallback" />
 
         <variable
             name="item"
@@ -16,7 +16,7 @@
 
         <variable
             name="callback"
-            type="julienbirabent.apollomusic.ui.adapters.criteria.CriteriaSelectionCallback" />
+            type="julienbirabent.apollomusic.ui.adapters.ItemSelectionCallback&lt;CriteriaEntity&gt;" />
 
     </data>
 
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="@={item.checked}"
-                android:onClick="@{()-> callback.onCriteriaSelected(item.item)}"
+                android:onClick="@{()-> callback.onItemSelected(item.item)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

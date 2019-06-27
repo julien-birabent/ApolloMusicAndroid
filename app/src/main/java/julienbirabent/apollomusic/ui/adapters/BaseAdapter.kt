@@ -66,7 +66,7 @@ abstract class BaseAdapter<Model, Callback>(callback: Callback) :
 
     protected abstract fun getLayoutId(position: Int, obj: Model): Int
 
-    protected fun getViewHolder(parent: ViewGroup, viewType: Int): DataBindingViewHolder<Model, Callback> {
+    open fun getViewHolder(parent: ViewGroup, viewType: Int): DataBindingViewHolder<Model, Callback> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, viewType, parent, false)
         return DataBindingViewHolder(binding)

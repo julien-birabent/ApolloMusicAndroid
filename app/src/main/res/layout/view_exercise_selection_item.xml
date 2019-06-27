@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="julienbirabent.apollomusic.data.local.entities.ExerciseEntity" />
+
+        <variable
+            name="item"
+            type="julienbirabent.apollomusic.data.local.entities.ExerciseEntity" />
+
+        <variable
+            name="callback"
+            type="julienbirabent.apollomusic.ui.adapters.ItemSelectionCallback&lt;ExerciseEntity&gt;" />
+
+    </data>
+
+    <julienbirabent.apollomusic.view.ExpandableCardView
+        style="@style/CardViewBase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:inner_view="@layout/view_exercise_recap"
+        app:title="@{item.title}">
+
+    </julienbirabent.apollomusic.view.ExpandableCardView>
+
+</layout>
