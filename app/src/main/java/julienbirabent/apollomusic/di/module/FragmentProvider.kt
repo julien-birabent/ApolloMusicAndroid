@@ -3,6 +3,7 @@ package julienbirabent.apollomusic.di.module
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import julienbirabent.apollomusic.ui.objective.ObjectiveCreateFragment
+import julienbirabent.apollomusic.ui.objective.ObjectiveExerciseSelectionFragment
 import julienbirabent.apollomusic.ui.objective.criteria.ObjectiveCriteriaSelectionFragment
 import julienbirabent.apollomusic.ui.practice.create.PracticeCreateFragment
 import julienbirabent.apollomusic.ui.practice.list.PracticeListFragment
@@ -21,4 +22,7 @@ abstract class FragmentProvider {
 
     @ContributesAndroidInjector
     abstract fun contributeObjectiveCriteriaSelectionFragment(): ObjectiveCriteriaSelectionFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeObjectiveExerciseSelectionFragment(): ObjectiveExerciseSelectionFragment
 }

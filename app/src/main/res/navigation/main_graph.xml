@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/objectiveCreateFragment"
         android:name="julienbirabent.apollomusic.ui.objective.ObjectiveCreateFragment"
-        android:label="">
+        android:label="@string/choose_the_objective_s_type">
         <action
             android:id="@+id/action_objectiveCreateFragment_to_objectiveCriteriaSelectionFragment"
             app:destination="@id/objectiveCriteriaSelectionFragment"
@@ -42,10 +42,31 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_objectiveCreateFragment_to_objectiveExerciseSelectionFragment"
+            app:destination="@id/objectiveExerciseSelectionFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
+
     <fragment
         android:id="@+id/objectiveCriteriaSelectionFragment"
         android:name="julienbirabent.apollomusic.ui.objective.criteria.ObjectiveCriteriaSelectionFragment"
         android:label="@string/criteria_selection_toolbar_label" />
+    <fragment
+        android:id="@+id/objectiveExerciseSelectionFragment"
+        android:name="julienbirabent.apollomusic.ui.objective.ObjectiveExerciseSelectionFragment"
+        android:label="@string/exercise_selection_toolbar_label">
+        <action
+            android:id="@+id/action_objectiveExerciseSelectionFragment_to_objectiveCreateFragment"
+            app:destination="@id/objectiveCreateFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
 </navigation>

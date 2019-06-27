@@ -16,18 +16,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/create_objective_type_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/choose_the_objective_s_type"
-            android:textAlignment="center"
-            android:textColor="@color/text_header_1"
-            android:textSize="@dimen/text_size_med" />
-
         <androidx.cardview.widget.CardView
             style="@style/CardViewBase.Button"
             android:layout_width="match_parent"
@@ -57,6 +45,7 @@
                     android:layout_height="120dp"
                     android:background="@android:color/transparent"
                     android:foreground="?selectableItemBackgroundBorderless"
+                    android:onClick="@{ () -> viewModel.goToExerciseSelection()}"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_exercise_collection"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -128,6 +117,7 @@
             style="@style/ColoredButtonBase.FlatGreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_transparent_24dp"
             android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
             android:enabled="@{viewModel.canGoToCriteriaSelection}"
             android:onClick="@{ () -> viewModel.goToCriteriaSelection()}"

@@ -92,5 +92,11 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
     fun createCriteria(criteriaString: String) {
         criteriaRepo.saveCriteria(criteriaString)
     }
+
+    /*******************************************************************************/
+
+    fun goToExerciseSelection() {
+        navigator.goToExerciseSelection()
+    }
 }
 
