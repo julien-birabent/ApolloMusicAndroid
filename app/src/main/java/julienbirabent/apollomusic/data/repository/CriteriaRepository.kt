@@ -3,14 +3,11 @@ package julienbirabent.apollomusic.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import io.reactivex.Single
-import julienbirabent.apollomusic.Utils.ConnectionAvailableEmitter.connectionAvailableEmitter
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.services.CriteriaAPI
 import julienbirabent.apollomusic.data.local.dao.CriteriaDao
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.UserEntity
-import julienbirabent.apollomusic.thread.AppExecutors
-import julienbirabent.apollomusic.thread.SchedulerProvider
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,18 +17,15 @@ class CriteriaRepository @Inject constructor(
     private val userRepo: UserRepository,
     private val criteriaDao: CriteriaDao,
     private val criteriaAPI: CriteriaAPI,
-    private val appConstants: AppConstants,
-    private val appExecutors: AppExecutors,
-    private val scheduler: SchedulerProvider
-) {
+    private val appConstants: AppConstants
+) : BaseRepository() {
 
     val currentUserLiveData: LiveData<UserEntity> = userRepo.getCurrentLoggedUser()
 
     init {
-        connectionAvailableEmitter()?.subscribe {
+        compositeDisposable.add(connectionAvailableEmitter().subscribe {
             //fetchCriteriaList(userRepo.getLoggedUserId())
-        }
-
+        })
     }
 
     private fun fetchCriteriaList(loggedUserId: String?): Single<List<CriteriaEntity>> {
