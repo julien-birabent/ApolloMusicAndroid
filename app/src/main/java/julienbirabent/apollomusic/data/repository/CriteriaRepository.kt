@@ -1,12 +1,9 @@
 package julienbirabent.apollomusic.data.repository
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
-import io.reactivex.Observable
 import io.reactivex.Single
-import julienbirabent.apollomusic.app.ApolloMusicApplication
+import julienbirabent.apollomusic.Utils.ConnectionAvailableEmitter.connectionAvailableEmitter
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.services.CriteriaAPI
 import julienbirabent.apollomusic.data.local.dao.CriteriaDao
@@ -31,23 +28,17 @@ class CriteriaRepository @Inject constructor(
     val currentUserLiveData: LiveData<UserEntity> = userRepo.getCurrentLoggedUser()
 
     init {
-        onConnectionAvailableEmitter()?.subscribe {
+        connectionAvailableEmitter()?.subscribe {
             //fetchCriteriaList(userRepo.getLoggedUserId())
         }
-    }
 
-    @SuppressLint("CheckResult")
-    fun onConnectionAvailableEmitter(): Observable<Boolean>? {
-        return ReactiveNetwork.observeNetworkConnectivity(ApolloMusicApplication.applicationContext())
-            .flatMapSingle { ReactiveNetwork.checkInternetConnectivity() }
-            .subscribeOn(scheduler.io())
-            .observeOn(scheduler.ui())
     }
 
     private fun fetchCriteriaList(loggedUserId: String?): Single<List<CriteriaEntity>> {
         //TODO() call server pour fetch les critere du user connecté
         // Mettre à jours la BD avec les criteres
         return Single.just(null)
+
     }
 
     fun getCriteriaList(profileId: String): LiveData<List<CriteriaEntity>> {
@@ -57,7 +48,7 @@ class CriteriaRepository @Inject constructor(
         )
     }
 
-    fun persistCriteria(criteria: String) {
+    fun saveCriteria(criteria: String) {
         var criteriaEntity = createCriteria(criteria)
 
         if (criteriaEntity != null) {

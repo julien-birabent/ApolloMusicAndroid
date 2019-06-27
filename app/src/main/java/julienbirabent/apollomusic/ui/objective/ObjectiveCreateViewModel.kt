@@ -90,7 +90,7 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
     }
 
     fun createCriteria(criteriaString: String) {
-        criteriaRepo.persistCriteria(criteriaString)
+        criteriaRepo.saveCriteria(criteriaString)
     }
 }
 
