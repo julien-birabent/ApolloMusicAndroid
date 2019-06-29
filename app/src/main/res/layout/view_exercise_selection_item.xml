@@ -6,6 +6,8 @@
 
         <import type="julienbirabent.apollomusic.data.local.entities.ExerciseEntity" />
 
+        <import type="String" />
+
         <variable
             name="item"
             type="julienbirabent.apollomusic.data.local.entities.ExerciseEntity" />
@@ -16,13 +18,93 @@
 
     </data>
 
-    <julienbirabent.apollomusic.view.ExpandableCardView
+    <androidx.cardview.widget.CardView
         style="@style/CardViewBase"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:inner_view="@layout/view_exercise_recap"
-        app:title="@{item.title}">
+        android:layout_height="wrap_content">
 
-    </julienbirabent.apollomusic.view.ExpandableCardView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/exercise_title"
+                style="@style/TextView.ListItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="some placeholder text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/expand_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.github.aakira.expandablelayout.ExpandableLinearLayout
+                android:id="@+id/expandable_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:ael_duration="400"
+                app:ael_expanded="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/exercise_title">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:padding="8dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/exercise_description"
+                        style="@style/TextView.Subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:text="@{item.description}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- Add Youtube links -->
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/exercise_difficulty"
+                        style="@style/TextView.Subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:text="@{String.format(@string/difficulty,item.difficulty.difficultyString)}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/exercise_description" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/exercise_creator_name"
+                        style="@style/TextView.Subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:text="@{item.profileId}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/exercise_difficulty" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </com.github.aakira.expandablelayout.ExpandableLinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

@@ -42,4 +42,6 @@
     <string name="default_input_hint">Type here</string>
     <string name="confirm">Confirm</string>
 
+    <string name="difficulty">Difficulty : %1$s</string>
+
 </resources>
