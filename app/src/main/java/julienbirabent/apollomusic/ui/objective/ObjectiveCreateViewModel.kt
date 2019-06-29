@@ -133,6 +133,10 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
         navigator.goToExerciseSelection()
     }
 
+    fun goToObjectiveTypeSelection() {
+        navigator.goToObjectiveTypeSelection()
+    }
+
     fun createObjective() {
         //Create objective
 

@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.FragmentObjectiveExerciseSelectionBinding
@@ -15,6 +16,11 @@ import julienbirabent.apollomusic.ui.base.BaseFragment
 class ObjectiveExerciseSelectionFragment :
     BaseFragment<FragmentObjectiveExerciseSelectionBinding, ObjectiveCreateViewModel>(),
     ObjectiveCreateNavigator {
+
+    override fun goToObjectiveTypeSelection() {
+        findNavController().navigate(R.id.action_objectiveExerciseSelectionFragment_to_objectiveCreateFragment)
+    }
+
     private lateinit var exerciseAdapter: ExerciseAdapter
 
     override fun goToPracticeCreation() {

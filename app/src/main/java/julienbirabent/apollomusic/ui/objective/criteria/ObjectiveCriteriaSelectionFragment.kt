@@ -18,6 +18,11 @@ import julienbirabent.apollomusic.ui.objective.ObjectiveCreateViewModel
 class ObjectiveCriteriaSelectionFragment :
     BaseFragment<FragmentObjectiveCriteriaSelectionBinding, ObjectiveCreateViewModel>(),
     ObjectiveCreateNavigator {
+
+    override fun goToObjectiveTypeSelection() {
+        //Not needed
+    }
+
     private lateinit var criteriaAdapter: CriteriaSelectionAdapter
 
     override fun goToPracticeCreation() {

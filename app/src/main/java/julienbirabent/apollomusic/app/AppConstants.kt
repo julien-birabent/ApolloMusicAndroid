@@ -10,5 +10,5 @@ interface AppConstants {
 
     fun sharedPrefName(): String
 
-    fun adminProfileI(): Int
+    fun adminProfileId(): Int
 }

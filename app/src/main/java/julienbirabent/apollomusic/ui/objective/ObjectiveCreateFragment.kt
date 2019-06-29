@@ -9,6 +9,11 @@ import julienbirabent.apollomusic.ui.base.BaseFragment
 
 class ObjectiveCreateFragment : BaseFragment<FragmentObjectiveCreateBinding, ObjectiveCreateViewModel>(),
     ObjectiveCreateNavigator {
+
+    override fun goToObjectiveTypeSelection() {
+        //Not needed
+    }
+
     override fun goToExerciseSelection() {
         findNavController().navigate(R.id.action_objectiveCreateFragment_to_objectiveExerciseSelectionFragment)
     }

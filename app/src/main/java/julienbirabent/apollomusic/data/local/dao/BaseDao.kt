@@ -31,6 +31,9 @@ interface BaseDao<T> {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(obj: T)
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun update(vararg obj: T)
+
     /**
      * Delete an object from the database
      *

@@ -20,7 +20,7 @@ class ReleaseAppConstants : AppConstants {
         return "shared_prefs_release"
     }
 
-    override fun adminProfileI(): Int {
+    override fun adminProfileId(): Int {
         return 0
     }
 }

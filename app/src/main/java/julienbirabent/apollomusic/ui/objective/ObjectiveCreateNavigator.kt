@@ -9,4 +9,6 @@ interface ObjectiveCreateNavigator : UINavigator{
     fun goToExerciseSelection()
 
     fun goToPracticeCreation()
+
+    fun goToObjectiveTypeSelection()
 }

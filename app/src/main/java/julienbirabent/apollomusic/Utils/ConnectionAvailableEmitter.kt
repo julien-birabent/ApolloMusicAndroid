@@ -16,7 +16,5 @@ class ConnectionAvailableEmitter @Inject constructor(
     fun connectionAvailableEmitter(): Observable<Boolean> {
         return ReactiveNetwork.observeNetworkConnectivity(context)
             .flatMapSingle { ReactiveNetwork.checkInternetConnectivity() }
-            .subscribeOn(scheduler.io())
-            .observeOn(scheduler.ui())
     }
 }
