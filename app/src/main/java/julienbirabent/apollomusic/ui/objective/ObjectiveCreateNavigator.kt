@@ -7,4 +7,6 @@ interface ObjectiveCreateNavigator : UINavigator{
     fun goToCriteriaSelection()
 
     fun goToExerciseSelection()
+
+    fun goToPracticeCreation()
 }

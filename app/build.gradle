@@ -120,5 +120,4 @@ dependencies {
     releaseImplementation 'com.idescout.sql:sqlscout-server-noop:4.1'
 
     implementation "com.github.pwittchen:reactivenetwork-rx2:$reactiveNetworkVersion"
-    implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
 }

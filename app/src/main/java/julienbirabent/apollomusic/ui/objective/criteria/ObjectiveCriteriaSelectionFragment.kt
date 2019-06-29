@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.FragmentObjectiveCriteriaSelectionBinding
@@ -18,6 +19,10 @@ class ObjectiveCriteriaSelectionFragment :
     BaseFragment<FragmentObjectiveCriteriaSelectionBinding, ObjectiveCreateViewModel>(),
     ObjectiveCreateNavigator {
     private lateinit var criteriaAdapter: CriteriaSelectionAdapter
+
+    override fun goToPracticeCreation() {
+        findNavController().navigate(R.id.action_objectiveCriteriaSelectionFragment_to_practiceCreateFragment)
+    }
 
     override fun goToExerciseSelection() {
         //Not needed

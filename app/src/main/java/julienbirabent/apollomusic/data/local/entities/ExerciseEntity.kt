@@ -36,7 +36,7 @@ data class ExerciseEntity(
 
     @Expose
     @SerializedName("links")
-    var links: List<String>,
+    var links: List<String>?,
 
     @Expose
     @SerializedName("tempoBase")

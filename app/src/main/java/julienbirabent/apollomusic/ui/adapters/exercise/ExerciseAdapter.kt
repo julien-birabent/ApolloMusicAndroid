@@ -1,11 +1,12 @@
 package julienbirabent.apollomusic.ui.adapters.exercise
 
 import android.animation.ObjectAnimator
-import android.util.SparseBooleanArray
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnticipateOvershootInterpolator
-import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter
-import com.github.aakira.expandablelayout.ExpandableLinearLayout
+import android.view.animation.LinearInterpolator
+import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.data.local.entities.ExerciseEntity
 import julienbirabent.apollomusic.ui.adapters.BaseAdapter
@@ -17,16 +18,10 @@ import julienbirabent.apollomusic.ui.adapters.ItemSelectionCallback
 class ExerciseAdapter(callback: ItemSelectionCallback<ExerciseEntity>) :
     BaseAdapter<ExerciseEntity, ItemSelectionCallback<ExerciseEntity>>(callback) {
 
-    private val expandState = SparseBooleanArray()
-
-    init {
-        listItems.forEachIndexed { index, _ ->
-            expandState.append(index, false)
-        }
-    }
+    private var expandedPosition: Int = -1
+    private lateinit var recyclerView: RecyclerView
 
     override fun getLayoutId(position: Int, obj: ExerciseEntity): Int {
-
         return R.layout.view_exercise_selection_item
     }
 
@@ -35,32 +30,32 @@ class ExerciseAdapter(callback: ItemSelectionCallback<ExerciseEntity>) :
         position: Int
     ) {
         super.onBindViewHolder(holder, position)
-        holder.setIsRecyclable(false)
-        val expandButton = holder.binding.root.findViewById(R.id.expand_button) as View
-        val expandableLayout = holder.binding.root.findViewById(R.id.expandable_layout) as ExpandableLinearLayout
-        with(expandableLayout) {
-            setInRecyclerView(true)
-            isExpanded = expandState.get(position)
-            setListener(object : ExpandableLayoutListenerAdapter() {
-                override fun onPreOpen() {
-                    super.onPreOpen()
-                    createRotateAnimator(expandButton, 0f, 180f).start()
-                    expandState.put(position, true)
-                }
 
-                override fun onPreClose() {
-                    super.onPreClose()
-                    createRotateAnimator(expandButton, 0f, 180f).start()
-                    expandState.put(position, false)
-                }
-            })
+        val expandButton = (holder.binding.root.findViewById(R.id.expand_button) as View)
+        val isExpanded = position == expandedPosition
+        getDetailsView(holder).visibility = if (isExpanded) View.VISIBLE else View.GONE
+        holder.binding.root.setOnClickListener {
+            if (expandedPosition >= 0) {
+                val prev = expandedPosition
+                notifyItemChanged(prev)
+            }
+            expandedPosition = if (isExpanded) -1 else position
+            TransitionManager.beginDelayedTransition(holder.binding.root as ViewGroup)
+            notifyItemChanged(expandedPosition)
+
+            val to = if (isExpanded) 0f else 180f
+            createRotateAnimator(expandButton, expandButton.rotation, to).start()
         }
+        expandButton.rotation = if (isExpanded) 180f else 0f
+    }
 
-        expandButton.rotation = if (expandState.get(position)) 180f else 0f
-        expandButton.setOnClickListener {
-            expandableLayout.toggle()
-        }
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView
+    }
 
+    private fun getDetailsView(holder: DataBindingViewHolder<ExerciseEntity, ItemSelectionCallback<ExerciseEntity>>): View {
+        return (holder.binding.root.findViewById(R.id.exercise_details_container) as View)
     }
 
     override fun getDiffUtilCallback(
@@ -78,10 +73,10 @@ class ExerciseAdapter(callback: ItemSelectionCallback<ExerciseEntity>) :
             })
     }
 
-    fun createRotateAnimator(target: View, from: Float, to: Float): ObjectAnimator {
+    private fun createRotateAnimator(target: View, from: Float, to: Float): ObjectAnimator {
         val animator = ObjectAnimator.ofFloat(target, "rotation", from, to)
         animator.duration = 300
-        animator.interpolator = AnticipateOvershootInterpolator()
+        animator.interpolator = LinearInterpolator()
         return animator
     }
 }
