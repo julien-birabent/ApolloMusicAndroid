@@ -3,9 +3,7 @@ package julienbirabent.apollomusic.ui.adapters.exercise
 import android.animation.ObjectAnimator
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnticipateOvershootInterpolator
 import android.view.animation.LinearInterpolator
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.data.local.entities.ExerciseEntity
@@ -19,7 +17,6 @@ class ExerciseAdapter(callback: ItemSelectionCallback<ExerciseEntity>) :
     BaseAdapter<ExerciseEntity, ItemSelectionCallback<ExerciseEntity>>(callback) {
 
     private var expandedPosition: Int = -1
-    private lateinit var recyclerView: RecyclerView
 
     override fun getLayoutId(position: Int, obj: ExerciseEntity): Int {
         return R.layout.view_exercise_selection_item
@@ -45,13 +42,10 @@ class ExerciseAdapter(callback: ItemSelectionCallback<ExerciseEntity>) :
 
             val to = if (isExpanded) 0f else 180f
             createRotateAnimator(expandButton, expandButton.rotation, to).start()
+
+            callback?.onItemSelected(listItems[position])
         }
         expandButton.rotation = if (isExpanded) 180f else 0f
-    }
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        this.recyclerView = recyclerView
     }
 
     private fun getDetailsView(holder: DataBindingViewHolder<ExerciseEntity, ItemSelectionCallback<ExerciseEntity>>): View {

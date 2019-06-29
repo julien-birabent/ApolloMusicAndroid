@@ -24,18 +24,20 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
     val customObjectiveString: MutableLiveData<String> = MutableLiveData()
     val canGoToCriteriaSelection: MediatorLiveData<Boolean> = MediatorLiveData()
 
+    //region Exercises
     val exerciseSelected: MutableLiveData<ExerciseEntity> = MutableLiveData()
     var exerciseList: MutableLiveData<List<ExerciseEntity>> = MutableLiveData()
     val exerciseItemCallback: ItemSelectionCallback<ExerciseEntity> = object :
         ItemSelectionCallback<ExerciseEntity> {
         override fun onItemSelected(item: ExerciseEntity) {
-            if (item != exerciseSelected.value) {
-                exerciseSelected.value = item
-            } else {
+            if (item == exerciseSelected.value) {
                 exerciseSelected.value = null
+            } else {
+                exerciseSelected.value = item
             }
         }
     }
+    //endregion
 
     //region Criterias variables
     val criteriaSelected: MutableLiveData<CriteriaEntity> = MutableLiveData()
@@ -79,16 +81,16 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
         exerciseList.postValue(
             listOf(
                 ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE)
+                ExerciseEntity(0, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
+                ExerciseEntity(1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
+                ExerciseEntity(2, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
+                ExerciseEntity(3, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
+                ExerciseEntity(4, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
+                ExerciseEntity(5, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
+                ExerciseEntity(16, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
+                ExerciseEntity(-16, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
+                ExerciseEntity(-18, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
+                ExerciseEntity(-15, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE)
             )
         )
 
@@ -97,7 +99,7 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
         canGoToCriteriaSelection.postValue(false)
 
         canGoToCriteriaSelection.addSource(customObjectiveString) {
-            canGoToCriteriaSelection.postValue(it.isNotEmpty())
+            canGoToCriteriaSelection.postValue(it.isNotEmpty().or(exerciseSelected.value != null))
         }
     }
 

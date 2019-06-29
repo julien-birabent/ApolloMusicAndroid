@@ -157,6 +157,8 @@
 
     <style name="CardViewBase.Button">
         <item name="android:clickable">true</item>
+        <item name="android:enabled">true</item>
+        <item name="android:focusable">true</item>
         <item name="android:foreground">?android:selectableItemBackgroundBorderless</item>
     </style>
 

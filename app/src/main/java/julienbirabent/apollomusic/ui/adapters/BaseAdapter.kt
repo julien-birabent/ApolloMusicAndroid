@@ -12,7 +12,7 @@ abstract class BaseAdapter<Model, Callback>(callback: Callback) :
     RecyclerView.Adapter<DataBindingViewHolder<Model, Callback>>() {
 
     protected var listItems: MutableList<Model>
-    private var callback: Callback? = callback
+    protected var callback: Callback? = callback
 
     init {
         listItems = mutableListOf()
