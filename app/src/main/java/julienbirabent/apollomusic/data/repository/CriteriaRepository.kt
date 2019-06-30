@@ -43,10 +43,11 @@ class CriteriaRepository @Inject constructor(
         getCriterias(profileId)
             .subscribeOn(scheduler.io())
             .observeOn(scheduler.io())
-            .subscribe {
+            .subscribe({
 
-
-            }
+            },{
+                Log.e("getCriteriaList", it.message)
+            })
         return criteriaDao.getCriteriaListByUserLive(profileId.toInt(), appConstants.adminProfileId())
     }
 
