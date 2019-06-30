@@ -5,10 +5,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import io.reactivex.Single
 import julienbirabent.apollomusic.Utils.AbsentLiveData
+import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.services.UserAPI
 import julienbirabent.apollomusic.data.local.dao.UserDao
 import julienbirabent.apollomusic.data.local.entities.UserEntity
 import julienbirabent.apollomusic.data.local.model.User
+import julienbirabent.apollomusic.ui.login.LoginType
 import retrofit2.Response
 import java.io.IOException
 import java.security.InvalidParameterException
@@ -17,11 +19,32 @@ import javax.inject.Singleton
 
 @Singleton
 class UserRepository @Inject constructor(
-    private val userAPI: UserAPI, private val userDao: UserDao, private val sharedPreferences: SharedPreferences
+    private val userAPI: UserAPI, private val userDao: UserDao, private val sharedPreferences: SharedPreferences,
+    private val appConstants: AppConstants
 ) : BaseRepository() {
 
     internal companion object {
         const val key_user_id = "key_user_id"
+    }
+
+    init {
+        createAdminProfile()
+    }
+
+    private fun createAdminProfile() {
+        appExecutors.diskIO().execute {
+            userDao.insert(
+                UserEntity(
+                    appConstants.adminProfileId().toString(),
+                    appConstants.adminProfileId().toString(),
+                    null,
+                    null,
+                    "admin",
+                    null,
+                    LoginType.GOOGLE
+                )
+            )
+        }
     }
 
     fun login(user: User): Single<Response<UserEntity>> {

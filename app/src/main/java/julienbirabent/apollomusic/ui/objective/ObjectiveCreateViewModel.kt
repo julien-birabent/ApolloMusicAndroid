@@ -14,6 +14,7 @@ import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.ui.adapters.CheckedWrapper
 import julienbirabent.apollomusic.ui.adapters.ItemSelectionCallback
 import julienbirabent.apollomusic.ui.base.BaseViewModel
+import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -139,10 +140,16 @@ class ObjectiveCreateViewModel @Inject constructor(
                 .doOnTerminate {
                     setIsLoading(false)
                 }
+                .doOnError {
+
+                }
                 .subscribe({
                     Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")
                 }, {
-                    Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")
+                    if(it is UnknownHostException){
+                        // Probleme de connexion internet
+                    }
+                    Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString was not added")
                 })
 
         )
