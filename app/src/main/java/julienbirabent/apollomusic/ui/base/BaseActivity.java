@@ -2,6 +2,7 @@ package julienbirabent.apollomusic.ui.base;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,22 +10,30 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import io.reactivex.disposables.CompositeDisposable;
+import julienbirabent.apollomusic.R;
 import julienbirabent.apollomusic.Utils.NetworkUtils;
+import julienbirabent.apollomusic.thread.SchedulerProvider;
 import julienbirabent.apollomusic.viewmodel.ViewModelFactory;
 
 import javax.inject.Inject;
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
         implements BaseFragment.Callback, HasSupportFragmentInjector {
+
+    @Inject
+    SchedulerProvider schedulerProvider;
 
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentAndroidInjector;
@@ -34,6 +43,8 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
 
     protected T binding;
     public V viewModel;
+
+    protected CompositeDisposable disposable = new CompositeDisposable();
 
     /**
      * Override for set binding variable
@@ -123,6 +134,49 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
             viewModel.setNavigator(this);
         }
         binding.executePendingBindings();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        disposable.add(ReactiveNetwork.observeNetworkConnectivity(this)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(
+                        connectivity -> {
+                            switch (connectivity.state()) {
+                                case DISCONNECTED:
+                                case SUSPENDED:
+                                case DISCONNECTING:
+                                case UNKNOWN:
+                                    showErrorDialog(getResources().getString(R.string.dialog_error_no_internet_title),
+                                            getResources().getString(R.string.dialog_error_no_internet_message));
+                                    break;
+                                case CONNECTED:
+                                case CONNECTING:
+                                    break;
+                            }
+                        },
+                        throwable -> {
+
+                        }
+                ));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        disposable.dispose();
+    }
+
+    public void showErrorDialog(String title, String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this,R.style.AlertDialogTheme_White).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setCancelable(false);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                (dialog, which) -> dialog.dismiss());
+        alertDialog.show();
     }
 }
 

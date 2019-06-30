@@ -151,7 +151,6 @@ class ObjectiveCreateViewModel @Inject constructor(
                     }
                     Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString was not added")
                 })
-
         )
     }
 

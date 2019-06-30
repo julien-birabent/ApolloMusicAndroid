@@ -3,7 +3,6 @@ package julienbirabent.apollomusic.data.repository
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
 import io.reactivex.Single
 import julienbirabent.apollomusic.app.AppConstants
@@ -25,6 +24,22 @@ class CriteriaRepository @Inject constructor(
 
     val currentUserLiveData: LiveData<UserEntity> = userRepo.getCurrentLoggedUser()
 
+    init {
+        compositeDisposable.add(connectionAvailableEmitter()
+            .subscribeOn(scheduler.io())
+            .observeOn(scheduler.io())
+            .flatMap { getCriterias(userRepo.getLoggedUserId().toString()) }
+            .subscribe({
+                Log.d(
+                    CriteriaRepository::class.simpleName,
+                    "Fetching criteria on connection gained ${it.size}"
+                )
+            }, {
+                Log.e(CriteriaRepository::class.simpleName, "An error happened : " + it.message)
+            })
+        )
+    }
+
     fun getCriterias(profileId: String): Observable<List<CriteriaEntity>> {
         return Observable.mergeArray(
             getCriteriaFromDb(profileId),
@@ -45,7 +60,7 @@ class CriteriaRepository @Inject constructor(
             .observeOn(scheduler.io())
             .subscribe({
 
-            },{
+            }, {
                 Log.e("getCriteriaList", it.message)
             })
         return criteriaDao.getCriteriaListByUserLive(profileId.toInt(), appConstants.adminProfileId())
