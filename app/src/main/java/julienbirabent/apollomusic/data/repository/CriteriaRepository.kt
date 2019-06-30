@@ -23,48 +23,7 @@ class CriteriaRepository @Inject constructor(
     val currentUserLiveData: LiveData<UserEntity> = userRepo.getCurrentLoggedUser()
 
     init {
-        compositeDisposable.add(connectionAvailableEmitter()
-            .subscribeOn(scheduler.io())
-            .observeOn(scheduler.io())
-            .subscribe { connectionAvailable ->
-                userRepo.getLoggedUserId()?.let { userId ->
-                    val pendingCriterias = criteriaDao.getAllPendingCriteriasByUser(userId)
 
-                    pendingCriterias.forEach { entity ->
-                        persistCriteriaOnServerCall(entity)
-                            .subscribeOn(scheduler.computation())
-                            .observeOn(scheduler.io())
-                            .subscribe({ response ->
-                                if (response.isSuccessful && response.body() != null) {
-                                    response.body()?.let { body ->
-                                        entity.pendingForSync = false
-                                        entity.serverId = body.serverId
-                                        criteriaDao.update(entity)
-                                    }
-                                }
-                            }, { throwable ->
-                                Log.e("CriteriaRepository", throwable.message)
-                            })
-                    }
-
-                    fetchCriteriaList(userId)
-                        .subscribeOn(scheduler.io())
-                        .observeOn(scheduler.io())
-                        .subscribe({ response ->
-                            if (response.isSuccessful && response.body() != null) {
-                                response.body()?.let { criteriaList ->
-                                    val userCriteria = filterUserCriteria(userId, criteriaList)
-                                    userCriteria.forEach {
-                                        it.pendingForSync = false
-                                        criteriaDao.insertOrUpdate(it)
-                                    }
-                                }
-                            }
-                        }, {
-                            Log.e("CriteriaRepository", it.message)
-                        })
-                }
-            })
     }
 
     private fun filterUserCriteria(userId: String, criteriaList: List<CriteriaEntity>): List<CriteriaEntity> {
@@ -84,48 +43,19 @@ class CriteriaRepository @Inject constructor(
         )
     }
 
-    fun saveCriteria(criteria: String) {
-        var criteriaEntity = createCriteria(criteria)
-
-        if (criteriaEntity != null) {
-            appExecutors.diskIO().execute {
-                criteriaEntity?.let {
-                    val id = criteriaDao.insert(it)
-                    criteriaEntity = criteriaDao.getCriteriaByInternalId(id)
-
-                    criteriaEntity?.let { entity ->
-                        persistCriteriaOnServerCall(entity).subscribe({ response ->
-                            if (response.isSuccessful && response.body() != null) {
-                                response.body()?.let { body ->
-                                    entity.pendingForSync = false
-                                    entity.serverId = body.serverId
-                                    criteriaDao.update(entity)
-                                }
-                            }
-                        }, { throwable ->
-                            Log.e("CriteriaRepository", throwable.message)
-                        })
+    fun saveCriteria(criteria: String): Single<Response<CriteriaEntity>> {
+        return criteriaAPI.postCriteria(criteria, userRepo.getLoggedUserId()?.toInt())
+            .subscribeOn(scheduler.io())
+            .observeOn(scheduler.io())
+            .doOnSuccess { response ->
+                if (response.isSuccessful) {
+                    appExecutors.diskIO().execute {
+                        response.body()?.let { criteriaDao.insert(it) }
                     }
                 }
             }
-        }
+            .doOnError {
+                Log.e("Persist criteria call", "An error happened : " + it.message)
+            }
     }
-
-    private fun persistCriteriaOnServerCall(entity: CriteriaEntity): Single<Response<CriteriaEntity>> {
-        return criteriaAPI.postCriteria(criteria = entity.criteria, profileId = entity.profileId)
-            .subscribeOn(scheduler.io())
-            .observeOn(scheduler.io())
-    }
-
-    private fun createCriteria(criteria: String): CriteriaEntity? {
-        return currentUserLiveData.value?.let {
-            CriteriaEntity(
-                criteria = criteria,
-                serverId = -1,
-                profileId = it.id.toInt(),
-                pendingForSync = true
-            )
-        }
-    }
-
 }

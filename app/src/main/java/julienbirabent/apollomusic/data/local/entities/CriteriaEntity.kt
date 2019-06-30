@@ -20,8 +20,9 @@ import com.google.gson.annotations.SerializedName
 data class CriteriaEntity(
 
     @Expose
+    @PrimaryKey
     @SerializedName("id")
-    var serverId: Int,
+    var id: Int,
 
     @Expose
     @SerializedName("profileId")
@@ -29,11 +30,5 @@ data class CriteriaEntity(
 
     @Expose
     @SerializedName("criteria")
-    var criteria: String,
-
-    @ColumnInfo(name = "pending")
-    var pendingForSync: Boolean = true
-) {
-    @PrimaryKey(autoGenerate = true)
-    var id: Long? = null
-}
+    var criteria: String
+)

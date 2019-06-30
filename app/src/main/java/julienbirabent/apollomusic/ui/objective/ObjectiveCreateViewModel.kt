@@ -1,5 +1,6 @@
 package julienbirabent.apollomusic.ui.objective
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,7 @@ import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.ExerciseEntity
 import julienbirabent.apollomusic.data.local.entities.UserEntity
 import julienbirabent.apollomusic.data.repository.CriteriaRepository
+import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.ui.adapters.CheckedWrapper
 import julienbirabent.apollomusic.ui.adapters.ItemSelectionCallback
 import julienbirabent.apollomusic.ui.base.BaseViewModel
@@ -16,7 +18,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: CriteriaRepository) :
+class ObjectiveCreateViewModel @Inject constructor(
+    private val criteriaRepo: CriteriaRepository,
+    private val scheduler: AppSchedulerProvider
+) :
     BaseViewModel<ObjectiveCreateNavigator>() {
 
     private val currentUser: LiveData<UserEntity> = criteriaRepo.currentUserLiveData
@@ -124,7 +129,23 @@ class ObjectiveCreateViewModel @Inject constructor(private val criteriaRepo: Cri
     }
 
     fun createCriteria(criteriaString: String) {
-        criteriaRepo.saveCriteria(criteriaString)
+        compositeDisposable.add(
+            criteriaRepo.saveCriteria(criteriaString)
+                .subscribeOn(scheduler.io())
+                .observeOn(scheduler.ui())
+                .doOnSubscribe {
+                    setIsLoading(true)
+                }
+                .doOnTerminate {
+                    setIsLoading(false)
+                }
+                .subscribe({
+                    Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")
+                }, {
+                    Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")
+                })
+
+        )
     }
 
     /*******************************************************************************/

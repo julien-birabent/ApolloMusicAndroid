@@ -120,4 +120,5 @@ dependencies {
     releaseImplementation 'com.idescout.sql:sqlscout-server-noop:4.1'
 
     implementation "com.github.pwittchen:reactivenetwork-rx2:$reactiveNetworkVersion"
+    compile "org.jetbrains.kotlin:kotlin-reflect:1.3.21"
 }
