@@ -1,11 +1,10 @@
 package julienbirabent.apollomusic.data.local.entities
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import julienbirabent.apollomusic.data.local.Difficulty
+import julienbirabent.apollomusic.data.local.converters.DifficultyConverter
 
 @Entity(
     tableName = "exercise",
@@ -26,6 +25,8 @@ data class ExerciseEntity(
     @SerializedName("profileId")
     var profileId: String,
 
+
+
     @Expose
     @SerializedName("title")
     var title: String,
@@ -44,9 +45,10 @@ data class ExerciseEntity(
 
     @Expose
     @SerializedName("difficulty")
-    var difficulty: Difficulty
+    var difficulty: Int?,
 
-    /*@Expose
+    @Expose
+    @Embedded
     @SerializedName("tablature")
-    var tablature: Difficulty*/
+    var tablature: Tablature?
 )

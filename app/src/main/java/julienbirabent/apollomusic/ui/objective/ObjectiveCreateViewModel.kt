@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import julienbirabent.apollomusic.data.local.Difficulty
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.ExerciseEntity
 import julienbirabent.apollomusic.data.local.entities.UserEntity
 import julienbirabent.apollomusic.data.repository.CriteriaRepository
+import julienbirabent.apollomusic.data.repository.ExercisesRepository
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.ui.adapters.CheckedWrapper
 import julienbirabent.apollomusic.ui.adapters.ItemSelectionCallback
@@ -21,6 +21,7 @@ import javax.inject.Singleton
 @Singleton
 class ObjectiveCreateViewModel @Inject constructor(
     private val criteriaRepo: CriteriaRepository,
+    private val exercisesRepository: ExercisesRepository,
     private val scheduler: AppSchedulerProvider
 ) :
     BaseViewModel<ObjectiveCreateNavigator>() {
@@ -32,7 +33,7 @@ class ObjectiveCreateViewModel @Inject constructor(
 
     //region Exercises
     val exerciseSelected: MutableLiveData<ExerciseEntity> = MutableLiveData()
-    var exerciseList: MutableLiveData<List<ExerciseEntity>> = MutableLiveData()
+    var exerciseList: LiveData<List<ExerciseEntity>> = MutableLiveData()
     val exerciseItemCallback: ItemSelectionCallback<ExerciseEntity> = object :
         ItemSelectionCallback<ExerciseEntity> {
         override fun onItemSelected(item: ExerciseEntity) {
@@ -84,21 +85,8 @@ class ObjectiveCreateViewModel @Inject constructor(
 
     init {
 
-        exerciseList.postValue(
-            listOf(
-                ExerciseEntity(-1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(0, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(1, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(2, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(3, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(4, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(5, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(16, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-16, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-18, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE),
-                ExerciseEntity(-15, "1", "Fake exercise", "Fake Description", null, 80, Difficulty.GODLIKE)
-            )
-        )
+        exerciseList = exercisesRepository.getAllexercises()
+        exercisesRepository.enableUpdatesOnConnectionAvailable(compositeDisposable)
 
         exerciseSelected.postValue(null)
         criteriaSelected.postValue(null)
@@ -146,7 +134,7 @@ class ObjectiveCreateViewModel @Inject constructor(
                 .subscribe({
                     Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")
                 }, {
-                    if(it is UnknownHostException){
+                    if (it is UnknownHostException) {
                         // Probleme de connexion internet
                     }
                     Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString was not added")

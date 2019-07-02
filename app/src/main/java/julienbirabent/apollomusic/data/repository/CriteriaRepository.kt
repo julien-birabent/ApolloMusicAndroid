@@ -41,7 +41,7 @@ class CriteriaRepository @Inject constructor(
     }
 
     fun getCriterias(profileId: String): Observable<List<CriteriaEntity>> {
-        return Observable.mergeArray(
+        return Observable.concatArray(
             getCriteriaFromDb(profileId),
             getCriteriaFromServer(profileId)
         )
@@ -55,14 +55,6 @@ class CriteriaRepository @Inject constructor(
 
     @SuppressLint("CheckResult")
     fun getCriteriaList(profileId: String): LiveData<List<CriteriaEntity>> {
-        getCriterias(profileId)
-            .subscribeOn(scheduler.io())
-            .observeOn(scheduler.io())
-            .subscribe({
-
-            }, {
-                Log.e("getCriteriaList", it.message)
-            })
         return criteriaDao.getCriteriaListByUserLive(profileId.toInt(), appConstants.adminProfileId())
     }
 
