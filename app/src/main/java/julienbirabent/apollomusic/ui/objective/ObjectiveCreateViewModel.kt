@@ -52,7 +52,6 @@ class ObjectiveCreateViewModel @Inject constructor(
     val criteriaSelected: MutableLiveData<CriteriaEntity> = MutableLiveData()
     private var _criteriaList: LiveData<StateData<List<CriteriaEntity>>> = Transformations.switchMap(currentUser) {
         currentUser.value?.id?.let { userId ->
-            /*criteriaRepo.getCriteriaList(userId)*/
             criteriaRepo.getCriteriasLive(userId)
         }
     }
@@ -141,6 +140,7 @@ class ObjectiveCreateViewModel @Inject constructor(
                     if (it is UnknownHostException) {
                         // Probleme de connexion internet
                     }
+                    setIsLoading(false)
                     Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString was not added")
                 })
         )
