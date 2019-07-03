@@ -1,6 +1,7 @@
 package julienbirabent.apollomusic.data.repository
 
 import android.content.Context
+import com.github.pwittchen.reactivenetwork.library.rx2.Connectivity
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import julienbirabent.apollomusic.Utils.ConnectionAvailableEmitter
@@ -27,7 +28,7 @@ open class BaseRepository {
 
     }
 
-    fun connectionAvailableEmitter(): Observable<Boolean> {
+    fun connectionAvailableEmitter(): Observable<Connectivity> {
         return connectionEmitter.connectionAvailableEmitter()
     }
 }

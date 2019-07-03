@@ -44,17 +44,13 @@ class ObjectiveExerciseSelectionFragment :
             Log.d("State live data test", "Status : " + it.status.toString())
             when (it.status) {
                 StateData.DataStatus.SUCCESS -> {
-                    viewDataBinding.loadingIndicator.hide()
                     exerciseAdapter.updateList(it.data!!)
                 }
-
                 StateData.DataStatus.ERROR -> Toast.makeText(
                     context,
                     R.string.network_error_could_not_fetch_last_exercises,
                     Toast.LENGTH_SHORT
                 ).show()
-                StateData.DataStatus.LOADING -> viewDataBinding.loadingIndicator.show()
-                StateData.DataStatus.COMPLETE -> viewDataBinding.loadingIndicator.hide()
             }
         })
     }

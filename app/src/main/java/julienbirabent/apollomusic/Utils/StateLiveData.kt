@@ -8,7 +8,7 @@ import julienbirabent.apollomusic.thread.SchedulerProvider
 
 class StateLiveData<T>(
     private var schedulerProvider: SchedulerProvider,
-    vararg val observables: Observable<T>
+    private val observable: Observable<T>
 ) : MutableLiveData<StateData<T>>() {
 
     private var disposable = CompositeDisposable()
@@ -16,34 +16,32 @@ class StateLiveData<T>(
     override fun onActive() {
         super.onActive()
 
-        observables.forEach {
-            disposable.add(
-                it
-                    .subscribeOn(schedulerProvider.io())
-                    .observeOn(schedulerProvider.ui())
-                    .doOnSubscribe {
-                        postLoading()
-                        Log.d("State live data test", "postLoading")
-                    }
-                    .doOnTerminate {
-                        postComplete()
-                        Log.d("State live data test", "postComplete")
-                    }
-                    .doFinally {
-                        postComplete()
-                    }
-                    .doOnComplete {
-                        postComplete()
-                    }
-                    .subscribe({
-                        postSuccess(it)
-                        Log.d("State live data test", "postSuccess with : " + it.toString())
-                    }, {
-                        postError(it)
-                        Log.d("State live data test", "postError with : " + it.toString())
-                    })
-            )
-        }
+        disposable.add(
+            observable
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .doOnSubscribe {
+                    postLoading()
+                    Log.d("State live data test", "postLoading")
+                }
+                .doOnTerminate {
+                    postComplete()
+                    Log.d("State live data test", "postComplete")
+                }
+                .doFinally {
+                    postComplete()
+                }
+                .doOnComplete {
+                    postComplete()
+                }
+                .subscribe({
+                    postSuccess(it)
+                    Log.d("State live data test", "postSuccess with : " + it.toString())
+                }, {
+                    postError(it)
+                    Log.d("State live data test", "postError with : " + it.toString())
+                })
+        )
     }
 
     override fun onInactive() {
@@ -54,7 +52,7 @@ class StateLiveData<T>(
     /**
      * Use this to put the Data on a LOADING Status
      */
-    fun postLoading() {
+    private fun postLoading() {
         postValue(StateData<T>().loading())
     }
 
@@ -79,7 +77,7 @@ class StateLiveData<T>(
     /**
      * Use this to put the Data on a COMPLETE DataStatus
      */
-    fun postComplete() {
+    private fun postComplete() {
         postValue(StateData<T>().complete())
     }
 
