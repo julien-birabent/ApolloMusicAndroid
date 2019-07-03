@@ -30,10 +30,12 @@ class ObjectiveCreateViewModel @Inject constructor(
 
     private val currentUser: LiveData<UserEntity> = criteriaRepo.currentUserLiveData
 
+    val practiceTargetTime: MutableLiveData<String> = MutableLiveData()
     val customObjectiveString: MutableLiveData<String> = MutableLiveData()
     val canGoToCriteriaSelection: MediatorLiveData<Boolean> = MediatorLiveData()
 
     //region Exercises
+    var exerciseTempo: MutableLiveData<String> = MutableLiveData()
     val exerciseSelected: MutableLiveData<ExerciseEntity> = MutableLiveData()
     var exerciseListState: StateLiveData<List<ExerciseEntity>> = exercisesRepository.getExercises()
     val exerciseItemCallback: ItemSelectionCallback<ExerciseEntity> = object :
@@ -91,13 +93,31 @@ class ObjectiveCreateViewModel @Inject constructor(
     //endregion
 
     init {
+        init()
+    }
+
+    private fun init() {
+        manualClear()
+        canGoToCriteriaSelection.addSource(customObjectiveString) {
+            if (it == null) {
+                canGoToCriteriaSelection.postValue(false)
+            } else {
+                canGoToCriteriaSelection.postValue(it.isNotEmpty())
+            }
+        }
+        canGoToCriteriaSelection.addSource(exerciseSelected) {
+            if (it != null) {
+                exerciseTempo.postValue(it.tempoBase.toString())
+            }
+            canGoToCriteriaSelection.postValue(it != null)
+        }
+    }
+
+    private fun manualClear() {
         exerciseSelected.postValue(null)
         criteriaSelected.postValue(null)
         canGoToCriteriaSelection.postValue(false)
-
-        canGoToCriteriaSelection.addSource(customObjectiveString) {
-            canGoToCriteriaSelection.postValue(it.isNotEmpty().or(exerciseSelected.value != null))
-        }
+        practiceTargetTime.postValue("0")
     }
 
     fun getCriteriaList(): LiveData<StateData<MutableList<CheckedWrapper<CriteriaEntity>>>> {
@@ -153,14 +173,23 @@ class ObjectiveCreateViewModel @Inject constructor(
     }
 
     fun goToObjectiveTypeSelection() {
+        customObjectiveString.postValue(null)
         navigator.goToObjectiveTypeSelection()
     }
 
     fun createObjective() {
         //Create objective
+        var criteriaSelected = criteriaSelected.value
+        val exerciseSelected = exerciseSelected.value.apply { this?.tempoBase = exerciseTempo.value?.toInt() }
 
+        if (exerciseSelected != null) {
+
+        } else if (customObjectiveString.value != null) {
+
+        }
         // if creation successful go to create practice
         navigator.goToPracticeCreation()
+        manualClear()
     }
 }
 

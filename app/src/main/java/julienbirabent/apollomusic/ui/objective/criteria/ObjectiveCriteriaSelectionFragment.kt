@@ -55,6 +55,10 @@ class ObjectiveCriteriaSelectionFragment :
                 this::onConfirmAddCriteria
             )
         }
+
+        viewDataBinding.doneButton.setOnClickListener {
+            viewModel.createObjective()
+        }
     }
 
     private fun onConfirmAddCriteria(criteriaString: String): Boolean {

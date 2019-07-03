@@ -21,7 +21,7 @@ class ObjectiveExerciseSelectionFragment :
     ObjectiveCreateNavigator {
 
     override fun goToObjectiveTypeSelection() {
-        findNavController().navigate(R.id.action_objectiveExerciseSelectionFragment_to_objectiveCreateFragment)
+        findNavController().navigateUp()
     }
 
     private lateinit var exerciseAdapter: ExerciseAdapter

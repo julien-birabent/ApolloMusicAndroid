@@ -41,7 +41,7 @@ data class ExerciseEntity(
 
     @Expose
     @SerializedName("tempoBase")
-    var tempoBase: Int,
+    var tempoBase: Int?,
 
     @Expose
     @SerializedName("difficulty")

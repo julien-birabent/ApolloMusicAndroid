@@ -1,11 +1,13 @@
 package julienbirabent.apollomusic.ui.objective
 
+import android.app.Activity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.FragmentObjectiveCreateBinding
 import julienbirabent.apollomusic.ui.base.BaseFragment
+import julienbirabent.apollomusic.ui.home.HomeActivity
 
 class ObjectiveCreateFragment : BaseFragment<FragmentObjectiveCreateBinding, ObjectiveCreateViewModel>(),
     ObjectiveCreateNavigator {
@@ -13,6 +15,14 @@ class ObjectiveCreateFragment : BaseFragment<FragmentObjectiveCreateBinding, Obj
     override fun goToObjectiveTypeSelection() {
         //Not needed
     }
+
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+        if (activity is HomeActivity) {
+            activity.hideBottomNavigation(true)
+        }
+    }
+
 
     override fun goToExerciseSelection() {
         findNavController().navigate(R.id.action_objectiveCreateFragment_to_objectiveExerciseSelectionFragment)

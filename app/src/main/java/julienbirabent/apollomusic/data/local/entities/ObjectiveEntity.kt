@@ -29,7 +29,7 @@ data class ObjectiveEntity(
 
     @Expose
     @SerializedName("targetPracticeTime")
-    var targetPracticeTime: String?,
+    var targetPracticeTime: Int?,
 
     @Expose
     @SerializedName("practiceId")
