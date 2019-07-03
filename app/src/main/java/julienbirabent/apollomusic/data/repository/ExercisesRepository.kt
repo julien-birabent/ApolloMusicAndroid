@@ -2,11 +2,9 @@ package julienbirabent.apollomusic.data.repository
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.lifecycle.LiveData
 import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
+import julienbirabent.apollomusic.Utils.StateLiveData
 import julienbirabent.apollomusic.data.api.services.ExerciseAPI
-import julienbirabent.apollomusic.data.local.Difficulty
 import julienbirabent.apollomusic.data.local.dao.ExerciseDao
 import julienbirabent.apollomusic.data.local.entities.ExerciseEntity
 import javax.inject.Inject
@@ -18,26 +16,29 @@ class ExercisesRepository @Inject constructor(
     private val exerciseDao: ExerciseDao
 ) : BaseRepository() {
 
-    fun enableUpdatesOnConnectionAvailable(composite: CompositeDisposable) {
-        composite.add(connectionAvailableEmitter()
+    private val exercisesFromServer: Observable<List<ExerciseEntity>> = getExercisesFromServer()
+    private val exercisesFromDb: Observable<List<ExerciseEntity>> = getExercisesFromDb()
+
+    fun exercisesFromServerUpdates(): Observable<List<ExerciseEntity>> {
+        return connectionAvailableEmitter()
             .subscribeOn(scheduler.io())
-            .observeOn(scheduler.io())
+            .observeOn(scheduler.ui())
             .flatMap { getExercisesFromServer() }
-            .subscribe({
-                Log.d(
-                    ExercisesRepository::class.simpleName,
-                    "Fetching exercises on connection gained ${it.size}"
-                )
-            }, {
+            .doOnSubscribe {
+                Log.d(ExercisesRepository::class.simpleName, "Subscribing to network changes")
+            }
+            .doOnNext {
+                Log.d(ExercisesRepository::class.simpleName, "Fetching exercises on connection gained ${it.size}")
+            }
+            .doOnError {
                 Log.e(ExercisesRepository::class.simpleName, "An error happened : " + it.message)
-            })
-        )
+            }
     }
 
-    private fun getExercises(): Observable<List<ExerciseEntity>> {
-        return Observable.concatArray(
-            getExercisesFromDb(),
-            getExercisesFromServer()
+    fun getExercises(): StateLiveData<List<ExerciseEntity>> {
+        return StateLiveData(
+            scheduler,
+            exercisesFromDb, exercisesFromServerUpdates()
         )
     }
 
@@ -60,15 +61,8 @@ class ExercisesRepository @Inject constructor(
 
     @SuppressLint("CheckResult")
     private fun storeExercisesInDb(exercises: List<ExerciseEntity>) {
-        Observable.fromCallable { exerciseDao.insert(*exercises.toTypedArray()) }
-            .subscribeOn(scheduler.computation())
-            .observeOn(scheduler.io())
-            .subscribe {
-                Log.d(ExercisesRepository::class.simpleName, "Inserted ${exercises.size} exercises from API in DB...")
-            }
-    }
-
-    fun getAllexercises(): LiveData<List<ExerciseEntity>> {
-        return exerciseDao.getAllExercisesLive()
+        appExecutors.diskIO().execute {
+            exerciseDao.insert(*exercises.toTypedArray())
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import io.reactivex.Observable
 import io.reactivex.Single
+import julienbirabent.apollomusic.Utils.StateLiveData
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.services.CriteriaAPI
 import julienbirabent.apollomusic.data.local.dao.CriteriaDao
@@ -27,9 +28,10 @@ class CriteriaRepository @Inject constructor(
     init {
         compositeDisposable.add(connectionAvailableEmitter()
             .subscribeOn(scheduler.io())
-            .observeOn(scheduler.io())
-            .flatMap { getCriterias(userRepo.getLoggedUserId().toString()) }
+            .observeOn(scheduler.ui())
+            .flatMap { getCriteriaFromServer(userRepo.getLoggedUserId().toString()) }
             .subscribe({
+                storeCriteriaInDb(it)
                 Log.d(
                     CriteriaRepository::class.simpleName,
                     "Fetching criteria on connection gained ${it.size}"
@@ -40,10 +42,10 @@ class CriteriaRepository @Inject constructor(
         )
     }
 
-    fun getCriterias(profileId: String): Observable<List<CriteriaEntity>> {
-        return Observable.concatArray(
-            getCriteriaFromDb(profileId),
-            getCriteriaFromServer(profileId)
+    fun getCriteriasLive(profileId: String): StateLiveData<List<CriteriaEntity>> {
+        return StateLiveData(
+            scheduler,
+            getCriteriaFromDb(profileId)
         )
     }
 
@@ -61,7 +63,7 @@ class CriteriaRepository @Inject constructor(
     fun saveCriteria(criteria: String): Single<Response<CriteriaEntity>> {
         return criteriaAPI.postCriteria(criteria, userRepo.getLoggedUserId()?.toInt())
             .subscribeOn(scheduler.io())
-            .observeOn(scheduler.io())
+            .observeOn(scheduler.ui())
             .doOnSuccess { response ->
                 if (response.isSuccessful) {
                     response.body()?.let { storeCriteriaInDb(listOf(it)) }
@@ -91,11 +93,8 @@ class CriteriaRepository @Inject constructor(
 
     @SuppressLint("CheckResult")
     private fun storeCriteriaInDb(criterias: List<CriteriaEntity>) {
-        Observable.fromCallable { criteriaDao.insert(*criterias.toTypedArray()) }
-            .subscribeOn(scheduler.computation())
-            .observeOn(scheduler.io())
-            .subscribe {
-                Log.d(CriteriaRepository::class.simpleName, "Inserted ${criterias.size} criterias from API in DB...")
-            }
+        appExecutors.diskIO().execute {
+            criteriaDao.insert(*criterias.toTypedArray())
+        }
     }
 }

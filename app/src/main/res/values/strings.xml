@@ -47,4 +47,5 @@
     <string name="dialog_error_no_internet_title">No Internet Connection</string>
     <string name="dialog_error_no_internet_message">You do not seems to have a proper access to internet. This can cause some data related drawbacks like having the data not up to date or not being able to upload.</string>
 
+    <string name="network_error_could_not_fetch_last_exercises">No internet connection. Exercises list might not be up to date.</string>
 </resources>

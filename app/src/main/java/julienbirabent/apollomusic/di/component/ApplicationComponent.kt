@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
+import julienbirabent.apollomusic.Utils.StateLiveData
 import julienbirabent.apollomusic.app.ApolloMusicApplication
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.repository.BaseRepository

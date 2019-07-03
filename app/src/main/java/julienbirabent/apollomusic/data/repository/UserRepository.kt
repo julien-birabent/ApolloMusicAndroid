@@ -33,17 +33,19 @@ class UserRepository @Inject constructor(
 
     private fun createAdminProfile() {
         appExecutors.diskIO().execute {
-            userDao.insert(
-                UserEntity(
-                    appConstants.adminProfileId().toString(),
-                    appConstants.adminProfileId().toString(),
-                    null,
-                    null,
-                    "admin",
-                    null,
-                    LoginType.GOOGLE
+            if (userDao.getUserById(appConstants.adminProfileId().toString()) == null) {
+                userDao.upsert(
+                    UserEntity(
+                        appConstants.adminProfileId().toString(),
+                        appConstants.adminProfileId().toString(),
+                        null,
+                        null,
+                        "admin",
+                        null,
+                        LoginType.GOOGLE
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -87,7 +89,7 @@ class UserRepository @Inject constructor(
     fun getCurrentLoggedUser(): LiveData<UserEntity> {
         val userId = getLoggedUserId()
         return if (userId != null) {
-            userDao.getUserById(userId)
+            userDao.getUserByIdLive(userId)
         } else {
             AbsentLiveData.create()
         }

@@ -63,7 +63,7 @@ class ExerciseAdapter(callback: ItemSelectionCallback<ExerciseEntity>) :
                 oldItem.id == newItem.id
             },
             areContentTheSame = { oldItem, newItem ->
-                oldItem.title == newItem.title
+                oldItem == newItem
             })
     }
 

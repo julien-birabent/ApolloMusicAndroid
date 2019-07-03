@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import julienbirabent.apollomusic.Utils.StateData
+import julienbirabent.apollomusic.Utils.StateLiveData
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.ExerciseEntity
 import julienbirabent.apollomusic.data.local.entities.UserEntity
@@ -33,7 +35,7 @@ class ObjectiveCreateViewModel @Inject constructor(
 
     //region Exercises
     val exerciseSelected: MutableLiveData<ExerciseEntity> = MutableLiveData()
-    var exerciseList: LiveData<List<ExerciseEntity>> = MutableLiveData()
+    var exerciseListState: StateLiveData<List<ExerciseEntity>> = exercisesRepository.getExercises()
     val exerciseItemCallback: ItemSelectionCallback<ExerciseEntity> = object :
         ItemSelectionCallback<ExerciseEntity> {
         override fun onItemSelected(item: ExerciseEntity) {
@@ -48,15 +50,19 @@ class ObjectiveCreateViewModel @Inject constructor(
 
     //region Criterias variables
     val criteriaSelected: MutableLiveData<CriteriaEntity> = MutableLiveData()
-    private var _criteriaList: LiveData<List<CriteriaEntity>> = Transformations.switchMap(currentUser) {
-        currentUser.value?.id?.let { it1 -> criteriaRepo.getCriteriaList(it1) }
+    private var _criteriaList: LiveData<StateData<List<CriteriaEntity>>> = Transformations.switchMap(currentUser) {
+        currentUser.value?.id?.let { userId ->
+            /*criteriaRepo.getCriteriaList(userId)*/
+            criteriaRepo.getCriteriasLive(userId)
+        }
     }
-    private var criteriaList: LiveData<MutableList<CheckedWrapper<CriteriaEntity>>> = Transformations.map(
+    private var criteriaList: LiveData<StateData<MutableList<CheckedWrapper<CriteriaEntity>>>> = Transformations.map(
         _criteriaList
     ) {
+        val newValue = StateData<MutableList<CheckedWrapper<CriteriaEntity>>>()
         val list = mutableListOf<CheckedWrapper<CriteriaEntity>>()
-        if (it != null) {
-            for (criteria in it) {
+        if (it != null && it.data != null && it.error == null && it.status == StateData.DataStatus.SUCCESS) {
+            for (criteria in it.data!!) {
                 val newCriteriaWrapper = CheckedWrapper(criteria)
                 if (criteria == criteriaSelected.value) {
                     newCriteriaWrapper.checked.set(true)
@@ -65,8 +71,10 @@ class ObjectiveCreateViewModel @Inject constructor(
                 }
                 list.add(newCriteriaWrapper)
             }
+            return@map newValue.success(list)
+        } else {
+            return@map newValue.error(Exception())
         }
-        list
     }
 
     val criteriaCallback: ItemSelectionCallback<CriteriaEntity> = object :
@@ -84,10 +92,6 @@ class ObjectiveCreateViewModel @Inject constructor(
     //endregion
 
     init {
-
-        exerciseList = exercisesRepository.getAllexercises()
-        exercisesRepository.enableUpdatesOnConnectionAvailable(compositeDisposable)
-
         exerciseSelected.postValue(null)
         criteriaSelected.postValue(null)
         canGoToCriteriaSelection.postValue(false)
@@ -97,13 +101,13 @@ class ObjectiveCreateViewModel @Inject constructor(
         }
     }
 
-    fun getCriteriaList(): LiveData<MutableList<CheckedWrapper<CriteriaEntity>>> {
+    fun getCriteriaList(): LiveData<StateData<MutableList<CheckedWrapper<CriteriaEntity>>>> {
         return this.criteriaList
     }
 
     private fun updateCriteriaListStates() {
         criteriaList.value?.let {
-            for (criteria in it) {
+            for (criteria in it.data!!) {
                 criteria.checked.set(criteria.item == criteriaSelected.value)
             }
         }
@@ -129,7 +133,7 @@ class ObjectiveCreateViewModel @Inject constructor(
                     setIsLoading(false)
                 }
                 .doOnError {
-
+                    setIsLoading(false)
                 }
                 .subscribe({
                     Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")

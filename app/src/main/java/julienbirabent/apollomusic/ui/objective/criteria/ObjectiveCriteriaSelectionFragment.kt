@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
+import julienbirabent.apollomusic.Utils.StateData
 import julienbirabent.apollomusic.databinding.FragmentObjectiveCriteriaSelectionBinding
 import julienbirabent.apollomusic.extensions.showInputDialog
 import julienbirabent.apollomusic.ui.adapters.criteria.CriteriaSelectionAdapter
@@ -41,7 +42,10 @@ class ObjectiveCriteriaSelectionFragment :
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getCriteriaList().observe(viewLifecycleOwner, Observer {
-            criteriaAdapter.updateList(it)
+            when (it.status) {
+                StateData.DataStatus.SUCCESS ->
+                    criteriaAdapter.updateList(it.data!!)
+            }
         })
 
         viewDataBinding.addCriteriaButton.setOnClickListener {
