@@ -21,18 +21,22 @@ data class ObjectiveEntity(
 
     @Expose
     @SerializedName("id")
-    @PrimaryKey var id: Int,
+    @PrimaryKey var id: Int? = -1,
 
     @Expose
     @SerializedName("objectif")
-    var objective: String?,
+    var objective: String? = "",
 
     @Expose
     @SerializedName("targetPracticeTime")
-    var targetPracticeTime: Int?,
+    var targetPracticeTime: Int? = 0,
+
+    @Expose
+    @SerializedName("tempoHistory")
+    var tempoHistory: String? = "",
 
     @Expose
     @SerializedName("practiceId")
     @ColumnInfo(name = "practiceId")
-    var practiceId: String?
+    var practiceId: Int? = -1
 )

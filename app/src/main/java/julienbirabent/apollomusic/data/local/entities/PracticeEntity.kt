@@ -23,7 +23,7 @@ data class PracticeEntity(
 
     @Expose
     @SerializedName("id")
-    @PrimaryKey var id: String,
+    @PrimaryKey var id: Int? = -1,
 
     @Expose
     @ColumnInfo(name = "profileId")

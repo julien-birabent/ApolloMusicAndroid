@@ -27,7 +27,7 @@ class ObjectiveExerciseSelectionFragment :
     private lateinit var exerciseAdapter: ExerciseAdapter
 
     override fun goToPracticeCreation() {
-        //Not needed
+        viewModel.manualClear()
     }
 
     override fun goToExerciseSelection() {

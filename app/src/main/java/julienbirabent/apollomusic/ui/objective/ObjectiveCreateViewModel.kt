@@ -101,8 +101,8 @@ class ObjectiveCreateViewModel @Inject constructor(
     private fun init() {
         manualClear()
         canGoToCriteriaSelection.addSource(customObjectiveString) {
-            if (it == null) {
-                canGoToCriteriaSelection.postValue(false)
+            if (it == null || exerciseSelected.value != null) {
+                canGoToCriteriaSelection.postValue(true)
             } else {
                 canGoToCriteriaSelection.postValue(it.isNotEmpty())
             }
@@ -110,12 +110,13 @@ class ObjectiveCreateViewModel @Inject constructor(
         canGoToCriteriaSelection.addSource(exerciseSelected) {
             if (it != null) {
                 exerciseTempo.postValue(it.tempoBase.toString())
+
             }
             canGoToCriteriaSelection.postValue(it != null)
         }
     }
 
-    private fun manualClear() {
+    fun manualClear() {
         exerciseSelected.postValue(null)
         criteriaSelected.postValue(null)
         canGoToCriteriaSelection.postValue(false)
@@ -181,15 +182,15 @@ class ObjectiveCreateViewModel @Inject constructor(
 
     fun createObjective() {
         //Create objective
-        var criteriaSelected = criteriaSelected.value
+        val criteriaSelected = criteriaSelected.value
         val exerciseSelected = exerciseSelected.value.apply { this?.tempoBase = exerciseTempo.value?.toInt() }
+        val objTitle = exerciseSelected?.title ?: customObjectiveString.value
 
-        if (exerciseSelected != null) {
+        objectiveRepository.createObjective(
+            objTitle, practiceTargetTime.value?.toInt(), exerciseTempo.value?.toInt(),
+            exerciseSelected?.copy(), criteriaSelected?.copy()
+        )
 
-        } else if (customObjectiveString.value != null) {
-
-        }
-        // if creation successful go to create practice
         navigator.goToPracticeCreation()
         manualClear()
     }

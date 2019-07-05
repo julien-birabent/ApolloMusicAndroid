@@ -1,6 +1,7 @@
 package julienbirabent.apollomusic.ui.objective
 
 import android.app.Activity
+import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import julienbirabent.apollomusic.BR
@@ -8,12 +9,18 @@ import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.FragmentObjectiveCreateBinding
 import julienbirabent.apollomusic.ui.base.BaseFragment
 import julienbirabent.apollomusic.ui.home.HomeActivity
+import kotlinx.android.synthetic.main.activity_home.*
 
 class ObjectiveCreateFragment : BaseFragment<FragmentObjectiveCreateBinding, ObjectiveCreateViewModel>(),
     ObjectiveCreateNavigator {
 
     override fun goToObjectiveTypeSelection() {
-        //Not needed
+        toolbar.setTitle("")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.manualClear()
     }
 
     override fun onAttach(activity: Activity) {
@@ -29,7 +36,6 @@ class ObjectiveCreateFragment : BaseFragment<FragmentObjectiveCreateBinding, Obj
     }
 
     override fun goToPracticeCreation() {
-        // Not needed
     }
 
     override fun goToCriteriaSelection() {
