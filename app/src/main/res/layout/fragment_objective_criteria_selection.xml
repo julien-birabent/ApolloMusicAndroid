@@ -55,6 +55,7 @@
             style="@style/ColoredButtonBase.FlatBlue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_transparent_24dp"
             android:drawableEnd="@drawable/ic_add_black_24dp"
             android:drawableTint="@color/white_almost"
             android:text="@string/add_a_custom_criteria_to_the_list"
@@ -68,6 +69,7 @@
             style="@style/ColoredButtonBase.FlatGreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_transparent_24dp"
             android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
             android:enabled="@{viewModel.criteriaSelected != null}"
             android:text="@string/done"
@@ -75,6 +77,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:visibility="@{viewModel.isLoading}"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            style="?android:attr/progressBarStyleLarge"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

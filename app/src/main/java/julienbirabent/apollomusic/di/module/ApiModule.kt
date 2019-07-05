@@ -7,9 +7,7 @@ import dagger.Provides
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.network.DataTypeAdapterFactory
 import julienbirabent.apollomusic.data.api.network.livedataconverter.LiveDataCallAdapterFactory
-import julienbirabent.apollomusic.data.api.services.CriteriaAPI
-import julienbirabent.apollomusic.data.api.services.ExampleAPI
-import julienbirabent.apollomusic.data.api.services.UserAPI
+import julienbirabent.apollomusic.data.api.services.*
 import julienbirabent.apollomusic.thread.SchedulerProvider
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -82,5 +80,17 @@ class ApiModule {
     @Singleton
     fun provideCriteriaApi(retrofit: Retrofit): CriteriaAPI {
         return retrofit.create(CriteriaAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideExerciseAPI(retrofit: Retrofit): ExerciseAPI {
+        return retrofit.create(ExerciseAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideObjectiveAPI(retrofit: Retrofit): ObjectiveAPI {
+        return retrofit.create(ObjectiveAPI::class.java)
     }
 }

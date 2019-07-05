@@ -5,6 +5,7 @@ import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 import javax.inject.Singleton
 
@@ -17,4 +18,7 @@ interface CriteriaAPI {
         @Field("criteria") criteria: String?,
         @Field("profileId") profileId: Int?
     ): Single<Response<CriteriaEntity>>
+
+    @GET("/api/criteria")
+    fun getAllCriterias(): Single<Response<List<CriteriaEntity>>>
 }

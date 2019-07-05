@@ -20,7 +20,7 @@ class DebugAppConstants : AppConstants {
         return "shared_prefs_debug"
     }
 
-    override fun adminProfileI(): Int {
+    override fun adminProfileId(): Int {
         return 0
     }
 }

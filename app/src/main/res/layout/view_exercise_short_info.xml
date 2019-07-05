@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <import type="julienbirabent.apollomusic.data.local.entities.ExerciseEntity" />
 
+        <import type="julienbirabent.apollomusic.data.local.Difficulty" />
+
         <variable
-            name="exercise"
+            name="item"
             type="julienbirabent.apollomusic.data.local.entities.ExerciseEntity" />
+
     </data>
 
-    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView
+        style="@style/CardViewBase.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:cardCornerRadius="@dimen/card_corner_radius"
-        app:cardBackgroundColor="@android:color/white">
+        android:animateLayoutChanges="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,11 +27,12 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/exercise_title"
-                style="@style/TextView.Title"
-                android:layout_width="match_parent"
+                style="@style/TextView.ListItem"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@{exercise.title}"
+                android:layout_marginEnd="8dp"
+                android:text="@{item.title}"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +44,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:padding="8dp"
-                android:text="@{exercise.description}"
+                android:textAlignment="center"
+                android:text="@{item.description}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/exercise_title" />
@@ -54,12 +59,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:padding="8dp"
-                android:text="@{exercise.difficulty.difficultyString}"
+                android:text="@{String.format(@string/difficulty,Difficulty.intToString(item.difficulty))}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/exercise_description" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/exercise_creator_name"
+                style="@style/TextView.Subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:text="@{item.profileId}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/exercise_difficulty" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 </layout>

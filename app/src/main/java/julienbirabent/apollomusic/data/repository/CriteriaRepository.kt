@@ -1,8 +1,11 @@
 package julienbirabent.apollomusic.data.repository
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
+import io.reactivex.Observable
 import io.reactivex.Single
+import julienbirabent.apollomusic.Utils.StateLiveData
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.services.CriteriaAPI
 import julienbirabent.apollomusic.data.local.dao.CriteriaDao
@@ -22,51 +25,76 @@ class CriteriaRepository @Inject constructor(
 
     val currentUserLiveData: LiveData<UserEntity> = userRepo.getCurrentLoggedUser()
 
-    fun getCriteriaList(profileId: String): LiveData<List<CriteriaEntity>> {
-        return criteriaDao.getCriteriaByUserLive(profileId.toInt(), adminProfileId = appConstants.adminProfileI())
+    init {
+        compositeDisposable.add(connectionAvailableEmitter()
+            .subscribeOn(scheduler.io())
+            .observeOn(scheduler.ui())
+            .flatMap { getCriteriaFromServer(userRepo.getLoggedUserId().toString()) }
+            .subscribe({
+                storeCriteriaInDb(it)
+                Log.d(
+                    CriteriaRepository::class.simpleName,
+                    "Fetching criteria on connection gained ${it.size}"
+                )
+            }, {
+                Log.e(CriteriaRepository::class.simpleName, "An error happened : " + it.message)
+            })
+        )
     }
 
-    fun persistCriteria(criteria: String) {
-        var criteriaEntity = createCriteria(criteria)
+    fun getCriteriasLive(profileId: String): StateLiveData<List<CriteriaEntity>> {
+        return StateLiveData(
+            scheduler,
+            getCriteriaFromDb(profileId)
+        )
+    }
 
-        if (criteriaEntity != null) {
-            appExecutors.diskIO().execute {
-                criteriaEntity?.let {
-                    val id = criteriaDao.insert(it)
-                    criteriaEntity = criteriaDao.getCriteriaByInternalId(id)
+    private fun filterUserCriteria(userId: String, criteriaList: List<CriteriaEntity>): List<CriteriaEntity> {
+        return criteriaList.filter {
+            it.profileId.toString() == userId || it.profileId == appConstants.adminProfileId()
+        }
+    }
 
-                    criteriaEntity?.let { entity ->
-                        persistCriteriaOnServer(entity).subscribe({ response ->
-                            if (response.isSuccessful && response.body() != null) {
-                                response.body()?.let { body ->
-                                    entity.pendingForSync = false
-                                    entity.serverId = body.serverId
-                                    criteriaDao.update(entity)
-                                }
-                            }
-                        }, { throwable ->
-                            Log.e("CriteriaRepository", throwable.message)
-                        })
-                    }
+    @SuppressLint("CheckResult")
+    fun getCriteriaList(profileId: String): LiveData<List<CriteriaEntity>> {
+        return criteriaDao.getCriteriaListByUserLive(profileId.toInt(), appConstants.adminProfileId())
+    }
+
+    fun saveCriteria(criteria: String): Single<Response<CriteriaEntity>> {
+        return criteriaAPI.postCriteria(criteria, userRepo.getLoggedUserId()?.toInt())
+            .subscribeOn(scheduler.io())
+            .observeOn(scheduler.ui())
+            .doOnSuccess { response ->
+                if (response.isSuccessful) {
+                    response.body()?.let { storeCriteriaInDb(listOf(it)) }
                 }
             }
+            .doOnError {
+                Log.e("Persist criteria call", "An error happened : " + it.message)
+            }
+    }
+
+    private fun getCriteriaFromDb(profileId: String): Observable<List<CriteriaEntity>> {
+        return criteriaDao.getCriteriaByUser(profileId.toInt(), appConstants.adminProfileId())
+            .filter { it.isNotEmpty() }
+            .doOnNext {
+                Log.d(CriteriaRepository::class.simpleName, "Dispatching ${it.size} criteria from DB...")
+            }
+    }
+
+    private fun getCriteriaFromServer(profileId: String): Observable<List<CriteriaEntity>> {
+        return criteriaAPI.getAllCriterias()
+            .map { it.body()!! }
+            .doOnSuccess {
+                Log.d(CriteriaRepository::class.simpleName, "Dispatching ${it.size} criteria from API...")
+                storeCriteriaInDb(filterUserCriteria(profileId, it))
+            }.toObservable()
+    }
+
+    @SuppressLint("CheckResult")
+    private fun storeCriteriaInDb(criterias: List<CriteriaEntity>) {
+        appExecutors.diskIO().execute {
+            criteriaDao.insert(*criterias.toTypedArray())
         }
     }
-
-    private fun persistCriteriaOnServer(entity: CriteriaEntity): Single<Response<CriteriaEntity>> {
-        return criteriaAPI.postCriteria(criteria = entity.criteria, profileId = entity.profileId)
-            .observeOn(scheduler.io())
-    }
-
-    private fun createCriteria(criteria: String): CriteriaEntity? {
-        return currentUserLiveData.value?.let {
-            CriteriaEntity(
-                criteria = criteria,
-                serverId = -1,
-                profileId = it.id.toInt(),
-                pendingForSync = true
-            )
-        }
-    }
-
 }

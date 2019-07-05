@@ -1,17 +1,35 @@
 package julienbirabent.apollomusic.data.repository
 
+import android.content.Context
+import com.github.pwittchen.reactivenetwork.library.rx2.Connectivity
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import julienbirabent.apollomusic.Utils.ConnectionAvailableEmitter
+import julienbirabent.apollomusic.app.ApolloMusicApplication
 import julienbirabent.apollomusic.thread.AppExecutors
 import julienbirabent.apollomusic.thread.SchedulerProvider
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-open class BaseRepository @Inject constructor() {
+open class BaseRepository {
 
     @Inject
-     lateinit var appExecutors: AppExecutors
+    lateinit var appExecutors: AppExecutors
     @Inject
-     lateinit var scheduler: SchedulerProvider
+    lateinit var scheduler: SchedulerProvider
+    @Inject
+    lateinit var context: Context
+    @Inject
+    lateinit var connectionEmitter: ConnectionAvailableEmitter
 
+    val compositeDisposable: CompositeDisposable = CompositeDisposable()
+
+    init {
+        ApolloMusicApplication.applicationComponent()?.inject(repository = this)
+
+    }
+
+    fun connectionAvailableEmitter(): Observable<Connectivity> {
+        return connectionEmitter.connectionAvailableEmitter()
+    }
 }
 

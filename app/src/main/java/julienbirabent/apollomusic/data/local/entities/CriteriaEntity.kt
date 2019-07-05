@@ -1,6 +1,5 @@
 package julienbirabent.apollomusic.data.local.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -20,20 +19,15 @@ import com.google.gson.annotations.SerializedName
 data class CriteriaEntity(
 
     @Expose
+    @PrimaryKey
     @SerializedName("id")
-    var serverId: Int,
+    var id: Int,
 
     @Expose
     @SerializedName("profileId")
-    var profileId: Int,
+    var profileId: Int?,
 
     @Expose
     @SerializedName("criteria")
-    var criteria: String,
-
-    @ColumnInfo(name = "pending")
-    var pendingForSync: Boolean = true
-) {
-    @PrimaryKey(autoGenerate = true)
-    var id: Long? = null
-}
+    var criteria: String
+)

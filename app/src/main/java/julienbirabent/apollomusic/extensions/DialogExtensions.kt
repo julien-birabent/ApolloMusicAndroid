@@ -64,4 +64,13 @@ fun Context.showInputDialog(
         }
     }
 
+    fun Context.showErrorDialog(title: String, message: String){
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton("Ok"
+            ) { dialogInterface, i -> dialogInterface.dismiss() }
+            .show()
+    }
 }

@@ -4,7 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import julienbirabent.apollomusic.data.local.converters.DateConverters
-import julienbirabent.apollomusic.data.local.converters.EnumConverters
+import julienbirabent.apollomusic.data.local.converters.DifficultyConverter
+import julienbirabent.apollomusic.data.local.converters.LoginTypeConverters
 import julienbirabent.apollomusic.data.local.converters.ListConverter
 import julienbirabent.apollomusic.data.local.dao.*
 import julienbirabent.apollomusic.data.local.entities.*
@@ -16,7 +17,7 @@ import java.text.SimpleDateFormat
         ObjectiveExerciseJoin::class, ObjectiveCriteriaJoin::class],
     version = 1
 )
-@TypeConverters(EnumConverters::class, DateConverters::class, ListConverter::class)
+@TypeConverters(LoginTypeConverters::class, DateConverters::class, ListConverter::class, DifficultyConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     companion object {
@@ -28,6 +29,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun practiceDao(): PracticeDao
     abstract fun objectiveDao(): ObjectiveDao
     abstract fun criteriaDao(): CriteriaDao
+    abstract fun exerciseDao(): ExerciseDao
     abstract fun objectiveCriteriaJoinDao(): ObjectiveCriteriaJoinDao
     abstract fun objectiveExerciseJoinDao(): ObjectiveExerciseJoinDao
 }

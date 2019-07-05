@@ -5,9 +5,10 @@ import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.ui.adapters.BaseAdapter
 import julienbirabent.apollomusic.ui.adapters.BaseDiffCallback
 import julienbirabent.apollomusic.ui.adapters.CheckedWrapper
+import julienbirabent.apollomusic.ui.adapters.ItemSelectionCallback
 
-class CriteriaSelectionAdapter(callback: CriteriaSelectionCallback) :
-    BaseAdapter<CheckedWrapper<CriteriaEntity>, CriteriaSelectionCallback>(callback) {
+class CriteriaSelectionAdapter(callback: ItemSelectionCallback<CriteriaEntity>) :
+    BaseAdapter<CheckedWrapper<CriteriaEntity>, ItemSelectionCallback<CriteriaEntity>>(callback) {
 
 
     override fun getLayoutId(position: Int, obj: CheckedWrapper<CriteriaEntity>): Int {

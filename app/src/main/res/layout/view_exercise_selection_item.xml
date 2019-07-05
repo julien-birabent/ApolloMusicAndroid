@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="julienbirabent.apollomusic.data.local.entities.ExerciseEntity" />
+
+        <import type="julienbirabent.apollomusic.data.local.Difficulty" />
+
+        <variable
+            name="item"
+            type="julienbirabent.apollomusic.data.local.entities.ExerciseEntity" />
+
+        <variable
+            name="callback"
+            type="julienbirabent.apollomusic.ui.adapters.ItemSelectionCallback&lt;ExerciseEntity&gt;" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        style="@style/CardViewBase.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/exercise_title"
+                style="@style/TextView.ListItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{item.title}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/expand_button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="8dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:focusable="false"
+                android:clickable="false"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:tint="@color/colorAccent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/exercise_details_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="8dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/exercise_title">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/exercise_description"
+                    style="@style/TextView.Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:text="@{item.description}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- Add Youtube links -->
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/exercise_difficulty"
+                    style="@style/TextView.Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:text="@{String.format(@string/difficulty,Difficulty.intToString(item.difficulty))}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/exercise_description" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/exercise_creator_name"
+                    style="@style/TextView.Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:text="@{item.profileId}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/exercise_difficulty" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

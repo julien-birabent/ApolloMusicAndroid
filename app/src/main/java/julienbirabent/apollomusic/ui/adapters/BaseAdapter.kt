@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseAdapter<Model, Callback>(callback: Callback) :
     RecyclerView.Adapter<DataBindingViewHolder<Model, Callback>>() {
 
-    private var listItems: MutableList<Model>
-    private var callback: Callback? = callback
+    protected var listItems: MutableList<Model>
+    protected var callback: Callback? = callback
 
     init {
         listItems = mutableListOf()
@@ -66,7 +66,7 @@ abstract class BaseAdapter<Model, Callback>(callback: Callback) :
 
     protected abstract fun getLayoutId(position: Int, obj: Model): Int
 
-    protected fun getViewHolder(parent: ViewGroup, viewType: Int): DataBindingViewHolder<Model, Callback> {
+    fun getViewHolder(parent: ViewGroup, viewType: Int): DataBindingViewHolder<Model, Callback> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, viewType, parent, false)
         return DataBindingViewHolder(binding)

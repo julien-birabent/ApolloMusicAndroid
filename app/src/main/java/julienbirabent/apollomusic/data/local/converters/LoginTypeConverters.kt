@@ -5,7 +5,7 @@ import julienbirabent.apollomusic.data.local.Difficulty
 import julienbirabent.apollomusic.ui.login.LoginType
 
 
-class EnumConverters {
+class LoginTypeConverters {
     companion object {
         @JvmStatic
         @TypeConverter
@@ -14,13 +14,5 @@ class EnumConverters {
         @TypeConverter
         @JvmStatic
         fun stringToLoginType(s: String): LoginType = LoginType.valueOf(s)
-
-        @JvmStatic
-        @TypeConverter
-        fun difficultyToInt(difficulty: Difficulty): Int = difficulty.difficulty
-
-        @TypeConverter
-        @JvmStatic
-        fun intToDifficulty(value: Int): Difficulty? = Difficulty.values().find { it.difficulty == value }
     }
 }

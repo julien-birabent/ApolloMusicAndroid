@@ -34,10 +34,23 @@
     <string name="next_step">Next step</string>
     <string name="pick_an_exercise">Pick an exercise you want to practice</string>
     <string name="criteria_selection_toolbar_label">Criteria selection</string>
+    <string name="exercise_selection_toolbar_label">Pick an exercise</string>
     <string name="done">Done</string>
 
     <string name="dialog_add_criteria_title">Add a criteria</string>
     <string name="dialog_add_criteria_message">You can add your own criteria by typing in the text field below.</string>
     <string name="default_input_hint">Type here</string>
+    <string name="confirm">Confirm</string>
 
+    <string name="difficulty">Difficulty : %1$s</string>
+
+    <string name="dialog_error_no_internet_title">No Internet Connection</string>
+    <string name="dialog_error_no_internet_message">You do not seems to have a proper access to internet. This can cause some data related drawbacks like having the data not up to date or not being able to upload.</string>
+
+    <string name="network_error_could_not_fetch_last_exercises">No internet connection. Exercises list might not be up to date.</string>
+    <string name="default_tempo_header">Select the default tempo for this exercise</string>
+    <string name="how_long_practice_exercise">How long you would like to practice this exercise ?</string>
+
+    <string name="minute">\u0020 min.</string>
+    <string name="bpm">\u0020 bpm.</string>
 </resources>

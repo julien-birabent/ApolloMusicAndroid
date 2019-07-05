@@ -72,4 +72,10 @@ class DatabaseModule {
     fun provideExampleDao(appDatabase: AppDatabase): ExampleDao {
         return appDatabase.exampleDao()
     }
+
+    @Singleton
+    @Provides
+    fun provideExerciseDao(appDatabase: AppDatabase): ExerciseDao {
+        return appDatabase.exerciseDao()
+    }
 }
