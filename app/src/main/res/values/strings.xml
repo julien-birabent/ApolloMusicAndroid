@@ -50,4 +50,7 @@
     <string name="network_error_could_not_fetch_last_exercises">No internet connection. Exercises list might not be up to date.</string>
     <string name="default_tempo_header">Select the default tempo for this exercise</string>
     <string name="how_long_practice_exercise">How long you would like to practice this exercise ?</string>
+
+    <string name="minute">\u0020 min.</string>
+    <string name="bpm">\u0020 bpm.</string>
 </resources>

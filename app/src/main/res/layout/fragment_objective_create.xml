@@ -52,13 +52,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_exercise_short_info">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="number"
-                android:lines="1"
-                android:padding="8dp"
-                android:text="@={viewModel.exerciseTempo}" />
+                <julienbirabent.apollomusic.view.EditTextWithSuffix
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:padding="8dp"
+                    android:text="@={viewModel.exerciseTempo}"
+                    app:suffix="@string/bpm"
+                    app:suffixPadding="8dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -75,18 +77,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tempo_input">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <julienbirabent.apollomusic.view.EditTextWithSuffix
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
                     android:lines="1"
                     android:padding="8dp"
-                    android:text="@={viewModel.practiceTargetTime}" />
+                    android:text="@={viewModel.practiceTargetTime}"
+                    app:suffix="@string/minute"
+                    app:suffixPadding="8dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
         <LinearLayout

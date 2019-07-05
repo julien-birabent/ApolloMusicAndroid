@@ -12,6 +12,7 @@ import julienbirabent.apollomusic.data.local.entities.ExerciseEntity
 import julienbirabent.apollomusic.data.local.entities.UserEntity
 import julienbirabent.apollomusic.data.repository.CriteriaRepository
 import julienbirabent.apollomusic.data.repository.ExercisesRepository
+import julienbirabent.apollomusic.data.repository.ObjectiveRepository
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.ui.adapters.CheckedWrapper
 import julienbirabent.apollomusic.ui.adapters.ItemSelectionCallback
@@ -24,6 +25,7 @@ import javax.inject.Singleton
 class ObjectiveCreateViewModel @Inject constructor(
     private val criteriaRepo: CriteriaRepository,
     private val exercisesRepository: ExercisesRepository,
+    private val objectiveRepository: ObjectiveRepository,
     private val scheduler: AppSchedulerProvider
 ) :
     BaseViewModel<ObjectiveCreateNavigator>() {
