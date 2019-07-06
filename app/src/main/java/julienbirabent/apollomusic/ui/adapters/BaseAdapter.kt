@@ -23,6 +23,7 @@ abstract class BaseAdapter<Model, Callback>(callback: Callback) :
         notifyDataSetChanged()
     }
 
+    fun isEmpty(): Boolean = listItems.isEmpty()
     /**
      * Child classes can override this method to implement their own logic for the diffcallback
      * They can also return null if they don<t need it
