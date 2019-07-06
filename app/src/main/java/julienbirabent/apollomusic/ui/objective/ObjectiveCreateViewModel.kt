@@ -148,15 +148,6 @@ class ObjectiveCreateViewModel @Inject constructor(
             criteriaRepo.saveCriteria(criteriaString)
                 .subscribeOn(scheduler.io())
                 .observeOn(scheduler.ui())
-                .doOnSubscribe {
-                    setIsLoading(true)
-                }
-                .doOnTerminate {
-                    setIsLoading(false)
-                }
-                .doOnError {
-                    setIsLoading(false)
-                }
                 .subscribe({
                     Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")
                 }, {

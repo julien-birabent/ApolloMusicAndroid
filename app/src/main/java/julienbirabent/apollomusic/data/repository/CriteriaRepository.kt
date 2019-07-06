@@ -11,6 +11,7 @@ import julienbirabent.apollomusic.data.api.services.CriteriaAPI
 import julienbirabent.apollomusic.data.local.dao.CriteriaDao
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.UserEntity
+import julienbirabent.apollomusic.extensions.dbExec
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -93,8 +94,6 @@ class CriteriaRepository @Inject constructor(
 
     @SuppressLint("CheckResult")
     private fun storeCriteriaInDb(criterias: List<CriteriaEntity>) {
-        appExecutors.diskIO().execute {
-            criteriaDao.insert(*criterias.toTypedArray())
-        }
+        dbExec { criteriaDao.insert(*criterias.toTypedArray()) }
     }
 }

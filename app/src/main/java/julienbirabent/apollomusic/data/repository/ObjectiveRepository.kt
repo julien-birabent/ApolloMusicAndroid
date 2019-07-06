@@ -1,11 +1,16 @@
 package julienbirabent.apollomusic.data.repository
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import julienbirabent.apollomusic.data.api.services.ObjectiveAPI
 import julienbirabent.apollomusic.data.local.dao.ObjectiveDao
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.ExerciseEntity
 import julienbirabent.apollomusic.data.local.entities.ObjectiveEntity
+import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
+import julienbirabent.apollomusic.extensions.add
+import julienbirabent.apollomusic.extensions.clear
+import julienbirabent.apollomusic.extensions.remove
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,25 +21,29 @@ class ObjectiveRepository @Inject constructor(
 ) : BaseRepository() {
 
     companion object {
-        private val pendingObjectives: MutableMap<ObjectiveEntity, Pair<CriteriaEntity?, ExerciseEntity?>> =
-            mutableMapOf()
+        private val pendingObjectives: MutableLiveData<List<ObjectiveBundle>> = MutableLiveData()
 
-        fun addPendingObj(obj: ObjectiveEntity, associatedEntities: Pair<CriteriaEntity?, ExerciseEntity?>) {
-            pendingObjectives[obj] = associatedEntities
-            Log.d("ObjectiveRepository", "add pending obj : $obj")
+        init {
+            pendingObjectives.value = mutableListOf()
         }
 
-        fun removePendingObj(obj: ObjectiveEntity) {
+        fun addPendingObj(objbundle: ObjectiveBundle) {
+            pendingObjectives.add(objbundle)
+            Log.d("ObjectiveRepository", "add pending obj : $objbundle")
+        }
+
+        fun removePendingObj(obj: ObjectiveBundle) {
             pendingObjectives.remove(obj)
+            Log.d("ObjectiveRepository", "remove pending obj : $obj")
         }
 
         fun resetPendingObj() {
             pendingObjectives.clear()
-            Log.d("ObjectiveRepository", "clear   (${pendingObjectives.size}) pending objs")
+            Log.d("ObjectiveRepository", "clear   (${pendingObjectives.value?.size}) pending objs")
         }
 
-        fun getPendingObjList(): MutableList<ObjectiveEntity> {
-            return pendingObjectives.keys.toMutableList()
+        fun getPendingObjList(): MutableLiveData<List<ObjectiveBundle>> {
+            return pendingObjectives
         }
     }
 
@@ -49,15 +58,19 @@ class ObjectiveRepository @Inject constructor(
         exerciseEntity: ExerciseEntity? = null,
         criteriaEntity: CriteriaEntity? = null
     ) {
-        var objectiveToCreate = ObjectiveEntity().apply {
+        val objectiveToCreate = ObjectiveEntity().apply {
             objective = objectiveTitle
-            tempoHistory = targetTempo.toString()
+            tempoBase = targetTempo
             targetPracticeTime = practiceTime
         }
-        addPendingObj(objectiveToCreate, Pair(criteriaEntity, exerciseEntity))
+        addPendingObj(ObjectiveBundle(objectiveToCreate, exerciseEntity, criteriaEntity))
     }
 
-    fun getPracticeCreationObjList(): MutableList<ObjectiveEntity> {
-        return getPendingObjList()
+    fun getPracticeCreationObjList(): MutableLiveData<List<ObjectiveBundle>> {
+        return pendingObjectives
+    }
+
+    fun deletePendingObj(obj: ObjectiveBundle) {
+        removePendingObj(obj)
     }
 }

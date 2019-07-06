@@ -36,6 +36,10 @@ data class ObjectiveEntity(
     var tempoHistory: String? = "",
 
     @Expose
+    @SerializedName("tempoBase")
+    var tempoBase: Int? = 0,
+
+    @Expose
     @SerializedName("practiceId")
     @ColumnInfo(name = "practiceId")
     var practiceId: Int? = -1

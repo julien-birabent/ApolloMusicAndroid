@@ -16,9 +16,11 @@ import androidx.navigation.fragment.findNavController
 import com.squareup.timessquare.CalendarPickerView
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
+import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
 import julienbirabent.apollomusic.databinding.FragmentPracticeCreateBinding
 import julienbirabent.apollomusic.databinding.ViewCalendarBinding
 import julienbirabent.apollomusic.ui.adapters.DateAdapter
+import julienbirabent.apollomusic.ui.adapters.objective.ObjectiveAdapter
 import julienbirabent.apollomusic.ui.base.BaseFragment
 import julienbirabent.apollomusic.ui.home.HomeActivity
 import java.util.*
@@ -27,7 +29,9 @@ import javax.inject.Inject
 
 class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, PracticeCreateViewModel>(),
     PracticeCreateNavigator {
+
     private lateinit var dateAdapter: DateAdapter
+    private lateinit var objAdapter: ObjectiveAdapter
 
     @Inject
     lateinit var calendar: Calendar
@@ -125,6 +129,10 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
             dateAdapter.updateList(it)
         })
 
+        viewModel.objList.observe(viewLifecycleOwner, Observer {
+            objAdapter.updateList(it)
+        })
+
         viewDataBinding.addObjectiveButton.setOnClickListener {
             viewModel.goToCreateObjectivePage()
         }
@@ -147,6 +155,8 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         super.setBindingVariables(binding)
         dateAdapter = DateAdapter(viewModel.dateActionItemCallback)
         binding.setVariable(BR.dateAdapter, dateAdapter)
+        objAdapter = ObjectiveAdapter(viewModel.objActionCallback)
+        binding.setVariable(BR.objAdapter, objAdapter)
     }
 
     override fun getBindingVariable(): Int {
