@@ -11,7 +11,6 @@ import julienbirabent.apollomusic.data.api.services.CriteriaAPI
 import julienbirabent.apollomusic.data.local.dao.CriteriaDao
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.UserEntity
-import julienbirabent.apollomusic.extensions.dbExec
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -64,7 +63,7 @@ class CriteriaRepository @Inject constructor(
     fun saveCriteria(criteria: String): Single<Response<CriteriaEntity>> {
         return criteriaAPI.postCriteria(criteria, userRepo.getLoggedUserId()?.toInt())
             .subscribeOn(scheduler.io())
-            .observeOn(scheduler.ui())
+            .observeOn(scheduler.io())
             .doOnSuccess { response ->
                 if (response.isSuccessful) {
                     response.body()?.let { storeCriteriaInDb(listOf(it)) }
@@ -94,6 +93,12 @@ class CriteriaRepository @Inject constructor(
 
     @SuppressLint("CheckResult")
     private fun storeCriteriaInDb(criterias: List<CriteriaEntity>) {
-        dbExec { criteriaDao.insert(*criterias.toTypedArray()) }
+        //dbExec { criteriaDao.insert(*criterias.toTypedArray()) }
+        Observable.fromCallable { criteriaDao.insert(*criterias.toTypedArray()) }
+            .subscribeOn(scheduler.computation())
+            .observeOn(scheduler.io())
+            .subscribe {
+                Log.d(CriteriaRepository::class.simpleName, "Inserting ${criterias.size} criteria in DB...")
+            }
     }
 }

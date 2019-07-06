@@ -41,10 +41,6 @@ class ObjectiveRepository @Inject constructor(
             pendingObjectives.clear()
             Log.d("ObjectiveRepository", "clear   (${pendingObjectives.value?.size}) pending objs")
         }
-
-        fun getPendingObjList(): MutableLiveData<List<ObjectiveBundle>> {
-            return pendingObjectives
-        }
     }
 
     init {

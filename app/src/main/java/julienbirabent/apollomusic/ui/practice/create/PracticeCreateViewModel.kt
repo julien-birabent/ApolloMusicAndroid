@@ -21,7 +21,7 @@ class PracticeCreateViewModel @Inject constructor(private val objRepo: Objective
     private var practiceDates = MutableLiveData<MutableList<Date>>()
     val datesEmpty: LiveData<Boolean> = Transformations.map(practiceDates) { it.size > 0 }
     val objList: MutableLiveData<List<ObjectiveBundle>> = objRepo.getPracticeCreationObjList()
-    val objEmpty: LiveData<Boolean> = Transformations.map(objList) { it.size > 0 }
+    val objEmpty: LiveData<Boolean> = Transformations.map(objList) { it.isNotEmpty() }
 
     val dateActionItemCallback: ActionItem<Date> = object :
         ActionItem<Date> {
@@ -42,6 +42,10 @@ class PracticeCreateViewModel @Inject constructor(private val objRepo: Objective
         override fun deleteItem(item: ObjectiveBundle) {
             objRepo.deletePendingObj(item)
         }
+    }
+
+    init {
+        practiceDates.value = mutableListOf()
     }
 
     fun openMultiSelectionCalendar() {
@@ -66,7 +70,6 @@ class PracticeCreateViewModel @Inject constructor(private val objRepo: Objective
      * For testing purpose
      */
     fun getPracticesDates(): MutableLiveData<MutableList<Date>> {
-        practiceDates.value = mutableListOf()
         return practiceDates
     }
 
