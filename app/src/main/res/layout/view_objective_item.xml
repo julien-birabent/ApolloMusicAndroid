@@ -29,14 +29,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:padding="4dp"
-        app:cardBackgroundColor="@color/white_purpleish">
+        android:padding="4dp">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/white"
+            android:background="@color/white_purpleish"
             android:padding="4dp">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -46,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="@{item.obj.objective}"
-                app:layout_constraintEnd_toEndOf="@id/delete_button"
+                app:layout_constraintEnd_toStartOf="@+id/delete_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,7 +53,7 @@
                 android:id="@+id/expand_button"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:background="@android:color/transparent"
                 android:clickable="false"
                 android:focusable="false"
@@ -68,7 +67,7 @@
                 android:id="@+id/delete_button"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:background="@android:color/transparent"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:onClick="@{ () -> callback.deleteItem(item)}"
@@ -84,7 +83,7 @@
                 android:id="@+id/objective_details_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
+                android:background="@android:color/transparent"
                 android:padding="8dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"

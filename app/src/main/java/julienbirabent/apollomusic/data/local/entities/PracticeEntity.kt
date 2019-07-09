@@ -27,16 +27,15 @@ data class PracticeEntity(
 
     @Expose
     @ColumnInfo(name = "profileId")
-    var profileId: String,
+    var profileId: String? = "-1",
 
     @Expose
     @SerializedName("userNotes")
-    var userNotes: String?,
+    var userNotes: String? = "",
 
     @Expose
     @SerializedName("datePractice")
-    var date: Date?,
-
-    @ColumnInfo(name = "pending")
-    var pendingForSync: Boolean
-)
+    var date: Date? = null
+) {
+    constructor(profileId: String?, userNotes: String?, date: Date?) : this(-1, profileId, userNotes, date)
+}
