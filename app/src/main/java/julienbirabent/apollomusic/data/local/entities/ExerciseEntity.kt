@@ -8,14 +8,14 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Entity(
-    tableName = "exercise",
+    tableName = "exercise"/*,
     foreignKeys = [ForeignKey(
         entity = UserEntity::class,
         parentColumns = ["id"],
         childColumns = ["profileId"],
         onDelete = ForeignKey.CASCADE,
         onUpdate = ForeignKey.CASCADE
-    )]
+    )]*/
 )
 data class ExerciseEntity(
 

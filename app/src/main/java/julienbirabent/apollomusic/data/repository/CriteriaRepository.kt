@@ -31,7 +31,7 @@ class CriteriaRepository @Inject constructor(
             .observeOn(scheduler.ui())
             .flatMap { getCriteriaFromServer(userRepo.getLoggedUserId().toString()) }
             .subscribe({
-                storeCriteriaInDb(it)
+                storeCriteriaInDb(filterUserCriteria(userRepo.getLoggedUserId().toString(), it))
                 Log.d(
                     CriteriaRepository::class.simpleName,
                     "Fetching criteria on connection gained ${it.size}"
