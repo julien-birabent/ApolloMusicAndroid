@@ -93,9 +93,8 @@ class CriteriaRepository @Inject constructor(
 
     @SuppressLint("CheckResult")
     private fun storeCriteriaInDb(criterias: List<CriteriaEntity>) {
-        //dbExec { criteriaDao.insert(*criterias.toTypedArray()) }
         Observable.fromCallable { criteriaDao.insert(*criterias.toTypedArray()) }
-            .subscribeOn(scheduler.computation())
+            .subscribeOn(scheduler.io())
             .observeOn(scheduler.io())
             .subscribe {
                 Log.d(CriteriaRepository::class.simpleName, "Inserting ${criterias.size} criteria in DB...")

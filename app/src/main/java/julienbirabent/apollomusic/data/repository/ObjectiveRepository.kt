@@ -21,25 +21,29 @@ class ObjectiveRepository @Inject constructor(
 ) : BaseRepository() {
 
     companion object {
-        private val pendingObjectives: MutableLiveData<List<ObjectiveBundle>> = MutableLiveData()
+        private val pendingObjectivesLive: MutableLiveData<List<ObjectiveBundle>> = MutableLiveData()
+        private val pendingObjList: MutableList<ObjectiveBundle> = mutableListOf()
 
         init {
-            pendingObjectives.value = mutableListOf()
+            pendingObjectivesLive.value = mutableListOf()
         }
 
         fun addPendingObj(objbundle: ObjectiveBundle) {
-            pendingObjectives.add(objbundle)
+            pendingObjectivesLive.add(objbundle)
+            pendingObjList.add(objbundle)
             Log.d("ObjectiveRepository", "add pending obj : $objbundle")
         }
 
         fun removePendingObj(obj: ObjectiveBundle) {
-            pendingObjectives.remove(obj)
+            pendingObjectivesLive.remove(obj)
+            pendingObjList.remove(obj)
             Log.d("ObjectiveRepository", "remove pending obj : $obj")
         }
 
         fun resetPendingObj() {
-            pendingObjectives.clear()
-            Log.d("ObjectiveRepository", "clear   (${pendingObjectives.value?.size}) pending objs")
+            pendingObjectivesLive.clear()
+            pendingObjList.clear()
+            Log.d("ObjectiveRepository", "clear   (${pendingObjectivesLive.value?.size}) pending objs")
         }
     }
 
@@ -62,9 +66,11 @@ class ObjectiveRepository @Inject constructor(
         addPendingObj(ObjectiveBundle(objectiveToCreate, exerciseEntity, criteriaEntity))
     }
 
-    fun getPracticeCreationObjList(): MutableLiveData<List<ObjectiveBundle>> {
-        return pendingObjectives
+    fun getPracticeCreationObjListLive(): MutableLiveData<List<ObjectiveBundle>> {
+        return pendingObjectivesLive
     }
+
+    fun getPracticeCreationObjectiveList(): List<ObjectiveBundle> = pendingObjList
 
     fun deletePendingObj(obj: ObjectiveBundle) {
         removePendingObj(obj)

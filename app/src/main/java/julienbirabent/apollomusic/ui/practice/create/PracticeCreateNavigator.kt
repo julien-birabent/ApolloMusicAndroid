@@ -10,4 +10,6 @@ interface PracticeCreateNavigator: UINavigator{
     fun goToSimpleSelectionCalendar(date : Date)
 
     fun goToCreateObjectivePage()
+
+    fun returnToPracticeList()
 }

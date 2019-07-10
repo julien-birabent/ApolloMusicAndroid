@@ -22,7 +22,7 @@ data class UserEntity(
     @Embedded
     @Expose
     @SerializedName("token")
-    var token : Token?,
+    var token: Token?,
 
     @Expose
     @ColumnInfo var email: String?,

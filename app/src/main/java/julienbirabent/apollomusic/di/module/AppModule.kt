@@ -24,7 +24,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideDateFormatter(): SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+    fun provideDateFormatter(): SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
 
     @Singleton
     @Provides

@@ -5,8 +5,10 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -16,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import com.squareup.timessquare.CalendarPickerView
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
-import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
 import julienbirabent.apollomusic.databinding.FragmentPracticeCreateBinding
 import julienbirabent.apollomusic.databinding.ViewCalendarBinding
 import julienbirabent.apollomusic.ui.adapters.DateAdapter
@@ -29,10 +30,9 @@ import javax.inject.Inject
 
 class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, PracticeCreateViewModel>(),
     PracticeCreateNavigator {
-
     private lateinit var dateAdapter: DateAdapter
-    private lateinit var objAdapter: ObjectiveAdapter
 
+    private lateinit var objAdapter: ObjectiveAdapter
     @Inject
     lateinit var calendar: Calendar
 
@@ -110,6 +110,11 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         datePickerDialog.show()
     }
 
+    override fun returnToPracticeList() {
+        activity?.supportFragmentManager?.popBackStack()
+        Toast.makeText(baseActivity, "Practice successfuly added.", Toast.LENGTH_LONG).show()
+    }
+
     override fun onDetach() {
         super.onDetach()
         if (activity is HomeActivity) {
@@ -141,6 +146,14 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.create_practice_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.save_practice -> viewModel.createPractice()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun goToSimpleSelectionCalendar(date: Date) {

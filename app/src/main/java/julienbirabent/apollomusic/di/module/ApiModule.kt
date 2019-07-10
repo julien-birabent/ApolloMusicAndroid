@@ -93,4 +93,10 @@ class ApiModule {
     fun provideObjectiveAPI(retrofit: Retrofit): ObjectiveAPI {
         return retrofit.create(ObjectiveAPI::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun providePracticeAPI(retrofit: Retrofit): PracticeAPI {
+        return retrofit.create(PracticeAPI::class.java)
+    }
 }

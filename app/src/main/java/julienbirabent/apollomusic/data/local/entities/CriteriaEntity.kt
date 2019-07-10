@@ -24,7 +24,7 @@ data class CriteriaEntity(
 
     @Expose
     @SerializedName("profileId")
-    var profileId: Int? = null,
+    var profileId: Int,
 
     @Expose
     @SerializedName("criteria")
