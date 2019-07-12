@@ -40,6 +40,11 @@ class PracticeRepository @Inject constructor(
 ) : BaseRepository() {
 
 
+    /*
+    * Cette méthode est totalement à refaire car elle n'est pas implémenter selon les guidelines de Rx.
+    * On a des callbacks imbriquées ce qui est peu pratique et ilisible. Faire la job pour le moment mais si je jdevais
+    * refactor le code, c'est ici que je commencerais.
+    * */
     @SuppressLint("CheckResult")
     fun createPractices(
         dates: List<Date>,
@@ -110,7 +115,6 @@ class PracticeRepository @Inject constructor(
                                 }
                             ).observeOn(scheduler.ui()).subscribeOn(scheduler.io())
                                 .observeOn(scheduler.ui()).subscribeOn(scheduler.io()).subscribe({
-                                    Log.d("create practice", "")
                                 }, {
                                     results.set(i, false)
                                 })
@@ -118,9 +122,9 @@ class PracticeRepository @Inject constructor(
                     }.doOnError {
                         results.set(i, false)
                     }
-                }.doOnError {
+                }.subscribe({}, {
                     results.set(i, false)
-                }.subscribe()
+                })
         }
         return results
     }

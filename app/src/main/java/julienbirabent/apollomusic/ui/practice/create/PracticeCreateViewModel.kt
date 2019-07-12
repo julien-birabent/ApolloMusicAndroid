@@ -52,6 +52,14 @@ class PracticeCreateViewModel @Inject constructor(
         practiceDates.value = mutableListOf()
     }
 
+    private fun isPracticeCreationPossible(): Boolean {
+        return if (objEmpty.value == null || datesEmpty.value == null) {
+            false
+        } else {
+            objEmpty.value!! && datesEmpty.value!!
+        }
+    }
+
     fun manualClear() {
         practiceDates.value = mutableListOf()
         practiceNotes.value = ""
@@ -95,21 +103,26 @@ class PracticeCreateViewModel @Inject constructor(
     }
 
     fun createPractice() {
-        practiceDates.value?.let {
-            val createPracticeLiveData = practiceRepository.createPractices(
-                it,
-                objRepo.getPracticeCreationObjectiveList(),
-                practiceNotes.value
-            )
-            practiceCreatedValidated = Transformations.map(createPracticeLiveData) {
-                !it.contains(false)
-            } as MutableLiveData<Boolean>
-            practiceCreatedValidated.observeForever { practiceSuccessfulyCreated ->
-                if (practiceSuccessfulyCreated) {
-                    manualClear()
-                    navigator.returnToPracticeList()
+        if (isPracticeCreationPossible()) {
+            practiceDates.value?.let {
+                val createPracticeLiveData = practiceRepository.createPractices(
+                    it,
+                    objRepo.getPracticeCreationObjectiveList(),
+                    practiceNotes.value
+                )
+                practiceCreatedValidated = Transformations.map(createPracticeLiveData) {
+                    !it.contains(false)
+                } as MutableLiveData<Boolean>
+                practiceCreatedValidated.observeForever { practiceSuccessfulyCreated ->
+                    if (practiceSuccessfulyCreated) {
+                        practiceCreatedValidated.removeObserver { }
+                        manualClear()
+                        navigator.returnToPracticeList()
+                    } 
                 }
             }
+        } else {
+            navigator.practiceContentMissingError()
         }
     }
 }

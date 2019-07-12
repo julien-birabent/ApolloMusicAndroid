@@ -12,4 +12,8 @@ interface PracticeCreateNavigator: UINavigator{
     fun goToCreateObjectivePage()
 
     fun returnToPracticeList()
+
+    fun createPracticeError()
+
+    fun practiceContentMissingError()
 }

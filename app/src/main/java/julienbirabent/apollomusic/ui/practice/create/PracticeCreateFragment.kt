@@ -30,6 +30,7 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
     private lateinit var dateAdapter: DateAdapter
 
     private lateinit var objAdapter: ObjectiveAdapter
+
     @Inject
     lateinit var calendar: Calendar
 
@@ -159,11 +160,11 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.create_practice_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
@@ -200,5 +201,16 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
 
     override fun getViewModel(): PracticeCreateViewModel {
         return ViewModelProviders.of(this, viewModelFactory).get(PracticeCreateViewModel::class.java)
+    }
+
+    override fun createPracticeError() {
+        Toast.makeText(baseActivity, "An error occured. Practice has not been created.", Toast.LENGTH_LONG).show()
+    }
+
+    override fun practiceContentMissingError() {
+        baseActivity.showErrorDialog(
+            "Cannot create practice",
+            "In order to create a practice, you must have at least one date and one objective defined."
+        )
     }
 }
