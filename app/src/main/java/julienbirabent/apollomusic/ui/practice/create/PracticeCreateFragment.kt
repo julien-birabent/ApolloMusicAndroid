@@ -3,10 +3,7 @@ package julienbirabent.apollomusic.ui.practice.create
 import android.app.Activity
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -41,6 +38,33 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         if (activity is HomeActivity) {
             activity.hideBottomNavigation(true)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.getPracticesDates().observe(viewLifecycleOwner, Observer {
+            dateAdapter.updateList(it)
+        })
+
+        viewModel.objList.observe(viewLifecycleOwner, Observer {
+            objAdapter.updateList(it)
+        })
+
+        view?.let {
+            it.setFocusableInTouchMode(true)
+            it.requestFocus()
+            it.setOnKeyListener { view, keyCode, keyEvent ->
+                if (keyEvent.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    // No choice but to clear manually the viewModel from the fragment because viewModel needs to be a singleton
+                    // but we also need to refresh the vm's data when the user return to the home activity
+                    viewModel.manualClear()
+                }
+                false
+            }
+        }
+
+
     }
 
     private fun showSingleSelectionCalendar(date: Date) {
@@ -130,18 +154,11 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        viewModel.getPracticesDates().observe(viewLifecycleOwner, Observer {
-            dateAdapter.updateList(it)
-        })
-
-        viewModel.objList.observe(viewLifecycleOwner, Observer {
-            objAdapter.updateList(it)
-        })
-
         viewDataBinding.addObjectiveButton.setOnClickListener {
             viewModel.goToCreateObjectivePage()
         }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.create_practice_menu, menu)
@@ -151,6 +168,7 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.save_practice -> viewModel.createPractice()
+            else -> viewModel.manualClear()
         }
 
         return super.onOptionsItemSelected(item)

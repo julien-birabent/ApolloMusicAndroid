@@ -51,6 +51,10 @@ class ObjectiveRepository @Inject constructor(
         resetPendingObj()
     }
 
+    fun resetObjCache(){
+        resetPendingObj()
+    }
+
     fun createObjective(
         objectiveTitle: String?,
         practiceTime: Int?,

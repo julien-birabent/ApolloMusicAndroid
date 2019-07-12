@@ -12,7 +12,6 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
 class PracticeCreateViewModel @Inject constructor(
     private val objRepo: ObjectiveRepository,
@@ -21,7 +20,7 @@ class PracticeCreateViewModel @Inject constructor(
     BaseViewModel<PracticeCreateNavigator>() {
 
     val practiceNotes = MutableLiveData<String>()
-    lateinit var practiceCreatedValidated: LiveData<Boolean>
+    var practiceCreatedValidated: MutableLiveData<Boolean> = MutableLiveData()
 
     private var practiceDates = MutableLiveData<MutableList<Date>>()
     val datesEmpty: LiveData<Boolean> = Transformations.map(practiceDates) { it.size > 0 }
@@ -51,6 +50,13 @@ class PracticeCreateViewModel @Inject constructor(
 
     init {
         practiceDates.value = mutableListOf()
+    }
+
+    fun manualClear() {
+        practiceDates.value = mutableListOf()
+        practiceNotes.value = ""
+        practiceCreatedValidated.value = false
+        objRepo.resetObjCache()
     }
 
     fun openMultiSelectionCalendar() {
@@ -97,9 +103,12 @@ class PracticeCreateViewModel @Inject constructor(
             )
             practiceCreatedValidated = Transformations.map(createPracticeLiveData) {
                 !it.contains(false)
-            }
+            } as MutableLiveData<Boolean>
             practiceCreatedValidated.observeForever { practiceSuccessfulyCreated ->
-                if (practiceSuccessfulyCreated) navigator.returnToPracticeList()
+                if (practiceSuccessfulyCreated) {
+                    manualClear()
+                    navigator.returnToPracticeList()
+                }
             }
         }
     }

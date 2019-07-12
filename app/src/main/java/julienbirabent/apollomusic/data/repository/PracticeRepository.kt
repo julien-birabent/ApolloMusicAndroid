@@ -101,8 +101,8 @@ class PracticeRepository @Inject constructor(
                                 BiFunction<Response<ObjectiveCriteriaJoin>, Response<ObjectiveExerciseJoin>, Unit> { objCriteriaJoin: Response<ObjectiveCriteriaJoin>, objExerciseJoin: Response<ObjectiveExerciseJoin> ->
                                     Log.d("create practice", "zip join call")
                                     dbExec {
-                                        objectiveCriteriaJoinDao.insert(objCriteriaJoin.body()!!)
-                                        objectiveExerciseJoinDao.insert(objExerciseJoin.body()!!)
+                                        objCriteriaJoin.body()?.let { it -> objectiveCriteriaJoinDao.insert(it) }
+                                        objExerciseJoin.body()?.let { it -> objectiveExerciseJoinDao.insert(it) }
                                         Log.d("create practice", "inserting ObjectiveCriteriaJoin : $objCriteriaJoin")
                                         Log.d("create practice", "inserting ObjectiveExerciseJoin : $objExerciseJoin")
                                         results.set(i, true)
