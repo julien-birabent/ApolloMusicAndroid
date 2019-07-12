@@ -2,10 +2,12 @@ package julienbirabent.apollomusic.ui.practice.list
 
 import android.os.Bundle
 import android.view.View
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
+import julienbirabent.apollomusic.data.local.entities.Tablature
 import julienbirabent.apollomusic.databinding.FragmentPracticeListBinding
 import julienbirabent.apollomusic.ui.base.BaseFragment
 
@@ -18,6 +20,20 @@ class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeL
             findNavController().navigate(R.id.action_actionHome_to_practiceCreateFragment)
         }
 
+    }
+
+    override fun setBindingVariables(binding: ViewDataBinding) {
+        super.setBindingVariables(binding)
+        val tab = Tablature(
+            "---------------------------------------------------------------------------------------"
+            ,
+            "---------------------------------------------------------------------------------------",
+            "---------------------------------------------------------------------------------------",
+            "---------------------------------------------------------------------------------------",
+            "---------------------------------------------------------------------------------------",
+            "---------------------------------------------------------------------------------------"
+        )
+        binding.setVariable(BR.tablature, tab)
     }
 
     override fun getBindingVariable(): Int {
