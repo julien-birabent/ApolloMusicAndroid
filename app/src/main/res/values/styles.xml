@@ -11,6 +11,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:editTextColor">@color/text_header_1</item>
+        <item name="android:textViewStyle">@style/TextView</item>
+        <item name="android:scrollbarThumbHorizontal">@color/white_purpleish</item>
     </style>
 
     <style name="AppTheme.Launcher">
