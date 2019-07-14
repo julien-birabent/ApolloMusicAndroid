@@ -59,4 +59,5 @@
     <string name="minute">\u0020 min.</string>
     <string name="bpm">\u0020 bpm.</string>
     <string name="no_objectives_has_been_added_for_this_practice_yet">No objectives has been added for this practice yet.</string>
+    <string name="let_s_practice">Let\'s practice !</string>
 </resources>
