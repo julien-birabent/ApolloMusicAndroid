@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
+import julienbirabent.apollomusic.Utils.DefaultLiveData
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.services.ObjectiveAPI
 import julienbirabent.apollomusic.data.api.services.PracticeAPI
@@ -127,5 +128,14 @@ class PracticeRepository @Inject constructor(
                 })
         }
         return results
+    }
+
+    fun getPracticeList(): LiveData<List<PracticeEntity>> {
+
+        val userId = userRepo.getLoggedUserId()?.toInt()
+        return if (userId != null) {
+            practiceDao.findPracticeForUser(userId)
+        } else return DefaultLiveData.create(emptyList())
+
     }
 }

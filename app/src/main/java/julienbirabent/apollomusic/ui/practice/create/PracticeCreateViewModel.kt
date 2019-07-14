@@ -20,7 +20,7 @@ class PracticeCreateViewModel @Inject constructor(
     BaseViewModel<PracticeCreateNavigator>() {
 
     val practiceNotes = MutableLiveData<String>()
-    var practiceCreatedValidated: MutableLiveData<Boolean> = MutableLiveData()
+    private var practiceCreatedValidated: MutableLiveData<Boolean> = MutableLiveData()
 
     private var practiceDates = MutableLiveData<MutableList<Date>>()
     val datesEmpty: LiveData<Boolean> = Transformations.map(practiceDates) { it.size > 0 }

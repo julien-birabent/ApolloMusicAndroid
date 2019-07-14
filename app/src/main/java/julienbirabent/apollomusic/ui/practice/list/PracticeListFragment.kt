@@ -47,7 +47,7 @@ class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeL
     }
 
     override fun getViewModel(): PracticeListViewModel {
-        return ViewModelProviders.of(baseActivity).get(PracticeListViewModel::class.java)
+        return ViewModelProviders.of(this, viewModelFactory).get(PracticeListViewModel::class.java)
     }
 
 }

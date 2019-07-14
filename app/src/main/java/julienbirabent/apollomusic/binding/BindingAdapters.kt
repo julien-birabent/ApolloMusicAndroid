@@ -20,6 +20,7 @@ import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.appcompat.widget.AppCompatEditText
 import android.widget.EditText
 import androidx.databinding.BindingConversion
+import androidx.recyclerview.widget.DividerItemDecoration
 
 
 @BindingConversion
@@ -45,6 +46,9 @@ fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: RecyclerView.Ad
     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     recyclerView.itemAnimator = DefaultItemAnimator()
     recyclerView.adapter = adapter
+    recyclerView.addItemDecoration(
+        DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
+    )
 }
 
 

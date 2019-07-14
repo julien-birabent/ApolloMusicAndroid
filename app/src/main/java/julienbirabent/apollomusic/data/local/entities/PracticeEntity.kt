@@ -35,7 +35,7 @@ data class PracticeEntity(
 
     @Expose
     @SerializedName("datePractice")
-    var date: Date? = null
+    var date: Date
 ) {
-    constructor(profileId: String?, userNotes: String?, date: Date?) : this(-1, profileId, userNotes, date)
+    constructor(profileId: String?, userNotes: String?, date: Date) : this(-1, profileId, userNotes, date)
 }

@@ -3,8 +3,8 @@ package julienbirabent.apollomusic.ui.adapters.practice
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.data.local.entities.PracticeEntity
 import julienbirabent.apollomusic.data.local.model.SimpleTextItem
-import julienbirabent.apollomusic.ui.adapters.base.BaseAdapter
-import julienbirabent.apollomusic.ui.adapters.base.BaseDiffCallback
+import julienbirabent.apollomusic.ui.adapters.BaseAdapter
+import julienbirabent.apollomusic.ui.adapters.BaseDiffCallback
 
 
 class PracticeAdapter(callback: PracticeItemCallback) :
