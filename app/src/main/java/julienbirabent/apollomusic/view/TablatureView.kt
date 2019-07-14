@@ -1,13 +1,16 @@
 package julienbirabent.apollomusic.view
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.View
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.LinearLayout.VERTICAL
 import androidx.appcompat.widget.AppCompatTextView
 import julienbirabent.apollomusic.data.local.entities.Tablature
+
 
 class TablatureView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -16,10 +19,12 @@ class TablatureView @JvmOverloads constructor(
     private var guitareStrings: ArrayList<AppCompatTextView> = arrayListOf()
     private lateinit var stringsContainer: LinearLayout
 
-    var tablature: Tablature = emptyTablature()
+    var tablature: Tablature? = emptyTablature()
         set(value) {
             field = value
-            bindTablature(field)
+            if (value != null) {
+                field?.let { bindTablature(it) }
+            } else this.visibility = View.GONE
         }
 
     init {
@@ -40,7 +45,7 @@ class TablatureView @JvmOverloads constructor(
         for (i in 0..5) {
             addString()
         }
-        bindTablature(tablature)
+        tablature?.let { bindTablature(it) }
     }
 
     private fun emptyTablature(): Tablature = Tablature("", "", "", "", "", "")
@@ -51,6 +56,7 @@ class TablatureView @JvmOverloads constructor(
             setSingleLine()
             setHorizontallyScrolling(true)
             gravity = Gravity.START
+            typeface = Typeface.MONOSPACE
             guitareStrings.add(this)
         }
         stringsContainer.addView(newString)
