@@ -3,16 +3,19 @@ package julienbirabent.apollomusic.ui.practice.list
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
-import julienbirabent.apollomusic.data.local.entities.Tablature
 import julienbirabent.apollomusic.databinding.FragmentPracticeListBinding
+import julienbirabent.apollomusic.ui.adapters.practice.PracticeAdapter
 import julienbirabent.apollomusic.ui.base.BaseFragment
 
 class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeListViewModel>(),
     PracticeListNavigator {
+
+    private lateinit var practiceAdapter: PracticeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -20,20 +23,19 @@ class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeL
             findNavController().navigate(R.id.action_actionHome_to_practiceCreateFragment)
         }
 
+        viewModel.practiceList.observe(viewLifecycleOwner, Observer {
+            practiceAdapter.updateList(it)
+        })
+    }
+
+    override fun goToPracticePage() {
+
     }
 
     override fun setBindingVariables(binding: ViewDataBinding) {
         super.setBindingVariables(binding)
-        val tab = Tablature(
-            "----------------------------5---------------------------------------------------------------------------------------------"
-            ,
-            "-------------------------------------------------------6------------------------------------------------------------------",
-            "--------------------------------------------------------7-----------------------------------------------------------------",
-            "--------------------------------------------------------------------------------------------------------------------------",
-            "--------------------------------------------------------------------------------------------------------------------------",
-            "----------------------------------------------------------------8---------------------------------------------------------"
-        )
-        binding.setVariable(BR.tablature, tab)
+        practiceAdapter = PracticeAdapter(viewModel.practiceItemCallback)
+        binding.setVariable(BR.adapter, practiceAdapter)
     }
 
     override fun getBindingVariable(): Int {
@@ -48,8 +50,4 @@ class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeL
         return ViewModelProviders.of(baseActivity).get(PracticeListViewModel::class.java)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = PracticeListFragment()
-    }
 }
