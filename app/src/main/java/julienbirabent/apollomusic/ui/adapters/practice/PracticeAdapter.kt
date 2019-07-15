@@ -1,5 +1,6 @@
 package julienbirabent.apollomusic.ui.adapters.practice
 
+import android.text.format.DateUtils
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.data.local.entities.PracticeEntity
 import julienbirabent.apollomusic.data.local.model.SimpleTextItem
@@ -13,7 +14,9 @@ class PracticeAdapter(callback: PracticeItemCallback) :
     override fun getLayoutId(position: Int, obj: Any): Int {
         return when (obj) {
             is SimpleTextItem -> R.layout.view_header_text_item
-            is PracticeEntity -> R.layout.view_practice_item
+            is PracticeEntity -> {
+                if (DateUtils.isToday(obj.date.time)) R.layout.view_today_practice_item else R.layout.view_not_today_practice_item
+            }
             else -> R.layout.view_empty_item
         }
     }

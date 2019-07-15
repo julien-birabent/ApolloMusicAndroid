@@ -63,4 +63,5 @@
 
     <string name="header_practice_today">Today\'s practice</string>
     <string name="header_practice_to_come">Practices to come</string>
+    <string name="see_details">See details</string>
 </resources>
