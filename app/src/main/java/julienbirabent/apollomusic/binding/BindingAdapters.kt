@@ -1,5 +1,6 @@
 package julienbirabent.apollomusic.binding
 
+import android.annotation.SuppressLint
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -19,9 +20,22 @@ import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.appcompat.widget.AppCompatEditText
 import android.widget.EditText
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingConversion
 import androidx.recyclerview.widget.DividerItemDecoration
+import java.text.SimpleDateFormat
+import java.util.*
 
+object BindingAdapters {
+
+    @SuppressLint("SimpleDateFormat")
+    val dateFormatSimple: SimpleDateFormat = SimpleDateFormat("EEE, MMM d")
+}
+
+@BindingAdapter("app:dateFormatted")
+fun dateFormatted(view: AppCompatTextView, date: Date) {
+    view.text = BindingAdapters.dateFormatSimple.format(date)
+}
 
 @BindingConversion
 fun intToStr(value: Int?): String {

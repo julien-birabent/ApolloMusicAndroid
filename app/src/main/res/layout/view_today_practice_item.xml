@@ -23,12 +23,15 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/practice_item_date"
             style="@style/TextView.Title"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{item.date.toString()}"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:textAlignment="textStart"
+            app:dateFormatted="@{item.date}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/practice_item_action"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/practice_item_today_image"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -43,7 +46,7 @@
             android:tint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/practice_item_date" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/practice_item_action"
@@ -52,13 +55,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
             android:text="@string/let_s_practice"
             app:iconTint="@color/green_fresh_herb"
-            app:layout_constraintBottom_toBottomOf="@+id/practice_item_today_image"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
             app:rippleColor="@color/green_fresh_herb"
             app:strokeColor="@color/green_fresh_herb" />
 
