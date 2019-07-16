@@ -83,6 +83,7 @@ class UserRepository @Inject constructor(
                     }
                     Log.d("UserRepo", "Login error : " + it.message)
                 }
+                .retry(1)
         }
     }
 

@@ -64,4 +64,5 @@
     <string name="header_practice_today">Today\'s practice</string>
     <string name="header_practice_to_come">Practices to come</string>
     <string name="see_details">See details</string>
+    <string name="no_practice_registered">It seems like you don\'t have any pratices registered yet.</string>
 </resources>

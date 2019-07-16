@@ -18,6 +18,7 @@ class PracticeListViewModel @Inject constructor(practiceRepo: PracticeRepository
 
     private var _practiceList: LiveData<List<PracticeEntity>> = practiceRepo.getPracticeList()
     val practiceList: LiveData<List<Any>>
+    var practiceListIsEmpty: LiveData<Boolean>
 
     val practiceItemCallback: PracticeItemCallback = object : PracticeItemCallback {
         override fun openTodayPractice(item: PracticeEntity) {
@@ -32,6 +33,10 @@ class PracticeListViewModel @Inject constructor(practiceRepo: PracticeRepository
             } else {
                 return@map preparePracticeListForUi(it)
             }
+        }
+
+        practiceListIsEmpty = Transformations.map(_practiceList) {
+            it.isEmpty()
         }
     }
 

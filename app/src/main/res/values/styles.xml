@@ -51,6 +51,7 @@
     </style>
 
     <style name="TextView">
+        <item name="android:typeface">normal</item>
         <item name="android:textColor">@color/text_header_1</item>
     </style>
 
