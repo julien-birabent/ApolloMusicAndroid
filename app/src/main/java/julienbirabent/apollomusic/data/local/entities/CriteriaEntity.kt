@@ -12,8 +12,7 @@ import com.google.gson.annotations.SerializedName
         entity = UserEntity::class,
         parentColumns = ["id"],
         childColumns = ["profileId"],
-        onDelete = ForeignKey.CASCADE,
-        onUpdate = ForeignKey.CASCADE
+        onDelete = ForeignKey.CASCADE
     )]
 )
 data class CriteriaEntity(
@@ -25,7 +24,7 @@ data class CriteriaEntity(
 
     @Expose
     @SerializedName("profileId")
-    var profileId: Int?,
+    var profileId: Int,
 
     @Expose
     @SerializedName("criteria")

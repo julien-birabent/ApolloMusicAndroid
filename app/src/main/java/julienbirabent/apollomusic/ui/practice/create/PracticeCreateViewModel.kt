@@ -5,22 +5,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
 import julienbirabent.apollomusic.data.repository.ObjectiveRepository
+import julienbirabent.apollomusic.data.repository.PracticeRepository
 import julienbirabent.apollomusic.ui.adapters.ActionItem
 import julienbirabent.apollomusic.ui.base.BaseViewModel
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
-class PracticeCreateViewModel @Inject constructor(private val objRepo: ObjectiveRepository) :
+class PracticeCreateViewModel @Inject constructor(
+    private val objRepo: ObjectiveRepository,
+    private val practiceRepository: PracticeRepository
+) :
     BaseViewModel<PracticeCreateNavigator>() {
 
     val practiceNotes = MutableLiveData<String>()
+    private var practiceCreatedValidated: MutableLiveData<Boolean> = MutableLiveData()
 
     private var practiceDates = MutableLiveData<MutableList<Date>>()
     val datesEmpty: LiveData<Boolean> = Transformations.map(practiceDates) { it.size > 0 }
-    val objList: MutableLiveData<List<ObjectiveBundle>> = objRepo.getPracticeCreationObjList()
+    val objList: MutableLiveData<List<ObjectiveBundle>> = objRepo.getPracticeCreationObjListLive()
     val objEmpty: LiveData<Boolean> = Transformations.map(objList) { it.isNotEmpty() }
 
     val dateActionItemCallback: ActionItem<Date> = object :
@@ -46,6 +50,21 @@ class PracticeCreateViewModel @Inject constructor(private val objRepo: Objective
 
     init {
         practiceDates.value = mutableListOf()
+    }
+
+    private fun isPracticeCreationPossible(): Boolean {
+        return if (objEmpty.value == null || datesEmpty.value == null) {
+            false
+        } else {
+            objEmpty.value!! && datesEmpty.value!!
+        }
+    }
+
+    fun manualClear() {
+        practiceDates.value = mutableListOf()
+        practiceNotes.value = ""
+        practiceCreatedValidated.value = false
+        objRepo.resetObjCache()
     }
 
     fun openMultiSelectionCalendar() {
@@ -83,4 +102,27 @@ class PracticeCreateViewModel @Inject constructor(private val objRepo: Objective
         practiceDates.value = practiceDates.value
     }
 
+    fun createPractice() {
+        if (isPracticeCreationPossible()) {
+            practiceDates.value?.let {
+                val createPracticeLiveData = practiceRepository.createPractices(
+                    it,
+                    objRepo.getPracticeCreationObjectiveList(),
+                    practiceNotes.value
+                )
+                practiceCreatedValidated = Transformations.map(createPracticeLiveData) {
+                    !it.contains(false)
+                } as MutableLiveData<Boolean>
+                practiceCreatedValidated.observeForever { practiceSuccessfulyCreated ->
+                    if (practiceSuccessfulyCreated) {
+                        practiceCreatedValidated.removeObserver { }
+                        manualClear()
+                        navigator.returnToPracticeList()
+                    } 
+                }
+            }
+        } else {
+            navigator.practiceContentMissingError()
+        }
+    }
 }

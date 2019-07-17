@@ -25,7 +25,8 @@ data class ObjectiveEntity(
 
     @Expose
     @SerializedName("objectif")
-    var objective: String? = "",
+    var objective: String? = "" +
+            "",
 
     @Expose
     @SerializedName("targetPracticeTime")
@@ -33,7 +34,7 @@ data class ObjectiveEntity(
 
     @Expose
     @SerializedName("tempoHistory")
-    var tempoHistory: String? = "",
+    var tempoHistory: String? = "blank",
 
     @Expose
     @SerializedName("tempoBase")

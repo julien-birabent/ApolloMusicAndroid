@@ -3,11 +3,13 @@ package julienbirabent.apollomusic.data.repository
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
+import io.reactivex.Observable
 import io.reactivex.Single
 import julienbirabent.apollomusic.Utils.AbsentLiveData
 import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.services.UserAPI
 import julienbirabent.apollomusic.data.local.dao.UserDao
+import julienbirabent.apollomusic.data.local.entities.Token
 import julienbirabent.apollomusic.data.local.entities.UserEntity
 import julienbirabent.apollomusic.data.local.model.User
 import julienbirabent.apollomusic.ui.login.LoginType
@@ -25,6 +27,7 @@ class UserRepository @Inject constructor(
 
     internal companion object {
         const val key_user_id = "key_user_id"
+        const val key_user_token = "key_user_token"
     }
 
     init {
@@ -38,7 +41,7 @@ class UserRepository @Inject constructor(
                     UserEntity(
                         appConstants.adminProfileId().toString(),
                         appConstants.adminProfileId().toString(),
-                        null,
+                        Token(),
                         null,
                         "admin",
                         null,
@@ -66,7 +69,7 @@ class UserRepository @Inject constructor(
                                     try {
                                         invalidateSession()
                                         if (it != null) {
-                                            setUserId(it)
+                                            setUserIdAndToken(it, userEntity.token.token)
                                         }
                                     } catch (e: InvalidParameterException) {
                                         //TODO(handle error)
@@ -83,6 +86,7 @@ class UserRepository @Inject constructor(
                     }
                     Log.d("UserRepo", "Login error : " + it.message)
                 }
+                .retry(1)
         }
     }
 
@@ -98,15 +102,27 @@ class UserRepository @Inject constructor(
     /**
      * When user is logged in, we use this method to keep track of which user in the db is logged id
      */
-    private fun setUserId(id: String) {
+    private fun setUserIdAndToken(id: String, token: String) {
         with(sharedPreferences.edit()) {
             putString(key_user_id, id)
+            putString(key_user_token, token)
             apply()
         }
     }
 
+    fun getLoggedUserToken(): String? {
+        return sharedPreferences.getString(key_user_token, null)
+    }
+
     fun getLoggedUserId(): String? {
         return sharedPreferences.getString(key_user_id, null)
+    }
+
+    fun getLoggedUser(): Observable<UserEntity> {
+        val userId = getLoggedUserId()
+        return if (userId != null) {
+            userDao.getUserByIdObservable(userId)
+        } else Observable.empty()
     }
 
     /**

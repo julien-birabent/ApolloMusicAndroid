@@ -5,12 +5,22 @@
     <color name="colorAccent">#1A237E</color>
     <color name="colorAccentDark">#AAAAAA</color>
     <color name="white_almost">#E0E4F0</color>
-    <color name="white_purpleish">#DACCFA</color>
+    <color name="white_purpleish">#F1EDF8</color>
     <color name="saumon">#DB473A</color>
     <color name="mer_clair">#4267B2</color>
     <color name="text_header_1">#252525</color>
     <color name="text_header_2">#474747</color>
     <color name="light_gray">#19DADADA</color>
     <color name="green_fresh_herb">#4CAF50</color>
+    <color name="green_even_more_fresh_herb">#7BB17E</color>
     <color name="amber_300">#FFD54F</color>
+
+    <integer-array name="swipe_layout_color_scheme">
+        <item>@color/colorPrimary</item>
+        <item>@color/colorPrimaryDark</item>
+        <item>@color/colorAccent</item>
+        <item>@color/green_fresh_herb</item>
+        <item>@color/green_even_more_fresh_herb</item>
+        <item>@color/amber_300</item>
+    </integer-array>
 </resources>

@@ -2,6 +2,8 @@ package julienbirabent.apollomusic.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 @Entity(
     tableName = "objective_exercise_join",
@@ -20,7 +22,11 @@ import androidx.room.ForeignKey
     ]
 )
 data class ObjectiveExerciseJoin(
+    @Expose
+    @SerializedName("objectiveId")
     var objectiveId: String,
 
+    @Expose
+    @SerializedName("exerciceId")
     var exerciseId: String
 )

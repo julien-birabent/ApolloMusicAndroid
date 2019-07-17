@@ -2,22 +2,48 @@ package julienbirabent.apollomusic.ui.practice.list
 
 import android.os.Bundle
 import android.view.View
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.FragmentPracticeListBinding
+import julienbirabent.apollomusic.ui.adapters.practice.PracticeAdapter
 import julienbirabent.apollomusic.ui.base.BaseFragment
 
 class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeListViewModel>(),
     PracticeListNavigator {
 
+    private lateinit var practiceAdapter: PracticeAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewDataBinding.createPractice.setOnClickListener {
-            findNavController().navigate(R.id.action_actionHome_to_practiceCreateFragment)
+
+        with(viewDataBinding) {
+            createPractice.setOnClickListener {
+                findNavController().navigate(R.id.action_actionHome_to_practiceCreateFragment)
+            }
         }
 
+        viewModel.practiceList.observe(viewLifecycleOwner, Observer {
+            practiceAdapter.updateList(it)
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshPracticeList()
+    }
+
+    override fun goToPracticePage() {
+
+    }
+
+    override fun setBindingVariables(binding: ViewDataBinding) {
+        super.setBindingVariables(binding)
+        practiceAdapter = PracticeAdapter(viewModel.practiceItemCallback)
+        binding.setVariable(BR.adapter, practiceAdapter)
     }
 
     override fun getBindingVariable(): Int {
@@ -29,11 +55,7 @@ class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeL
     }
 
     override fun getViewModel(): PracticeListViewModel {
-        return ViewModelProviders.of(baseActivity).get(PracticeListViewModel::class.java)
+        return ViewModelProviders.of(this, viewModelFactory).get(PracticeListViewModel::class.java)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = PracticeListFragment()
-    }
 }

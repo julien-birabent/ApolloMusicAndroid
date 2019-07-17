@@ -31,7 +31,7 @@ class CriteriaRepository @Inject constructor(
             .observeOn(scheduler.ui())
             .flatMap { getCriteriaFromServer(userRepo.getLoggedUserId().toString()) }
             .subscribe({
-                storeCriteriaInDb(it)
+                storeCriteriaInDb(filterUserCriteria(userRepo.getLoggedUserId().toString(), it))
                 Log.d(
                     CriteriaRepository::class.simpleName,
                     "Fetching criteria on connection gained ${it.size}"
@@ -93,9 +93,8 @@ class CriteriaRepository @Inject constructor(
 
     @SuppressLint("CheckResult")
     private fun storeCriteriaInDb(criterias: List<CriteriaEntity>) {
-        //dbExec { criteriaDao.insert(*criterias.toTypedArray()) }
         Observable.fromCallable { criteriaDao.insert(*criterias.toTypedArray()) }
-            .subscribeOn(scheduler.computation())
+            .subscribeOn(scheduler.io())
             .observeOn(scheduler.io())
             .subscribe {
                 Log.d(CriteriaRepository::class.simpleName, "Inserting ${criterias.size} criteria in DB...")

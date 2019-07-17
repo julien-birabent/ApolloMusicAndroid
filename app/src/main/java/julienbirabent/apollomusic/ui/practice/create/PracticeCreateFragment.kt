@@ -3,10 +3,9 @@ package julienbirabent.apollomusic.ui.practice.create
 import android.app.Activity
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
+import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -16,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.squareup.timessquare.CalendarPickerView
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
-import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
 import julienbirabent.apollomusic.databinding.FragmentPracticeCreateBinding
 import julienbirabent.apollomusic.databinding.ViewCalendarBinding
 import julienbirabent.apollomusic.ui.adapters.DateAdapter
@@ -29,8 +27,8 @@ import javax.inject.Inject
 
 class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, PracticeCreateViewModel>(),
     PracticeCreateNavigator {
-
     private lateinit var dateAdapter: DateAdapter
+
     private lateinit var objAdapter: ObjectiveAdapter
 
     @Inject
@@ -41,6 +39,33 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         if (activity is HomeActivity) {
             activity.hideBottomNavigation(true)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.getPracticesDates().observe(viewLifecycleOwner, Observer {
+            dateAdapter.updateList(it)
+        })
+
+        viewModel.objList.observe(viewLifecycleOwner, Observer {
+            objAdapter.updateList(it)
+        })
+
+        view?.let {
+            it.setFocusableInTouchMode(true)
+            it.requestFocus()
+            it.setOnKeyListener { view, keyCode, keyEvent ->
+                if (keyEvent.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    // No choice but to clear manually the viewModel from the fragment because viewModel needs to be a singleton
+                    // but we also need to refresh the vm's data when the user return to the home activity
+                    viewModel.manualClear()
+                }
+                false
+            }
+        }
+
+
     }
 
     private fun showSingleSelectionCalendar(date: Date) {
@@ -110,6 +135,11 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         datePickerDialog.show()
     }
 
+    override fun returnToPracticeList() {
+        activity?.supportFragmentManager?.popBackStack()
+        Toast.makeText(baseActivity, "Practice successfuly added.", Toast.LENGTH_LONG).show()
+    }
+
     override fun onDetach() {
         super.onDetach()
         if (activity is HomeActivity) {
@@ -125,14 +155,6 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        viewModel.getPracticesDates().observe(viewLifecycleOwner, Observer {
-            dateAdapter.updateList(it)
-        })
-
-        viewModel.objList.observe(viewLifecycleOwner, Observer {
-            objAdapter.updateList(it)
-        })
-
         viewDataBinding.addObjectiveButton.setOnClickListener {
             viewModel.goToCreateObjectivePage()
         }
@@ -141,6 +163,16 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.create_practice_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.save_practice -> viewModel.createPractice()
+            else -> viewModel.manualClear()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun goToSimpleSelectionCalendar(date: Date) {
@@ -169,5 +201,16 @@ class PracticeCreateFragment : BaseFragment<FragmentPracticeCreateBinding, Pract
 
     override fun getViewModel(): PracticeCreateViewModel {
         return ViewModelProviders.of(this, viewModelFactory).get(PracticeCreateViewModel::class.java)
+    }
+
+    override fun createPracticeError() {
+        Toast.makeText(baseActivity, "An error occured. Practice has not been created.", Toast.LENGTH_LONG).show()
+    }
+
+    override fun practiceContentMissingError() {
+        baseActivity.showErrorDialog(
+            "Cannot create practice",
+            "In order to create a practice, you must have at least one date and one objective defined."
+        )
     }
 }
