@@ -19,13 +19,21 @@ class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewDataBinding.createPractice.setOnClickListener {
-            findNavController().navigate(R.id.action_actionHome_to_practiceCreateFragment)
+
+        with(viewDataBinding) {
+            createPractice.setOnClickListener {
+                findNavController().navigate(R.id.action_actionHome_to_practiceCreateFragment)
+            }
         }
 
         viewModel.practiceList.observe(viewLifecycleOwner, Observer {
             practiceAdapter.updateList(it)
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshPracticeList()
     }
 
     override fun goToPracticePage() {

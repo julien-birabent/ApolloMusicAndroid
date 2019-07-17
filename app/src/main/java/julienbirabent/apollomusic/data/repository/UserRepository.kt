@@ -3,6 +3,7 @@ package julienbirabent.apollomusic.data.repository
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
+import io.reactivex.Observable
 import io.reactivex.Single
 import julienbirabent.apollomusic.Utils.AbsentLiveData
 import julienbirabent.apollomusic.app.AppConstants
@@ -108,6 +109,13 @@ class UserRepository @Inject constructor(
 
     fun getLoggedUserId(): String? {
         return sharedPreferences.getString(key_user_id, null)
+    }
+
+    fun getLoggedUser(): Observable<UserEntity> {
+        val userId = getLoggedUserId()
+        return if (userId != null) {
+            userDao.getUserByIdObservable(userId)
+        } else Observable.empty()
     }
 
     /**

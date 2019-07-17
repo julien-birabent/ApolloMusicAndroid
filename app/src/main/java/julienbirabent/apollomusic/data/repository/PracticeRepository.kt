@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import julienbirabent.apollomusic.Utils.DefaultLiveData
-import julienbirabent.apollomusic.app.AppConstants
 import julienbirabent.apollomusic.data.api.services.ObjectiveAPI
 import julienbirabent.apollomusic.data.api.services.PracticeAPI
 import julienbirabent.apollomusic.data.local.dao.ObjectiveCriteriaJoinDao
@@ -33,7 +32,6 @@ class PracticeRepository @Inject constructor(
     private val userRepo: UserRepository,
     private val practiceAPI: PracticeAPI,
     private val objAPI: ObjectiveAPI,
-    private val appConstants: AppConstants,
     private val practiceDao: PracticeDao,
     private val objectiveDao: ObjectiveDao,
     private val objectiveCriteriaJoinDao: ObjectiveCriteriaJoinDao,
@@ -137,5 +135,19 @@ class PracticeRepository @Inject constructor(
             practiceDao.findPracticeForUser(userId)
         } else return DefaultLiveData.create(emptyList())
 
+    }
+
+    fun fetchPracticeList(): Single<List<PracticeEntity>> {
+        return userRepo.getLoggedUser()
+            .observeOn(scheduler.io())
+            .flatMapSingle {
+                practiceAPI.getUserPractices(it.id, it.token?.token)
+            }
+            .firstOrError()
+            .retry(1)
+            .flatMap {
+                Single.just(it.body() ?: emptyList())
+            }
+            .onErrorReturn { emptyList() }
     }
 }

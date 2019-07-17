@@ -3,10 +3,7 @@ package julienbirabent.apollomusic.data.api.services
 import io.reactivex.Single
 import julienbirabent.apollomusic.data.local.entities.PracticeEntity
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 import java.util.*
 import javax.inject.Singleton
 
@@ -22,4 +19,6 @@ interface PracticeAPI {
     ): Single<Response<PracticeEntity>>
 
 
+    @GET("/api/profiles/{id}/practices")
+    fun getUserPractices(@Path("id") profileId: String?, @Field("access_token") token: String?): Single<Response<List<PracticeEntity>>>
 }

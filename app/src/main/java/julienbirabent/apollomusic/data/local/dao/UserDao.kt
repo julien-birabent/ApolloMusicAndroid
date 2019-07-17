@@ -3,6 +3,7 @@ package julienbirabent.apollomusic.data.local.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import io.reactivex.Observable
+import io.reactivex.Single
 import julienbirabent.apollomusic.data.local.entities.UserEntity
 
 

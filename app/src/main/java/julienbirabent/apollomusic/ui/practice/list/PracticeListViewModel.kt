@@ -7,13 +7,17 @@ import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.data.local.entities.PracticeEntity
 import julienbirabent.apollomusic.data.local.model.SimpleTextItem
 import julienbirabent.apollomusic.data.repository.PracticeRepository
+import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.ui.adapters.practice.PracticeItemCallback
 import julienbirabent.apollomusic.ui.base.BaseViewModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PracticeListViewModel @Inject constructor(practiceRepo: PracticeRepository) :
+class PracticeListViewModel @Inject constructor(
+    private val practiceRepo: PracticeRepository,
+    private val scheduler: AppSchedulerProvider
+) :
     BaseViewModel<PracticeListNavigator>() {
 
     private var _practiceList: LiveData<List<PracticeEntity>> = practiceRepo.getPracticeList()
@@ -38,6 +42,18 @@ class PracticeListViewModel @Inject constructor(practiceRepo: PracticeRepository
         practiceListIsEmpty = Transformations.map(_practiceList) {
             it.isEmpty()
         }
+    }
+
+    fun refreshPracticeList() {
+        isLoading.set(true)
+        compositeDisposable.add(
+            practiceRepo.fetchPracticeList()
+                .observeOn(scheduler.io())
+                .subscribeOn(scheduler.ui())
+                .doOnTerminate { isLoading.set(false) }
+                .subscribe()
+        )
+
     }
 
     private fun preparePracticeListForUi(inputList: List<PracticeEntity>): List<Any> {

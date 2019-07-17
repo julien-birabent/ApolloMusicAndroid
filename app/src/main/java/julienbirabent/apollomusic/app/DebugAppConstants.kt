@@ -21,7 +21,7 @@ class DebugAppConstants : AppConstants {
     }
 
     override fun adminProfileId(): Int {
-        return 0
+        return 1
     }
 }
 
