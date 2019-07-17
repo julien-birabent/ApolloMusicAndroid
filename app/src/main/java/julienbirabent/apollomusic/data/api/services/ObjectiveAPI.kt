@@ -39,4 +39,7 @@ interface ObjectiveAPI {
         @Field(value = "exerciceId") exerciseId: Int?,
         @Field(value = "objectiveId") objIdField: Int?
     ): Single<Response<ObjectiveExerciseJoin>>
+
+
+
 }

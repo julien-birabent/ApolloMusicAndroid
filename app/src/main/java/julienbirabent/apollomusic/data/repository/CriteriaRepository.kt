@@ -100,4 +100,19 @@ class CriteriaRepository @Inject constructor(
                 Log.d(CriteriaRepository::class.simpleName, "Inserting ${criterias.size} criteria in DB...")
             }
     }
+
+    fun refreshCriteriaList(): Single<List<CriteriaEntity>> {
+        return getCriteriaFromServer(userRepo.getLoggedUserId().toString())
+            .subscribeOn(scheduler.io())
+            .observeOn(scheduler.io())
+            .firstOrError()
+            .doOnSuccess {
+                storeCriteriaInDb(filterUserCriteria(userRepo.getLoggedUserId().toString(), it))
+                Log.d(
+                    CriteriaRepository::class.simpleName,
+                    "Fetching criteria on connection gained ${it.size}"
+                )
+            }
+            .doOnError { Log.e(CriteriaRepository::class.simpleName, "An error happened : " + it.message) }
+    }
 }

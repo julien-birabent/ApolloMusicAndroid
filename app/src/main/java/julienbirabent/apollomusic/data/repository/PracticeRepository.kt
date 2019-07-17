@@ -155,13 +155,13 @@ class PracticeRepository @Inject constructor(
 
     @SuppressLint("CheckResult")
     private fun storePracticesInDb(practices: List<PracticeEntity>) {
-        Observable.fromCallable { practiceDao.insert(*practices.toTypedArray()) }
+        Observable.fromCallable { practiceDao.synchronizeUserPractices(userRepo.getLoggedUserId(), practices) }
             .subscribeOn(scheduler.io())
             .observeOn(scheduler.io())
-            .subscribe ({
+            .subscribe({
                 Log.d(CriteriaRepository::class.simpleName, "Inserting ${practices.size} practices in DB...")
-            },{
-                Log.e(CriteriaRepository::class.simpleName, "Error inserting practices in DB : ${it.message}", it )
+            }, {
+                Log.e(CriteriaRepository::class.simpleName, "Error inserting practices in DB : ${it.message}", it)
             })
 
     }
