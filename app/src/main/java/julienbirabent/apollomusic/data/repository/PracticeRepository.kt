@@ -150,7 +150,6 @@ class PracticeRepository @Inject constructor(
                 Log.d(CriteriaRepository::class.simpleName, "Fetched ${it.body()?.size} practices from API...")
                 Single.just(it.body() ?: emptyList())
             }
-            .onErrorReturn { emptyList() }
             .doOnSuccess { storePracticesInDb(it) }
     }
 

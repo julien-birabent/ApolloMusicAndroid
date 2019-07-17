@@ -6,4 +6,5 @@ interface PracticeListNavigator : UINavigator {
 
     fun goToPracticePage()
 
+    fun showPracticeFetchCompleted(successful: Boolean)
 }

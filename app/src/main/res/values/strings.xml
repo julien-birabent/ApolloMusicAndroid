@@ -65,4 +65,8 @@
     <string name="header_practice_to_come">Practices to come</string>
     <string name="see_details">See details</string>
     <string name="no_practice_registered">It seems like you don\'t have any pratices registered yet.</string>
+
+    <string name="practice_successfully_fetched">The practices list has been updated successfully.</string>
+    <string name="practice_unsuccessfully_fetched">Sorry. There has been an error.</string>
+    <string name="retry">Retry</string>
 </resources>

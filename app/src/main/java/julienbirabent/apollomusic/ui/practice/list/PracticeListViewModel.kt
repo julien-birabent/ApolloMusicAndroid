@@ -53,7 +53,11 @@ class PracticeListViewModel @Inject constructor(
                 .subscribeOn(scheduler.ui())
                 .delay(1, TimeUnit.SECONDS)
                 .doOnTerminate { isLoading.set(false) }
-                .subscribe()
+                .subscribe({
+                    navigator?.showPracticeFetchCompleted(true)
+                }, {
+                    navigator?.showPracticeFetchCompleted(false)
+                })
         )
 
     }

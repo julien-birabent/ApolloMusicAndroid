@@ -9,6 +9,9 @@ import androidx.navigation.fragment.findNavController
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.FragmentPracticeListBinding
+import julienbirabent.apollomusic.extensions.error
+import julienbirabent.apollomusic.extensions.makeSnackBar
+import julienbirabent.apollomusic.extensions.success
 import julienbirabent.apollomusic.ui.adapters.practice.PracticeAdapter
 import julienbirabent.apollomusic.ui.base.BaseFragment
 
@@ -38,6 +41,16 @@ class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeL
 
     override fun goToPracticePage() {
 
+    }
+
+    override fun showPracticeFetchCompleted(successful: Boolean) {
+        when (successful) {
+            true -> activity?.makeSnackBar(getString(R.string.practice_successfully_fetched))?.success()
+            false -> activity?.makeSnackBar(
+                getString(R.string.practice_unsuccessfully_fetched),
+                actionText = getString(R.string.retry), action = { viewModel.refreshPracticeList() }
+            )?.error()
+        }
     }
 
     override fun setBindingVariables(binding: ViewDataBinding) {
