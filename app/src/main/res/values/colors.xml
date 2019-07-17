@@ -14,4 +14,13 @@
     <color name="green_fresh_herb">#4CAF50</color>
     <color name="green_even_more_fresh_herb">#7BB17E</color>
     <color name="amber_300">#FFD54F</color>
+
+    <integer-array name="swipe_layout_color_scheme">
+        <item>@color/colorPrimary</item>
+        <item>@color/colorPrimaryDark</item>
+        <item>@color/colorAccent</item>
+        <item>@color/green_fresh_herb</item>
+        <item>@color/green_even_more_fresh_herb</item>
+        <item>@color/amber_300</item>
+    </integer-array>
 </resources>
