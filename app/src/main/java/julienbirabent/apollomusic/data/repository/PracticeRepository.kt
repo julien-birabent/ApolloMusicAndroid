@@ -159,8 +159,11 @@ class PracticeRepository @Inject constructor(
         Observable.fromCallable { practiceDao.insert(*practices.toTypedArray()) }
             .subscribeOn(scheduler.io())
             .observeOn(scheduler.io())
-            .subscribe {
+            .subscribe ({
                 Log.d(CriteriaRepository::class.simpleName, "Inserting ${practices.size} practices in DB...")
-            }
+            },{
+                Log.e(CriteriaRepository::class.simpleName, "Error inserting practices in DB : ${it.message}", it )
+            })
+
     }
 }
