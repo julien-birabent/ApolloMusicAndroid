@@ -141,7 +141,7 @@ class PracticeRepository @Inject constructor(
         return userRepo.getLoggedUser()
             .observeOn(scheduler.io())
             .flatMapSingle {
-                practiceAPI.getUserPractices(it.id, it.token?.token)
+                practiceAPI.getUserPractices(it.id)
             }
             .firstOrError()
             .retry(1)

@@ -20,5 +20,5 @@ interface PracticeAPI {
 
 
     @GET("/api/profiles/{id}/practices")
-    fun getUserPractices(@Path("id") profileId: String?, @Field("access_token") token: String?): Single<Response<List<PracticeEntity>>>
+    fun getUserPractices(@Path("id") profileId: String?): Single<Response<List<PracticeEntity>>>
 }

@@ -1,13 +1,16 @@
 package julienbirabent.apollomusic.di.module
 
+import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import julienbirabent.apollomusic.app.AppConstants
+import julienbirabent.apollomusic.data.api.network.AuthInterceptor
 import julienbirabent.apollomusic.data.api.network.DataTypeAdapterFactory
 import julienbirabent.apollomusic.data.api.network.livedataconverter.LiveDataCallAdapterFactory
 import julienbirabent.apollomusic.data.api.services.*
+import julienbirabent.apollomusic.data.repository.UserRepository
 import julienbirabent.apollomusic.thread.SchedulerProvider
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -55,12 +58,17 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(interceptor: Interceptor): OkHttpClient {
+    fun provideAuthInterceptor(sharedPreferences: SharedPreferences): AuthInterceptor = AuthInterceptor(sharedPreferences)
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(interceptor: Interceptor, authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .writeTimeout(15, TimeUnit.SECONDS)
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
+            .addInterceptor(authInterceptor)
             .build()
     }
 

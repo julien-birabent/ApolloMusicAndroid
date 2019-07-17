@@ -18,4 +18,6 @@ data class Token(
     @Expose
     @SerializedName("ttl")
     var ttl: Long
-)
+) {
+    constructor() : this("", "", Date(), 0)
+}
