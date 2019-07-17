@@ -10,6 +10,7 @@ import julienbirabent.apollomusic.data.repository.PracticeRepository
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.ui.adapters.practice.PracticeItemCallback
 import julienbirabent.apollomusic.ui.base.BaseViewModel
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -50,6 +51,7 @@ class PracticeListViewModel @Inject constructor(
             practiceRepo.fetchPracticeList()
                 .observeOn(scheduler.io())
                 .subscribeOn(scheduler.ui())
+                .delay(1, TimeUnit.SECONDS)
                 .doOnTerminate { isLoading.set(false) }
                 .subscribe()
         )

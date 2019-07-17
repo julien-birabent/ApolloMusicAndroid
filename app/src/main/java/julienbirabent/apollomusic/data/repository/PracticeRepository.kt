@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import julienbirabent.apollomusic.Utils.DefaultLiveData
@@ -146,8 +147,20 @@ class PracticeRepository @Inject constructor(
             .firstOrError()
             .retry(1)
             .flatMap {
+                Log.d(CriteriaRepository::class.simpleName, "Fetched ${it.body()?.size} practices from API...")
                 Single.just(it.body() ?: emptyList())
             }
             .onErrorReturn { emptyList() }
+            .doOnSuccess { storePracticesInDb(it) }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun storePracticesInDb(practices: List<PracticeEntity>) {
+        Observable.fromCallable { practiceDao.insert(*practices.toTypedArray()) }
+            .subscribeOn(scheduler.io())
+            .observeOn(scheduler.io())
+            .subscribe {
+                Log.d(CriteriaRepository::class.simpleName, "Inserting ${practices.size} practices in DB...")
+            }
     }
 }
