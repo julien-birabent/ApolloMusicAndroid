@@ -49,8 +49,8 @@ class PracticeListViewModel @Inject constructor(
         isLoading.set(true)
         compositeDisposable.add(
             practiceRepo.fetchPracticeList()
-                .observeOn(scheduler.io())
                 .subscribeOn(scheduler.ui())
+                .observeOn(scheduler.io())
                 .delay(1, TimeUnit.SECONDS)
                 .doOnTerminate { isLoading.set(false) }
                 .subscribe({
@@ -59,6 +59,14 @@ class PracticeListViewModel @Inject constructor(
                     navigator?.showPracticeFetchCompleted(false)
                 })
         )
+
+        compositeDisposable.add(practiceRepo.fetchPracticesRelatedObjects()
+            .observeOn(scheduler.io())
+            .subscribeOn(scheduler.ui())
+            .subscribe({
+            }, {
+            }
+            ))
 
     }
 

@@ -23,6 +23,6 @@ class ConnectionAvailableEmitter @Inject constructor(
             .subscribeOn(scheduler.io())
             .filter(ConnectivityPredicate.hasState(NetworkInfo.State.CONNECTED))
             .filter(ConnectivityPredicate.hasType(ConnectivityManager.TYPE_WIFI))
-            .observeOn(scheduler.ui())
+            .observeOn(scheduler.io())
     }
 }

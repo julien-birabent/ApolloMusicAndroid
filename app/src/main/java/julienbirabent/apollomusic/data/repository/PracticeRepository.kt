@@ -154,6 +154,50 @@ class PracticeRepository @Inject constructor(
     }
 
     @SuppressLint("CheckResult")
+    fun fetchPracticesRelatedObjects(): Observable<Unit> {
+        return userRepo.getLoggedUser()
+            .observeOn(scheduler.io())
+            .subscribeOn(scheduler.ui())
+            .flatMapSingle { practiceAPI.getUserPractices(it.id) }
+            .flatMapIterable { it.body() ?: emptyList() }
+            .flatMapSingle { practiceAPI.getObjectiveWithPracticeId(it.id.toString()) }
+            .flatMapIterable { it.body() ?: emptyList() }
+            .concatMapSingle {
+                with(practiceAPI) {
+                    Single.zip(getObjectiveCriteriaJoin(it.id), getObjectiveExerciseJoin(it.id),
+                        BiFunction<ObjectiveCriteriaJoin, ObjectiveExerciseJoin, Unit> { critJoin, exJoin ->
+                            storePracticeRelatedObjects(it, critJoin, exJoin)
+                        })
+                }
+            }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun storePracticeRelatedObjects(
+        objective: ObjectiveEntity,
+        objectiveCriteriaJoin: ObjectiveCriteriaJoin,
+        objectiveExerciseJoin: ObjectiveExerciseJoin
+    ) {
+        Observable.fromCallable {
+            dbExec {
+                objectiveDao.insert(objective)
+                objectiveCriteriaJoinDao.insert(objectiveCriteriaJoin)
+                objectiveExerciseJoinDao.insert(objectiveExerciseJoin)
+            }
+        }.subscribe({
+            Log.d(
+                CriteriaRepository::class.simpleName,
+                "Inserting practice related objects in DB : $objective , $objectiveCriteriaJoin, $objectiveExerciseJoin"
+            )
+        }, {
+            Log.d(
+                CriteriaRepository::class.simpleName,
+                "Failed to insert practice related objects in DB : $objective , $objectiveCriteriaJoin, $objectiveExerciseJoin"
+            )
+        })
+    }
+
+    @SuppressLint("CheckResult")
     private fun storePracticesInDb(practices: List<PracticeEntity>) {
         Observable.fromCallable { practiceDao.synchronizeUserPractices(userRepo.getLoggedUserId(), practices) }
             .subscribeOn(scheduler.io())

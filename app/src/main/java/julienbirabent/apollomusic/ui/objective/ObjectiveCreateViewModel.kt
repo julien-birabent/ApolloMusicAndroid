@@ -143,6 +143,17 @@ class ObjectiveCreateViewModel @Inject constructor(
         return criteriaString.isNotEmpty()
     }
 
+    fun refreshCriteriaList() {
+        compositeDisposable.add(
+            criteriaRepo.refreshCriteriaList()
+                .subscribeOn(scheduler.ui())
+                .observeOn(scheduler.io())
+                .subscribe({
+                    Log.d("", "")
+                }, { Log.d("", "")})
+        )
+    }
+
     fun createCriteria(criteriaString: String) {
         compositeDisposable.add(
             criteriaRepo.saveCriteria(criteriaString)
