@@ -29,8 +29,8 @@ interface PracticeAPI {
     fun getObjectiveWithPracticeId(@Path("id") practiceId: String?): Single<Response<List<ObjectiveEntity>>>
 
     @GET("/api/objectives/{id}/mappingCriteriaObjectifs")
-    fun getObjectiveCriteriaJoin(@Path("id") objId: Int?): Single<ObjectiveCriteriaJoin>
+    fun getObjectiveCriteriaJoin(@Path("id") objId: Int?): Single<List<ObjectiveCriteriaJoin>>
 
     @GET("/api/objectives/{id}/mappingObjectifExercices")
-    fun getObjectiveExerciseJoin(@Path("id") exerciseId: Int?): Single<ObjectiveExerciseJoin>
+    fun getObjectiveExerciseJoin(@Path("id") exerciseId: Int?): Single<List<ObjectiveExerciseJoin>>
 }

@@ -1,6 +1,7 @@
 package julienbirabent.apollomusic.ui.practice.list
 
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import julienbirabent.apollomusic.R
@@ -65,6 +66,7 @@ class PracticeListViewModel @Inject constructor(
             .subscribeOn(scheduler.ui())
             .subscribe({
             }, {
+                Log.d("PracticeListViewModel", "Error while fetching practices related objects", it)
             }
             ))
 

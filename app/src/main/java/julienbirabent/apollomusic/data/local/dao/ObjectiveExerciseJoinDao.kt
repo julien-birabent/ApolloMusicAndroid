@@ -10,11 +10,8 @@ import julienbirabent.apollomusic.data.local.entities.ObjectiveCriteriaJoin
 import julienbirabent.apollomusic.data.local.entities.ObjectiveExerciseJoin
 
 @Dao
-abstract class ObjectiveExerciseJoinDao {
-
-    @Insert
-    abstract fun insert(objectiveExerciseJoin: ObjectiveExerciseJoin)
+abstract class ObjectiveExerciseJoinDao : BaseDao<ObjectiveExerciseJoin> {
 
     @Query("SELECT * FROM exercise INNER JOIN objective_exercise_join ON exercise.id=objective_exercise_join.exerciseId WHERE objective_exercise_join.objectiveId=:id")
-    abstract fun getExerciceForObjective(id: String): LiveData<ExerciseEntity>
+    abstract fun getExerciseWithObjectiveId(id: String): LiveData<ExerciseEntity>
 }

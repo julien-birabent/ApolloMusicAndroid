@@ -8,10 +8,7 @@ import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.ObjectiveCriteriaJoin
 
 @Dao
-abstract class ObjectiveCriteriaJoinDao {
-
-    @Insert
-    abstract fun insert(objectiveCriteriaJoin: ObjectiveCriteriaJoin)
+abstract class ObjectiveCriteriaJoinDao : BaseDao<ObjectiveCriteriaJoin> {
 
     @Query("SELECT * FROM criteria INNER JOIN objective_criteria_join ON criteria.id=objective_criteria_join.criteriaId WHERE objective_criteria_join.objectiveId=:id")
     abstract fun getCriteriaForObjective(id: String): LiveData<CriteriaEntity>

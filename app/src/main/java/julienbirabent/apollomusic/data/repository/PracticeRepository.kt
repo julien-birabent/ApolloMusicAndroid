@@ -165,7 +165,7 @@ class PracticeRepository @Inject constructor(
             .concatMapSingle {
                 with(practiceAPI) {
                     Single.zip(getObjectiveCriteriaJoin(it.id), getObjectiveExerciseJoin(it.id),
-                        BiFunction<ObjectiveCriteriaJoin, ObjectiveExerciseJoin, Unit> { critJoin, exJoin ->
+                        BiFunction<List<ObjectiveCriteriaJoin>, List<ObjectiveExerciseJoin>, Unit> { critJoin, exJoin ->
                             storePracticeRelatedObjects(it, critJoin, exJoin)
                         })
                 }
@@ -175,14 +175,14 @@ class PracticeRepository @Inject constructor(
     @SuppressLint("CheckResult")
     private fun storePracticeRelatedObjects(
         objective: ObjectiveEntity,
-        objectiveCriteriaJoin: ObjectiveCriteriaJoin,
-        objectiveExerciseJoin: ObjectiveExerciseJoin
+        objectiveCriteriaJoin: List<ObjectiveCriteriaJoin>,
+        objectiveExerciseJoin: List<ObjectiveExerciseJoin>
     ) {
         Observable.fromCallable {
             dbExec {
                 objectiveDao.insert(objective)
-                objectiveCriteriaJoinDao.insert(objectiveCriteriaJoin)
-                objectiveExerciseJoinDao.insert(objectiveExerciseJoin)
+                objectiveCriteriaJoinDao.insert(*objectiveCriteriaJoin.toTypedArray())
+                objectiveExerciseJoinDao.insert(*objectiveExerciseJoin.toTypedArray())
             }
         }.subscribe({
             Log.d(
