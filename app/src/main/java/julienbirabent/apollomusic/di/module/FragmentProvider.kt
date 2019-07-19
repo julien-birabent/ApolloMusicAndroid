@@ -6,6 +6,7 @@ import julienbirabent.apollomusic.ui.objective.ObjectiveCreateFragment
 import julienbirabent.apollomusic.ui.objective.ObjectiveExerciseSelectionFragment
 import julienbirabent.apollomusic.ui.objective.criteria.ObjectiveCriteriaSelectionFragment
 import julienbirabent.apollomusic.ui.practice.create.PracticeCreateFragment
+import julienbirabent.apollomusic.ui.practice.list.PracticeDetailsFragment
 import julienbirabent.apollomusic.ui.practice.list.PracticeListFragment
 
 @Module
@@ -25,4 +26,7 @@ abstract class FragmentProvider {
 
     @ContributesAndroidInjector
     abstract fun contributeObjectiveExerciseSelectionFragment(): ObjectiveExerciseSelectionFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributePracticeDetailsFragment(): PracticeDetailsFragment
 }

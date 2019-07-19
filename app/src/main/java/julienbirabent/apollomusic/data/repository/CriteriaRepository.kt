@@ -80,6 +80,8 @@ class CriteriaRepository @Inject constructor(
 
     fun saveCriteria(criteria: String): Single<Response<CriteriaEntity>> {
         return criteriaAPI.postCriteria(criteria, userRepo.getLoggedUserId()?.toInt())
+            .observeOn(scheduler.io())
+            .subscribeOn(scheduler.ui())
             .doOnSuccess { response ->
                 if (response.isSuccessful) {
                     response.body()?.let { storeCriteriaInDb(listOf(it)) }

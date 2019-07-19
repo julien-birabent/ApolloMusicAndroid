@@ -157,8 +157,8 @@ class ObjectiveCreateViewModel @Inject constructor(
     fun createCriteria(criteriaString: String) {
         compositeDisposable.add(
             criteriaRepo.saveCriteria(criteriaString)
-                .subscribeOn(scheduler.io())
-                .observeOn(scheduler.ui())
+                .subscribeOn(scheduler.ui())
+                .observeOn(scheduler.io())
                 .subscribe({
                     Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")
                 }, {
