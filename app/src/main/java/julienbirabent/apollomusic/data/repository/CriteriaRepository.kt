@@ -26,7 +26,7 @@ class CriteriaRepository @Inject constructor(
     val currentUserLiveData: LiveData<UserEntity> = userRepo.getCurrentLoggedUser()
 
     init {
-        compositeDisposable.add(connectionAvailableEmitter()
+        /*compositeDisposable.add(connectionAvailableEmitter()
             .subscribeOn(scheduler.io())
             .observeOn(scheduler.ui())
             .flatMap { getCriteriaFromServer(userRepo.getLoggedUserId().toString()) }
@@ -39,13 +39,31 @@ class CriteriaRepository @Inject constructor(
             }, {
                 Log.e(CriteriaRepository::class.simpleName, "An error happened : " + it.message)
             })
-        )
+        )*/
+    }
+
+    private fun criteriasFromServerUpdates(profileId: String): Observable<List<CriteriaEntity>> {
+        return connectionAvailableEmitter()
+            .subscribeOn(scheduler.io())
+            .observeOn(scheduler.ui())
+            .flatMap { getCriteriaFromServer(profileId) }
+            .doOnSubscribe {
+                Log.d(ExercisesRepository::class.simpleName, "Subscribing to network changes")
+            }
+            .doOnNext {
+                Log.d(ExercisesRepository::class.simpleName, "Fetching exercises on connection gained ${it.size}")
+            }
+            .doOnError {
+                Log.e(ExercisesRepository::class.simpleName, "An error happened : " + it.message)
+            }.doOnDispose {
+                Log.d(ExercisesRepository::class.simpleName, "Unsubscribing to network changes")
+            }
     }
 
     fun getCriteriasLive(profileId: String): StateLiveData<List<CriteriaEntity>> {
         return StateLiveData(
             scheduler,
-            getCriteriaFromDb(profileId)
+            Observable.concatArrayEager(getCriteriaFromDb(profileId), criteriasFromServerUpdates(profileId))
         )
     }
 
@@ -68,7 +86,7 @@ class CriteriaRepository @Inject constructor(
                 }
             }
             .doOnError {
-                Log.e("Persist criteria call", "An error happened : " + it.message)
+                Log.e("Persist criteria call", "An error happened : " + it.message, it)
             }
     }
 
