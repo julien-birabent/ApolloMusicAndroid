@@ -21,6 +21,8 @@ interface PracticeAPI {
         @Field(value = "profileId") profileId: String?
     ): Single<Response<PracticeEntity>>
 
+    @GET("/api/practices/{id}")
+    fun getPracticeWithId(@Path("id") practiceId: Int?): Single<PracticeEntity>
 
     @GET("/api/profiles/{id}/practices")
     fun getUserPractices(@Path("id") profileId: String?): Single<Response<List<PracticeEntity>>>

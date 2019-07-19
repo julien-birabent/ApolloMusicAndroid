@@ -154,6 +154,23 @@ class PracticeRepository @Inject constructor(
     }
 
     @SuppressLint("CheckResult")
+    fun fetchPractice(practiceId: Int): Observable<Unit> {
+        return practiceAPI.getPracticeWithId(practiceId)
+            .observeOn(scheduler.io())
+            .subscribeOn(scheduler.ui())
+            .flatMap { practiceAPI.getObjectiveWithPracticeId(it.id.toString()) }
+            .flattenAsObservable { it.body() }
+            .concatMapSingle {
+                with(practiceAPI) {
+                    Single.zip(getObjectiveCriteriaJoin(it.id), getObjectiveExerciseJoin(it.id),
+                        BiFunction<List<ObjectiveCriteriaJoin>, List<ObjectiveExerciseJoin>, Unit> { critJoin, exJoin ->
+                            storePracticeRelatedObjects(it, critJoin, exJoin)
+                        })
+                }
+            }
+    }
+
+    @SuppressLint("CheckResult")
     fun fetchPracticesRelatedObjects(): Observable<Unit> {
         return userRepo.getLoggedUser()
             .observeOn(scheduler.io())
