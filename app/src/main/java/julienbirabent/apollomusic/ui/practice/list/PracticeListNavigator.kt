@@ -4,7 +4,7 @@ import julienbirabent.apollomusic.ui.base.UINavigator
 
 interface PracticeListNavigator : UINavigator {
 
-    fun goToPracticePage()
+    fun goToPracticePage(practiceId : Int)
 
     fun showPracticeFetchCompleted(successful: Boolean)
 }

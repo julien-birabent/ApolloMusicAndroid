@@ -4,12 +4,6 @@
 
     <data>
 
-        <import type="julienbirabent.apollomusic.ui.adapters.objective.ObjectiveAdapter" />
-
-        <variable
-            name="objAdapter"
-            type="julienbirabent.apollomusic.ui.adapters.objective.ObjectiveAdapter" />
-
         <variable
             name="viewModel"
             type="julienbirabent.apollomusic.ui.practice.detail.PracticeDetailsViewModel" />

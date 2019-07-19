@@ -39,8 +39,8 @@ class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeL
         viewModel.refreshPracticeList()
     }
 
-    override fun goToPracticePage() {
-
+    override fun goToPracticePage(practiceId: Int) {
+        findNavController().navigate(PracticeListFragmentDirections.goToPracticePage(practiceId))
     }
 
     override fun showPracticeFetchCompleted(successful: Boolean) {

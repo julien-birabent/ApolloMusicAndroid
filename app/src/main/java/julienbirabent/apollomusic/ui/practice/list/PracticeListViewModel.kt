@@ -28,7 +28,7 @@ class PracticeListViewModel @Inject constructor(
 
     val practiceItemCallback: PracticeItemCallback = object : PracticeItemCallback {
         override fun openTodayPractice(item: PracticeEntity) {
-            navigator?.goToPracticePage()
+            item.id?.let { navigator?.goToPracticePage(it) }
         }
     }
 

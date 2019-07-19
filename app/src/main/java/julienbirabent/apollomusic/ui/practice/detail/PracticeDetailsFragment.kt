@@ -32,7 +32,7 @@ class PracticeDetailsFragment : BaseFragment<FragmentPracticeDetailsBinding, Pra
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_practice_list
+        return R.layout.fragment_practice_details
     }
 
     override fun getViewModel(): PracticeDetailsViewModel {
