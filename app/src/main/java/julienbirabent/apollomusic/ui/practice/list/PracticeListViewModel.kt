@@ -11,6 +11,7 @@ import julienbirabent.apollomusic.data.repository.PracticeRepository
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.ui.adapters.practice.PracticeItemCallback
 import julienbirabent.apollomusic.ui.base.BaseViewModel
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -75,6 +76,8 @@ class PracticeListViewModel @Inject constructor(
     private fun preparePracticeListForUi(inputList: List<PracticeEntity>): List<Any> {
         val outputList: MutableList<Any> = mutableListOf()
         val copyInputList = inputList.toMutableList()
+
+        copyInputList.retainAll { it.date.after(Date())  || DateUtils.isToday(it.date.time)}
         copyInputList.sortBy { it.date }
 
         outputList.add(SimpleTextItem(R.string.header_practice_today))
