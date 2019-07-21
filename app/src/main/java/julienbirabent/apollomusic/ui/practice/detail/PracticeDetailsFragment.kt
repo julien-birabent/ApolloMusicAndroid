@@ -3,23 +3,31 @@ package julienbirabent.apollomusic.ui.practice.detail
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.FragmentPracticeDetailsBinding
+import julienbirabent.apollomusic.ui.adapters.objective.ObjectiveDetailAdapter
 import julienbirabent.apollomusic.ui.base.BaseFragment
 
 class PracticeDetailsFragment : BaseFragment<FragmentPracticeDetailsBinding, PracticeDetailsViewModel>(),
     PracticeDetailsNavigator {
 
     private val args: PracticeDetailsFragmentArgs by navArgs()
+    private lateinit var objAdapter: ObjectiveDetailAdapter
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.practiceId.postValue(args.practiceId)
+        with(viewModel) {
+            practiceId.postValue(args.practiceId)
+            objBundleList.observe(viewLifecycleOwner, Observer {
+                objAdapter.updateList(it)
+            })
+        }
     }
 
     override fun onResume() {
@@ -28,6 +36,8 @@ class PracticeDetailsFragment : BaseFragment<FragmentPracticeDetailsBinding, Pra
 
     override fun setBindingVariables(binding: ViewDataBinding) {
         super.setBindingVariables(binding)
+        objAdapter = ObjectiveDetailAdapter()
+        binding.setVariable(BR.objAdapter, objAdapter)
     }
 
     override fun getBindingVariable(): Int {

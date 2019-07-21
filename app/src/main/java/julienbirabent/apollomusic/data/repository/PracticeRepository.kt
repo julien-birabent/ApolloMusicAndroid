@@ -92,7 +92,7 @@ class PracticeRepository @Inject constructor(
                         for (bundleIndex in 0 until objs.size) {
                             var bundle = objs[bundleIndex]
                             var responseBody = objects[bundleIndex]
-                            bundle.obj.id = (responseBody as Response<ObjectiveEntity>).body()?.id
+                            bundle.obj.id = (responseBody as Response<ObjectiveEntity>).body()?.id!!
                             dbExec {
                                 objectiveDao.insert(bundle.obj)
                                 Log.d("create practice", "inserting objective : $bundle.obj")
@@ -147,7 +147,7 @@ class PracticeRepository @Inject constructor(
             .firstOrError()
             .retry(1)
             .flatMap {
-                Log.d(CriteriaRepository::class.simpleName, "Fetched ${it.body()?.size} practices from API...")
+                Log.d(PracticeRepository::class.simpleName, "Fetched ${it.body()?.size} practices from API...")
                 Single.just(it.body() ?: emptyList())
             }
             .doOnSuccess { storePracticesInDb(it) }
@@ -207,12 +207,12 @@ class PracticeRepository @Inject constructor(
             }
         }.subscribe({
             Log.d(
-                CriteriaRepository::class.simpleName,
+                PracticeRepository::class.simpleName,
                 "Inserting practice related objects in DB : $objective , $objectiveCriteriaJoin, $objectiveExerciseJoin"
             )
         }, {
             Log.d(
-                CriteriaRepository::class.simpleName,
+                PracticeRepository::class.simpleName,
                 "Failed to insert practice related objects in DB : $objective , $objectiveCriteriaJoin, $objectiveExerciseJoin"
             )
         })
@@ -224,9 +224,9 @@ class PracticeRepository @Inject constructor(
             .subscribeOn(scheduler.io())
             .observeOn(scheduler.io())
             .subscribe({
-                Log.d(CriteriaRepository::class.simpleName, "Inserting ${practices.size} practices in DB...")
+                Log.d(PracticeRepository::class.simpleName, "Inserting ${practices.size} practices in DB...")
             }, {
-                Log.e(CriteriaRepository::class.simpleName, "Error inserting practices in DB : ${it.message}", it)
+                Log.e(PracticeRepository::class.simpleName, "Error inserting practices in DB : ${it.message}", it)
             })
 
     }

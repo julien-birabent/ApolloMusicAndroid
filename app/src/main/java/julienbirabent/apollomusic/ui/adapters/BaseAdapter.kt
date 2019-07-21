@@ -8,11 +8,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 
-abstract class BaseAdapter<Model, Callback>(callback: Callback) :
+abstract class BaseAdapter<Model, Callback>(protected var callback: Callback? = null) :
     RecyclerView.Adapter<DataBindingViewHolder<Model, Callback>>() {
 
     protected var listItems: MutableList<Model>
-    protected var callback: Callback? = callback
 
     init {
         listItems = mutableListOf()

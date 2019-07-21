@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import julienbirabent.apollomusic.data.local.entities.PracticeEntity
+import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
+import julienbirabent.apollomusic.data.repository.ObjectiveRepository
 import julienbirabent.apollomusic.data.repository.PracticeRepository
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.ui.base.BaseViewModel
@@ -14,6 +16,7 @@ import javax.inject.Singleton
 @Singleton
 class PracticeDetailsViewModel @Inject constructor(
     private val practiceRepo: PracticeRepository,
+    private val objectiveRepository: ObjectiveRepository,
     private val scheduler: AppSchedulerProvider
 ) :
     BaseViewModel<PracticeDetailsNavigator>() {
@@ -35,12 +38,13 @@ class PracticeDetailsViewModel @Inject constructor(
         practiceRepo.getPractice(practiceId)
     }
 
-    val practiceNotes : LiveData<String> = Transformations.map(practice){
+    val objBundleList: LiveData<List<ObjectiveBundle>> = Transformations.switchMap(practice) {
+        it.id?.let { it1 -> objectiveRepository.getObjectiveBundleList(it1, compositeDisposable) }
+    }
+
+    val practiceNotes: LiveData<String> = Transformations.map(practice) {
         it.userNotes
     }
 
-    init {
-
-    }
 
 }

@@ -15,6 +15,9 @@ abstract class ExerciseDao : BaseDao<ExerciseEntity> {
     @Query("select * from exercise")
     abstract fun getExercises(): List<ExerciseEntity>
 
+    @Query("select * from exercise where id=:exId")
+    abstract fun getExerciseById(exId: Int): ExerciseEntity
+
     @Query("select * from exercise")
     abstract fun getAllExercisesLive(): LiveData<List<ExerciseEntity>>
 }

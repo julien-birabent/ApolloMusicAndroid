@@ -28,5 +28,5 @@ data class ObjectiveCriteriaJoin(
 
     @Expose
     @SerializedName("criteriaId")
-    var criteriaId: String
+    var criteriaId: String = ""
 )
