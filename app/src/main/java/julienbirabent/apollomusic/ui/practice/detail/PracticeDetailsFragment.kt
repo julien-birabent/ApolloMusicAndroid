@@ -19,7 +19,7 @@ class PracticeDetailsFragment : BaseFragment<FragmentPracticeDetailsBinding, Pra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.practiceId = args.practiceId
+        viewModel.practiceId.postValue(args.practiceId)
     }
 
     override fun onResume() {

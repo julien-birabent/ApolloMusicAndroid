@@ -170,6 +170,10 @@ class PracticeRepository @Inject constructor(
             }
     }
 
+    fun getPractice(practiceId: Int): LiveData<PracticeEntity> {
+        return practiceDao.findPracticeById(practiceId)
+    }
+
     @SuppressLint("CheckResult")
     fun fetchPracticesRelatedObjects(): Observable<Unit> {
         return userRepo.getLoggedUser()

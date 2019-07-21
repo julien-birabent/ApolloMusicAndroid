@@ -15,6 +15,9 @@ abstract class PracticeDao : BaseDao<PracticeEntity> {
     @Query("SELECT * FROM practice WHERE profileId=:userId")
     abstract fun findPractices(userId: String): List<PracticeEntity>
 
+    @Query("SELECT * FROM practice WHERE id=:practiceId")
+    abstract fun findPracticeById(practiceId: Int): LiveData<PracticeEntity>
+
     fun synchronizeUserPractices(userId: String?, freshPractices: List<PracticeEntity>) {
         userId?.let {
             val practices = findPractices(it)
