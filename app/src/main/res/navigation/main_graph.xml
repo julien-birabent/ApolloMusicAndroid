@@ -90,8 +90,8 @@
 
     <fragment
         android:id="@+id/practiceDetailsFragment"
-        android:name=""
-        android:label="PracticeDetailsFragment"
+        android:name="julienbirabent.apollomusic.ui.practice.detail.PracticeDetailsFragment"
+        android:label=""
         tools:layout="@layout/fragment_practice_details">
         <argument
             android:name="practiceId"

@@ -46,7 +46,7 @@ class StateLiveData<T>(
 
     override fun onInactive() {
         super.onInactive()
-        disposable.clear()
+        if (!disposable.isDisposed) disposable.clear()
     }
 
     /**

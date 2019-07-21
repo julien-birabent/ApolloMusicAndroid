@@ -1,5 +1,6 @@
 package julienbirabent.apollomusic.ui.objective
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -150,25 +151,25 @@ class ObjectiveCreateViewModel @Inject constructor(
                 .observeOn(scheduler.io())
                 .subscribe({
                     Log.d("", "")
-                }, { Log.d("", "")})
+                }, { Log.d("", "") })
         )
     }
 
+    @SuppressLint("CheckResult")
     fun createCriteria(criteriaString: String) {
-        compositeDisposable.add(
-            criteriaRepo.saveCriteria(criteriaString)
-                .subscribeOn(scheduler.ui())
-                .observeOn(scheduler.io())
-                .subscribe({
-                    Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")
-                }, {
-                    if (it is UnknownHostException) {
-                        // Probleme de connexion internet
-                    }
-                    setIsLoading(false)
-                    Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString was not added")
-                })
-        )
+        criteriaRepo.saveCriteria(criteriaString)
+            .subscribeOn(scheduler.ui())
+            .observeOn(scheduler.io())
+            .doOnSubscribe { Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Subscribing to save criteria call") }
+            .subscribe({
+                Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")
+            }, {
+                if (it is UnknownHostException) {
+                    // Probleme de connexion internet
+                }
+                setIsLoading(false)
+                Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString was not added")
+            })
     }
 
     /*******************************************************************************/

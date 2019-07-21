@@ -13,5 +13,6 @@ class PracticeDetailsViewModel @Inject constructor(
 ) :
     BaseViewModel<PracticeDetailsNavigator>() {
 
+    var practiceId: Int = -1
 
 }

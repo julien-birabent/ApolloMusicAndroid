@@ -11,6 +11,7 @@ import julienbirabent.apollomusic.data.api.services.CriteriaAPI
 import julienbirabent.apollomusic.data.local.dao.CriteriaDao
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.UserEntity
+import julienbirabent.apollomusic.data.local.model.PostCriteria
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,23 +25,6 @@ class CriteriaRepository @Inject constructor(
 ) : BaseRepository() {
 
     val currentUserLiveData: LiveData<UserEntity> = userRepo.getCurrentLoggedUser()
-
-    init {
-        /*compositeDisposable.add(connectionAvailableEmitter()
-            .subscribeOn(scheduler.io())
-            .observeOn(scheduler.ui())
-            .flatMap { getCriteriaFromServer(userRepo.getLoggedUserId().toString()) }
-            .subscribe({
-                storeCriteriaInDb(filterUserCriteria(userRepo.getLoggedUserId().toString(), it))
-                Log.d(
-                    CriteriaRepository::class.simpleName,
-                    "Fetching criteria on connection gained ${it.size}"
-                )
-            }, {
-                Log.e(CriteriaRepository::class.simpleName, "An error happened : " + it.message)
-            })
-        )*/
-    }
 
     private fun criteriasFromServerUpdates(profileId: String): Observable<List<CriteriaEntity>> {
         return connectionAvailableEmitter()
@@ -79,7 +63,7 @@ class CriteriaRepository @Inject constructor(
     }
 
     fun saveCriteria(criteria: String): Single<Response<CriteriaEntity>> {
-        return criteriaAPI.postCriteria(criteria, userRepo.getLoggedUserId()?.toInt())
+        return criteriaAPI.postCriteria(PostCriteria(criteria, userRepo.getLoggedUserId()))
             .observeOn(scheduler.io())
             .subscribeOn(scheduler.ui())
             .doOnSuccess { response ->

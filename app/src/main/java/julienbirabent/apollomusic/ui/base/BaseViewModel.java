@@ -1,5 +1,6 @@
 package julienbirabent.apollomusic.ui.base;
 
+import android.util.Log;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModel;
 import io.reactivex.disposables.CompositeDisposable;
