@@ -33,7 +33,7 @@
             android:padding="@dimen/content_padding_simple">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/date_header"
+                android:id="@+id/practice_details_header"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

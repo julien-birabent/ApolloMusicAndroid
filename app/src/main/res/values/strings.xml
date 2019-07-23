@@ -69,4 +69,5 @@
     <string name="practice_successfully_fetched">The practices list has been updated successfully.</string>
     <string name="practice_unsuccessfully_fetched">Sorry. There has been an error.</string>
     <string name="retry">Retry</string>
+    <string name="your_objectives_for_this_practice">Your objectives for this practice</string>
 </resources>

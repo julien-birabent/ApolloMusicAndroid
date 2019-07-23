@@ -22,20 +22,45 @@
             android:layout_height="match_parent"
             android:padding="@dimen/content_padding_simple">
 
-            <!--<androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/date_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/music_ic_left"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="Today"
+                android:src="@drawable/ic_musical_note"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintEnd_toStartOf="@+id/practice_details_header"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/music_ic_right"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_musical_note"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/practice_details_header"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/practice_details_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/your_objectives_for_this_practice"
+                android:textAlignment="center"
                 android:textColor="@color/text_header_1"
                 android:textSize="@dimen/text_size_med"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />-->
+                app:layout_constraintEnd_toStartOf="@+id/music_ic_right"
+                app:layout_constraintStart_toEndOf="@+id/music_ic_left"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/objective_list"
@@ -44,10 +69,10 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:setAdapter="@{objAdapter}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/practice_details_header"
+                app:setAdapter="@{objAdapter}" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/notes"
