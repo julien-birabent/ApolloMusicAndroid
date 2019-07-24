@@ -6,7 +6,16 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 android {
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+        freeCompilerArgs = ['-Xjvm-default=compatibility']
+    }
+
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "julienbirabent.apollomusic"

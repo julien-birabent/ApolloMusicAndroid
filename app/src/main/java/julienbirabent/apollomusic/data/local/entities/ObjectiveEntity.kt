@@ -21,7 +21,7 @@ data class ObjectiveEntity(
 
     @Expose
     @SerializedName("id")
-    @PrimaryKey var id: Int? = -1,
+    @PrimaryKey var id: Int = -1,
 
     @Expose
     @SerializedName("objectif")

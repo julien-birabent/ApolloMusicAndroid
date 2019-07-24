@@ -61,6 +61,11 @@ class ObjectiveCriteriaSelectionFragment :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshCriteriaList()
+    }
+
     private fun onConfirmAddCriteria(criteriaString: String): Boolean {
         return if (viewModel.isCriteriaInputValid(criteriaString)) {
             viewModel.createCriteria(criteriaString)

@@ -19,6 +19,7 @@ import julienbirabent.apollomusic.data.local.entities.ObjectiveEntity
 import julienbirabent.apollomusic.data.local.entities.ObjectiveExerciseJoin
 import julienbirabent.apollomusic.data.local.entities.PracticeEntity
 import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
+import julienbirabent.apollomusic.data.local.model.PracticeBundle
 import julienbirabent.apollomusic.extensions.add
 import julienbirabent.apollomusic.extensions.dbExec
 import julienbirabent.apollomusic.extensions.deepCopyOf
@@ -92,7 +93,7 @@ class PracticeRepository @Inject constructor(
                         for (bundleIndex in 0 until objs.size) {
                             var bundle = objs[bundleIndex]
                             var responseBody = objects[bundleIndex]
-                            bundle.obj.id = (responseBody as Response<ObjectiveEntity>).body()?.id
+                            bundle.obj.id = (responseBody as Response<ObjectiveEntity>).body()?.id!!
                             dbExec {
                                 objectiveDao.insert(bundle.obj)
                                 Log.d("create practice", "inserting objective : $bundle.obj")
@@ -107,7 +108,12 @@ class PracticeRepository @Inject constructor(
                                     Log.d("create practice", "zip join call")
                                     dbExec {
                                         objCriteriaJoin.body()?.let { it -> objectiveCriteriaJoinDao.insert(it) }
-                                        objExerciseJoin.body()?.let { it -> objectiveExerciseJoinDao.insert(it) }
+
+                                        objExerciseJoin.body()?.let { it ->
+                                            if (it.exerciseId != null) {
+                                                objectiveExerciseJoinDao.insert(it)
+                                            }
+                                        }
                                         Log.d("create practice", "inserting ObjectiveCriteriaJoin : $objCriteriaJoin")
                                         Log.d("create practice", "inserting ObjectiveExerciseJoin : $objExerciseJoin")
                                         results.set(i, true)
@@ -135,7 +141,13 @@ class PracticeRepository @Inject constructor(
         return if (userId != null) {
             practiceDao.findPracticeForUser(userId)
         } else return DefaultLiveData.create(emptyList())
+    }
 
+    fun getPracticeBundleList(practiceId: Int, objectiveBundle: List<ObjectiveBundle>): Observable<PracticeBundle> {
+        return Observable.fromCallable { practiceDao.findPracticeById(practiceId) }
+            .observeOn(scheduler.io())
+            .subscribeOn(scheduler.io())
+            .map { PracticeBundle(it, objectiveBundle) }
     }
 
     fun fetchPracticeList(): Single<List<PracticeEntity>> {
@@ -147,22 +159,87 @@ class PracticeRepository @Inject constructor(
             .firstOrError()
             .retry(1)
             .flatMap {
-                Log.d(CriteriaRepository::class.simpleName, "Fetched ${it.body()?.size} practices from API...")
+                Log.d(PracticeRepository::class.simpleName, "Fetched ${it.body()?.size} practices from API...")
                 Single.just(it.body() ?: emptyList())
             }
-            .onErrorReturn { emptyList() }
             .doOnSuccess { storePracticesInDb(it) }
     }
 
     @SuppressLint("CheckResult")
+    fun fetchPractice(practiceId: Int): Observable<Unit> {
+        return practiceAPI.getPracticeWithId(practiceId)
+            .observeOn(scheduler.io())
+            .subscribeOn(scheduler.ui())
+            .map { practiceDao.synchronizeUserPractices(userRepo.getLoggedUserId(), listOf(it)).first() }
+            .flatMap { practiceAPI.getObjectiveWithPracticeId(it.id.toString()) }
+            .flattenAsObservable { it.body() }
+            .concatMapSingle {
+                with(practiceAPI) {
+                    Single.zip(getObjectiveCriteriaJoin(it.id), getObjectiveExerciseJoin(it.id),
+                        BiFunction<List<ObjectiveCriteriaJoin>, List<ObjectiveExerciseJoin>, Unit> { critJoin, exJoin ->
+                            storePracticeRelatedObjects(it, critJoin, exJoin)
+                        })
+                }
+            }
+    }
+
+    fun getPractice(practiceId: Int): LiveData<PracticeEntity> {
+        return practiceDao.findPracticeByIdLive(practiceId)
+    }
+
+    @SuppressLint("CheckResult")
+    fun fetchPracticesRelatedObjects(): Observable<Unit> {
+        return userRepo.getLoggedUser()
+            .observeOn(scheduler.io())
+            .subscribeOn(scheduler.ui())
+            .flatMapSingle { practiceAPI.getUserPractices(it.id) }
+            .flatMapIterable { it.body() ?: emptyList() }
+            .flatMapSingle { practiceAPI.getObjectiveWithPracticeId(it.id.toString()) }
+            .flatMapIterable { it.body() ?: emptyList() }
+            .concatMapSingle {
+                with(practiceAPI) {
+                    Single.zip(getObjectiveCriteriaJoin(it.id), getObjectiveExerciseJoin(it.id),
+                        BiFunction<List<ObjectiveCriteriaJoin>, List<ObjectiveExerciseJoin>, Unit> { critJoin, exJoin ->
+                            storePracticeRelatedObjects(it, critJoin, exJoin)
+                        })
+                }
+            }
+    }
+
+    @SuppressLint("CheckResult")
+    internal fun storePracticeRelatedObjects(
+        objective: ObjectiveEntity,
+        objectiveCriteriaJoin: List<ObjectiveCriteriaJoin>,
+        objectiveExerciseJoin: List<ObjectiveExerciseJoin>
+    ) {
+        Observable.fromCallable {
+            dbExec {
+                objectiveDao.insert(objective)
+                objectiveCriteriaJoinDao.insert(*objectiveCriteriaJoin.toTypedArray())
+                objectiveExerciseJoinDao.insert(*objectiveExerciseJoin.filter { it.exerciseId != null }.toTypedArray())
+            }
+        }.subscribe({
+            Log.d(
+                PracticeRepository::class.simpleName,
+                "Inserting practice related objects in DB : $objective , $objectiveCriteriaJoin, $objectiveExerciseJoin"
+            )
+        }, {
+            Log.d(
+                PracticeRepository::class.simpleName,
+                "Failed to insert practice related objects in DB : $objective , $objectiveCriteriaJoin, $objectiveExerciseJoin"
+            )
+        })
+    }
+
+    @SuppressLint("CheckResult")
     private fun storePracticesInDb(practices: List<PracticeEntity>) {
-        Observable.fromCallable { practiceDao.insert(*practices.toTypedArray()) }
+        Observable.fromCallable { practiceDao.synchronizeUserPractices(userRepo.getLoggedUserId(), practices) }
             .subscribeOn(scheduler.io())
             .observeOn(scheduler.io())
-            .subscribe ({
-                Log.d(CriteriaRepository::class.simpleName, "Inserting ${practices.size} practices in DB...")
-            },{
-                Log.e(CriteriaRepository::class.simpleName, "Error inserting practices in DB : ${it.message}", it )
+            .subscribe({
+                Log.d(PracticeRepository::class.simpleName, "Inserting ${practices.size} practices in DB...")
+            }, {
+                Log.e(PracticeRepository::class.simpleName, "Error inserting practices in DB : ${it.message}", it)
             })
 
     }

@@ -35,7 +35,7 @@ class TablatureView @JvmOverloads constructor(
     private fun initStringContainer() {
         stringsContainer = LinearLayout(context).apply {
             orientation = VERTICAL
-            gravity = Gravity.LEFT
+            gravity = Gravity.CENTER
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
             this@TablatureView.addView(this)
         }

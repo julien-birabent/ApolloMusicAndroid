@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:background="@drawable/bg_card_outlined"
+        android:background="@drawable/bg_card_outlined_color_primary"
         android:padding="8dp">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -56,6 +56,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:onClick="@{() -> callback.openPractice(item)}"
             android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
             android:text="@string/let_s_practice"
             app:iconTint="@color/green_fresh_herb"

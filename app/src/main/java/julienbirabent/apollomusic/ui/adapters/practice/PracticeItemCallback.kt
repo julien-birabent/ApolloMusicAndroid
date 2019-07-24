@@ -4,5 +4,5 @@ import julienbirabent.apollomusic.data.local.entities.PracticeEntity
 
 interface PracticeItemCallback {
 
-    fun openTodayPractice(item: PracticeEntity)
+    fun openPractice(item: PracticeEntity)
 }

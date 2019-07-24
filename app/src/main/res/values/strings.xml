@@ -43,8 +43,11 @@
     <string name="confirm">Confirm</string>
 
     <string name="difficulty">Difficulty : %1$s</string>
+    <string name="notes">Notes : %1$s</string>
     <string name="tempo">Tempo : %1$s</string>
+    <string name="tempo_plus_suffix">Tempo : %1$s bpm.</string>
     <string name="practice_time">Practice time : %1$s</string>
+    <string name="practice_time_plus_suffix">Practice time : %1$s min.</string>
     <string name="criteria">Criteria : %1$s</string>
     <string name="description">Description : %1$s</string>
     <string name="exercise_s">Exercise : %1$s</string>
@@ -65,4 +68,16 @@
     <string name="header_practice_to_come">Practices to come</string>
     <string name="see_details">See details</string>
     <string name="no_practice_registered">It seems like you don\'t have any pratices registered yet.</string>
+    <string name="no_practice_scheduled_for_today">No practices are planned today</string>
+    <string name="no_practice_scheduled_in_future">No practices are planned in the future</string>
+
+    <string name="practice_successfully_fetched">The practices list has been updated successfully.</string>
+    <string name="practice_unsuccessfully_fetched">Sorry. There has been an error.</string>
+    <string name="retry">Retry</string>
+    <string name="your_objectives_for_this_practice">Your objectives for this practice</string>
+
+    <string name="objective_header">Objective %1$s</string>
+    <string name="title">Title : %1$s</string>
+    <string name="no_notes">None.</string>
+    <string name="start_exercise">Start exercise</string>
 </resources>

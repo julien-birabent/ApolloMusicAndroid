@@ -29,38 +29,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:padding="4dp">
-
+        android:padding="4dp"
+        android:shadowRadius="5"
+        app:cardElevation="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white_purpleish"
-            android:padding="4dp">
+            android:background="@color/white">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/objective_title"
+                android:id="@+id/objective_header"
                 style="@style/TextView.ListItem"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_height="@dimen/default_list_item_height"
+                android:gravity="center_vertical"
                 android:text="@{item.obj.objective}"
+                android:textSize="@dimen/text_size_med"
+                app:layout_constraintBottom_toTopOf="@id/objective_details_container"
                 app:layout_constraintEnd_toStartOf="@+id/delete_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/expand_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_margin="4dp"
-                android:background="@android:color/transparent"
-                android:clickable="false"
-                android:focusable="false"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
-                android:tint="@color/colorAccent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageButton
@@ -75,67 +63,83 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_garbage"
                 android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toTopOf="@id/objective_details_container"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/expand_button"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/expand_button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="4dp"
+                android:background="@android:color/transparent"
+                android:clickable="false"
+                android:focusable="false"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toTopOf="@id/objective_details_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
                 android:id="@+id/objective_details_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:orientation="vertical"
                 android:padding="8dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/objective_title">
+                app:layout_constraintTop_toBottomOf="@id/objective_header">
 
                 <include
                     android:id="@+id/view_exercise_short_info"
-                    layout="@layout/view_exercise_short_info"
+                    layout="@layout/view_exercice_info_alternative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     bind:item="@{item.ex}" />
 
-                <julienbirabent.apollomusic.view.EditTextWithSuffix
-                    android:id="@+id/practice_time_target"
-                    style="@style/TextView.Subtitle"
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:padding="8dp"
-                    android:text="@{String.format(@string/practice_time,item.obj.targetPracticeTime)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/view_exercise_short_info"
-                    app:suffix="@string/minute" />
+                    android:background="@drawable/bg_card_outlined_saumon"
+                    android:orientation="vertical">
 
-                <julienbirabent.apollomusic.view.EditTextWithSuffix
-                    android:id="@+id/tempo_target"
-                    style="@style/TextView.Subtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:padding="8dp"
-                    android:text="@{String.format(@string/tempo,item.obj.tempoBase)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/practice_time_target"
-                    app:suffix="@string/bpm" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/criteria_description"
+                        style="@style/TextView.Title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="@{String.format(@string/criteria,item.crit.criteria)}" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/criteria_description"
-                    style="@style/TextView.Subtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:padding="8dp"
-                    android:text="@{String.format(@string/criteria,item.crit.criteria)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tempo_target" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/practice_time_target"
+                        style="@style/TextView.Subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="@{String.format(@string/practice_time_plus_suffix,item.obj.targetPracticeTime)}"
+                        app:suffix="@string/minute" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tempo_target"
+                        style="@style/TextView.Subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:animatedVisibility="@{item.obj.tempoBase != null}"
+                        android:text="@{String.format(@string/tempo_plus_suffix,item.obj.tempoBase)}"
+                        app:suffix="@string/bpm" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

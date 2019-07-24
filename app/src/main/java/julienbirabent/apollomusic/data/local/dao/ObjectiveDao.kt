@@ -12,4 +12,10 @@ abstract class ObjectiveDao : BaseDao<ObjectiveEntity> {
     @Query("SELECT * FROM objective WHERE practiceId=:practiceId")
     abstract fun findObjectiveForPractice(practiceId: Int): LiveData<List<ObjectiveEntity>>
 
+    @Query("SELECT * FROM objective WHERE practiceId=:practiceId")
+    abstract fun findObjectiveListWithPracticeId(practiceId: Int): List<ObjectiveEntity>
+
+    @Query("SELECT * FROM objective WHERE id=:objId")
+    abstract fun findObjective(objId: Int): ObjectiveEntity
+
 }

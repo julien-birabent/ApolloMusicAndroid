@@ -5,10 +5,7 @@ import julienbirabent.apollomusic.data.local.entities.ObjectiveCriteriaJoin
 import julienbirabent.apollomusic.data.local.entities.ObjectiveEntity
 import julienbirabent.apollomusic.data.local.entities.ObjectiveExerciseJoin
 import retrofit2.Response
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 import javax.inject.Singleton
 
 @Singleton
@@ -39,4 +36,5 @@ interface ObjectiveAPI {
         @Field(value = "exerciceId") exerciseId: Int?,
         @Field(value = "objectiveId") objIdField: Int?
     ): Single<Response<ObjectiveExerciseJoin>>
+
 }

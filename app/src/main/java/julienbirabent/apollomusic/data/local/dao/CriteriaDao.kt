@@ -10,7 +10,7 @@ import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 abstract class CriteriaDao : BaseDao<CriteriaEntity> {
 
     @Query("SELECT * FROM criteria WHERE id = :id LIMIT 1")
-    abstract fun getCriteriaById(id: Int): CriteriaEntity?
+    abstract fun getCriteriaById(id: Int?): CriteriaEntity?
 
     @Query("SELECT * FROM criteria WHERE profileId= :profileId OR profileId= :adminProfileId")
     abstract fun getCriteriaListByUserLive(profileId: Int, adminProfileId: Int): LiveData<List<CriteriaEntity>>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="julienbirabent.apollomusic.data.local.entities.ExerciseEntity" />
+
+        <import type="julienbirabent.apollomusic.data.local.Difficulty" />
+
+        <variable
+            name="item"
+            type="julienbirabent.apollomusic.data.local.entities.ExerciseEntity" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_card_outlined_green">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/exercise_title"
+            style="@style/TextView.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@{String.format(@string/exercise_s,item.title)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/exercise_description"
+            style="@style/TextView.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@{String.format(@string/description,item.description)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exercise_title" />
+
+        <!-- Add Youtube links -->
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/exercise_difficulty"
+            style="@style/TextView.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@{String.format(@string/difficulty,Difficulty.intToString(item.difficulty))}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exercise_description" />
+
+        <julienbirabent.apollomusic.view.TablatureView
+            android:id="@+id/exercise_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exercise_difficulty"
+            app:tablature="@{item.tablature}">
+
+        </julienbirabent.apollomusic.view.TablatureView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

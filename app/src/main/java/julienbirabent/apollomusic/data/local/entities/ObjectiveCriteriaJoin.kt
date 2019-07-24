@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(
     tableName = "objective_criteria_join",
-    primaryKeys = ["objectiveId", "criteriaId"],
+    primaryKeys = ["objectiveId", "criteriaId"]/*,
     foreignKeys = [
         ForeignKey(
             entity = ObjectiveEntity::class,
@@ -19,7 +19,7 @@ import com.google.gson.annotations.SerializedName
             parentColumns = ["id"],
             childColumns = ["criteriaId"]
         )
-    ]
+    ]*/
 )
 data class ObjectiveCriteriaJoin(
     @Expose
@@ -28,5 +28,5 @@ data class ObjectiveCriteriaJoin(
 
     @Expose
     @SerializedName("criteriaId")
-    var criteriaId: String
+    var criteriaId: String = ""
 )

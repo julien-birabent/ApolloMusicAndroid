@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(
     tableName = "objective_exercise_join",
-    primaryKeys = ["objectiveId", "exerciseId"],
+    primaryKeys = ["objectiveId", "exerciseId"]/*,
     foreignKeys = [
         ForeignKey(
             entity = ObjectiveEntity::class,
@@ -19,7 +19,7 @@ import com.google.gson.annotations.SerializedName
             parentColumns = ["id"],
             childColumns = ["exerciseId"]
         )
-    ]
+    ]*/
 )
 data class ObjectiveExerciseJoin(
     @Expose
@@ -28,5 +28,5 @@ data class ObjectiveExerciseJoin(
 
     @Expose
     @SerializedName("exerciceId")
-    var exerciseId: String
+    var exerciseId: String = "-1"
 )

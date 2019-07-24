@@ -1,15 +1,16 @@
 package julienbirabent.apollomusic.ui.base;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import dagger.android.support.AndroidSupportInjection;
@@ -57,6 +58,7 @@ public abstract class BaseFragment<Binding extends androidx.databinding.ViewData
             BaseActivity activity = (BaseActivity) context;
             this.mActivity = activity;
             activity.onFragmentAttached();
+
         }
     }
 
@@ -71,13 +73,21 @@ public abstract class BaseFragment<Binding extends androidx.databinding.ViewData
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        hideToolbar(true);
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         rootView = binding.getRoot();
         return rootView;
     }
 
     @Override
+    public void onDestroyView() {
+        hideToolbar(false);
+        super.onDestroyView();
+    }
+
+    @Override
     public void onDetach() {
+        mActivity.setRequestedOrientation(getDefaultScreenOrientation());
         mActivity = null;
         super.onDetach();
     }
@@ -91,9 +101,10 @@ public abstract class BaseFragment<Binding extends androidx.databinding.ViewData
             viewModel.setNavigator(this);
         }
         binding.executePendingBindings();
+        mActivity.setRequestedOrientation(getDefaultScreenOrientation());
     }
 
-    protected void setBindingVariables(@NotNull androidx.databinding.ViewDataBinding binding){
+    protected void setBindingVariables(@NotNull androidx.databinding.ViewDataBinding binding) {
         this.binding.setVariable(getBindingVariable(), viewModel);
     }
 
@@ -111,22 +122,23 @@ public abstract class BaseFragment<Binding extends androidx.databinding.ViewData
         }
     }
 
-    public boolean isNetworkConnected() {
-        return mActivity != null && mActivity.isNetworkConnected();
-    }
-
-    public void openActivityOnTokenExpire() {
-        if (mActivity != null) {
-            mActivity.openActivityOnTokenExpire();
-        }
-    }
-
     private void performDependencyInjection() {
         AndroidSupportInjection.inject(this);
     }
 
     protected ViewModelFactory getViewModelFactory() {
         return viewModelFactory;
+    }
+
+    protected int getDefaultScreenOrientation() {
+        return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    }
+
+    private void hideToolbar(Boolean hideIt) {
+        if (this instanceof HideToolbarCallback) {
+            getBaseActivity().hideToolbar(hideIt);
+            ((HideToolbarCallback) this).onHideToolbar(!hideIt);
+        }
     }
 
     public interface Callback {

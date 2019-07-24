@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
     entities = [UserEntity::class, ExampleEntity::class, PracticeEntity::class,
         ObjectiveEntity::class, ExerciseEntity::class, CriteriaEntity::class,
         ObjectiveExerciseJoin::class, ObjectiveCriteriaJoin::class],
-    version = 2
+    version = 3
 )
 @TypeConverters(LoginTypeConverters::class, DateConverters::class, ListConverter::class, DifficultyConverter::class)
 abstract class AppDatabase : RoomDatabase() {

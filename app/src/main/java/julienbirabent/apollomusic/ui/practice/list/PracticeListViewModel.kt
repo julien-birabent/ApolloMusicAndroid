@@ -1,6 +1,7 @@
 package julienbirabent.apollomusic.ui.practice.list
 
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import julienbirabent.apollomusic.R
@@ -10,6 +11,7 @@ import julienbirabent.apollomusic.data.repository.PracticeRepository
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
 import julienbirabent.apollomusic.ui.adapters.practice.PracticeItemCallback
 import julienbirabent.apollomusic.ui.base.BaseViewModel
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,8 +28,8 @@ class PracticeListViewModel @Inject constructor(
     var practiceListIsEmpty: LiveData<Boolean>
 
     val practiceItemCallback: PracticeItemCallback = object : PracticeItemCallback {
-        override fun openTodayPractice(item: PracticeEntity) {
-            navigator?.goToPracticePage()
+        override fun openPractice(item: PracticeEntity) {
+            item.id?.let { navigator?.goToPracticePage(it) }
         }
     }
 
@@ -49,33 +51,52 @@ class PracticeListViewModel @Inject constructor(
         isLoading.set(true)
         compositeDisposable.add(
             practiceRepo.fetchPracticeList()
-                .observeOn(scheduler.io())
                 .subscribeOn(scheduler.ui())
+                .observeOn(scheduler.io())
                 .delay(1, TimeUnit.SECONDS)
                 .doOnTerminate { isLoading.set(false) }
-                .subscribe()
+                .subscribe({
+                    navigator?.showPracticeFetchCompleted(true)
+                }, {
+                    navigator?.showPracticeFetchCompleted(false)
+                })
         )
+
+        compositeDisposable.add(practiceRepo.fetchPracticesRelatedObjects()
+            .observeOn(scheduler.io())
+            .subscribeOn(scheduler.ui())
+            .subscribe({
+            }, {
+                Log.d("PracticeListViewModel", "Error while fetching practices related objects", it)
+            }
+            ))
 
     }
 
     private fun preparePracticeListForUi(inputList: List<PracticeEntity>): List<Any> {
         val outputList: MutableList<Any> = mutableListOf()
         val copyInputList = inputList.toMutableList()
+
+        copyInputList.retainAll { it.date.after(Date()) || DateUtils.isToday(it.date.time) }
         copyInputList.sortBy { it.date }
 
-        outputList.add(SimpleTextItem(R.string.header_practice_today))
+        outputList.add(SimpleTextItem(R.string.header_practice_today, true))
 
         copyInputList.filter { DateUtils.isToday(it.date.time) }.apply {
-            forEach { practice ->
-                outputList.add(practice)
-            }
+            if (this.isNotEmpty()) {
+                forEach { practice ->
+                    outputList.add(practice)
+                }
+            } else outputList.add(SimpleTextItem(R.string.no_practice_scheduled_for_today, false))
         }
-        outputList.add(SimpleTextItem(R.string.header_practice_to_come))
+        outputList.add(SimpleTextItem(R.string.header_practice_to_come, true))
 
         copyInputList.filter { !DateUtils.isToday(it.date.time) }.apply {
-            forEach { practice ->
-                outputList.add(practice)
-            }
+            if (isNotEmpty()) {
+                forEach { practice ->
+                    outputList.add(practice)
+                }
+            } else outputList.add(SimpleTextItem(R.string.no_practice_scheduled_in_future, false))
         }
         return outputList
     }

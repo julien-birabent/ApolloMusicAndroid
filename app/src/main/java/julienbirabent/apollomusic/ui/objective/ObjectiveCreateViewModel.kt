@@ -1,5 +1,6 @@
 package julienbirabent.apollomusic.ui.objective
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -121,6 +122,7 @@ class ObjectiveCreateViewModel @Inject constructor(
         criteriaSelected.postValue(null)
         canGoToCriteriaSelection.postValue(false)
         practiceTargetTime.postValue("0")
+        customObjectiveString.postValue("")
     }
 
     fun getCriteriaList(): LiveData<StateData<MutableList<CheckedWrapper<CriteriaEntity>>>> {
@@ -143,21 +145,32 @@ class ObjectiveCreateViewModel @Inject constructor(
         return criteriaString.isNotEmpty()
     }
 
-    fun createCriteria(criteriaString: String) {
+    fun refreshCriteriaList() {
         compositeDisposable.add(
-            criteriaRepo.saveCriteria(criteriaString)
-                .subscribeOn(scheduler.io())
-                .observeOn(scheduler.ui())
+            criteriaRepo.refreshCriteriaList()
+                .subscribeOn(scheduler.ui())
+                .observeOn(scheduler.io())
                 .subscribe({
-                    Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")
-                }, {
-                    if (it is UnknownHostException) {
-                        // Probleme de connexion internet
-                    }
-                    setIsLoading(false)
-                    Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString was not added")
-                })
+                    Log.d("", "")
+                }, { Log.d("", "") })
         )
+    }
+
+    @SuppressLint("CheckResult")
+    fun createCriteria(criteriaString: String) {
+        criteriaRepo.saveCriteria(criteriaString)
+            .subscribeOn(scheduler.ui())
+            .observeOn(scheduler.io())
+            .doOnSubscribe { Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Subscribing to save criteria call") }
+            .subscribe({
+                Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString successfuly added")
+            }, {
+                if (it is UnknownHostException) {
+                    // Probleme de connexion internet
+                }
+                setIsLoading(false)
+                Log.d(ObjectiveCreateViewModel::class.qualifiedName, "Criteria $criteriaString was not added")
+            })
     }
 
     /*******************************************************************************/
