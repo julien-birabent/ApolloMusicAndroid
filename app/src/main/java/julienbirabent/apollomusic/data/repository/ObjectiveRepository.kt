@@ -1,11 +1,8 @@
 package julienbirabent.apollomusic.data.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
-import julienbirabent.apollomusic.data.api.services.ObjectiveAPI
 import julienbirabent.apollomusic.data.local.dao.*
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.ExerciseEntity
@@ -19,7 +16,6 @@ import javax.inject.Singleton
 
 @Singleton
 class ObjectiveRepository @Inject constructor(
-    private val objectiveAPI: ObjectiveAPI,
     private val objectiveDao: ObjectiveDao,
     private val objCriteriaJoinDao: ObjectiveCriteriaJoinDao,
     private val exerciseDao: ExerciseDao,
@@ -61,29 +57,26 @@ class ObjectiveRepository @Inject constructor(
     private fun getObjectiveBundle(objId: Int): Observable<ObjectiveBundle> {
         return Observable.fromCallable {
             val obj = objectiveDao.findObjective(objId)
-            val exerciseEntity = objExerciseJoinDao.getExerciseIdByObjId(obj.id).let { exerciseDao.getExerciseById(it.exerciseId.toInt()) }
-            val criteriaEntity = objCriteriaJoinDao.getCriteriaIdByObjId(obj.id).let { criteriaDao.getCriteriaById(it.criteriaId.toInt()) }
+            val criteriaEntity = objCriteriaJoinDao.getCriteriaIdByObjId(obj.id)
+                .let { criteriaDao.getCriteriaById(it.criteriaId.toInt()) }
+            val exerciseEntity = objExerciseJoinDao.getExerciseIdByObjId(obj.id).let {
+                if (it.exerciseId != null) {
+                    it.exerciseId?.toInt()?.let { exerciseId -> exerciseDao.getExerciseById(exerciseId) }
+                } else null
+            }
 
             ObjectiveBundle(obj, exerciseEntity, criteriaEntity)
         }.observeOn(scheduler.io())
     }
 
-    fun getObjectiveBundleList(practiceId: Int, disposable: CompositeDisposable): LiveData<List<ObjectiveBundle>> {
-        val objBundleData = MutableLiveData<List<ObjectiveBundle>>()
-
-        disposable.add(Observable.fromCallable { objectiveDao.findObjectiveListWithPracticeId(practiceId) }
+    fun getObjectiveBundleList(practiceId: Int): Observable<MutableList<ObjectiveBundle>> {
+        return Observable.fromCallable { objectiveDao.findObjectiveListWithPracticeId(practiceId) }
             .observeOn(scheduler.io())
             .subscribeOn(scheduler.io())
             .flatMap { Observable.fromIterable(it) }
             .flatMap { getObjectiveBundle(it.id) }
             .toList()
-            .subscribe({
-                objBundleData.postValue(it.toList())
-            }, {
-                objBundleData.postValue(emptyList())
-                Log.d(ObjectiveRepository::class.simpleName, "error while retrieving objective bundle list", it)
-            }))
-        return objBundleData
+            .toObservable()
     }
 
     fun resetObjCache() {

@@ -3,7 +3,6 @@ package julienbirabent.apollomusic.data.local.dao
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import androidx.room.Transaction
 import julienbirabent.apollomusic.data.local.entities.PracticeEntity
 
 @Dao
@@ -16,13 +15,17 @@ abstract class PracticeDao : BaseDao<PracticeEntity> {
     abstract fun findPractices(userId: String): List<PracticeEntity>
 
     @Query("SELECT * FROM practice WHERE id=:practiceId")
-    abstract fun findPracticeById(practiceId: Int): LiveData<PracticeEntity>
+    abstract fun findPracticeByIdLive(practiceId: Int): LiveData<PracticeEntity>
 
-    fun synchronizeUserPractices(userId: String?, freshPractices: List<PracticeEntity>) {
+    @Query("SELECT * FROM practice WHERE id=:practiceId")
+    abstract fun findPracticeById(practiceId: Int): PracticeEntity
+
+    fun synchronizeUserPractices(userId: String?, freshPractices: List<PracticeEntity>) : List<PracticeEntity> {
         userId?.let {
             val practices = findPractices(it)
             delete(*practices.toTypedArray())
             insert(*freshPractices.toTypedArray())
         }
+        return freshPractices
     }
 }

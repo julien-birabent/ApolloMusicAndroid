@@ -163,6 +163,7 @@ class PracticeRepository @Inject constructor(
         return practiceAPI.getPracticeWithId(practiceId)
             .observeOn(scheduler.io())
             .subscribeOn(scheduler.ui())
+            .map { practiceDao.synchronizeUserPractices(userRepo.getLoggedUserId(), listOf(it)).first() }
             .flatMap { practiceAPI.getObjectiveWithPracticeId(it.id.toString()) }
             .flattenAsObservable { it.body() }
             .concatMapSingle {
@@ -176,7 +177,7 @@ class PracticeRepository @Inject constructor(
     }
 
     fun getPractice(practiceId: Int): LiveData<PracticeEntity> {
-        return practiceDao.findPracticeById(practiceId)
+        return practiceDao.findPracticeByIdLive(practiceId)
     }
 
     @SuppressLint("CheckResult")
@@ -199,7 +200,7 @@ class PracticeRepository @Inject constructor(
     }
 
     @SuppressLint("CheckResult")
-    private fun storePracticeRelatedObjects(
+    internal fun storePracticeRelatedObjects(
         objective: ObjectiveEntity,
         objectiveCriteriaJoin: List<ObjectiveCriteriaJoin>,
         objectiveExerciseJoin: List<ObjectiveExerciseJoin>

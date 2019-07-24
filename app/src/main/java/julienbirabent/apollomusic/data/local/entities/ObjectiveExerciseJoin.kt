@@ -28,5 +28,5 @@ data class ObjectiveExerciseJoin(
 
     @Expose
     @SerializedName("exerciceId")
-    var exerciseId: String = ""
+    var exerciseId: String = "-1"
 )

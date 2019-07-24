@@ -28,26 +28,28 @@ class PracticeDetailsViewModel @Inject constructor(
 
     val practice: LiveData<PracticeEntity> = Transformations.switchMap(practiceId) { practiceId ->
         practiceRepo.fetchPractice(practiceId)
-            .subscribeOn(scheduler.ui())
             .observeOn(scheduler.io())
+            .subscribeOn(scheduler.ui())
+            .switchMap { objectiveRepository.getObjectiveBundleList(practiceId) }
             .doOnSubscribe { isLoading.set(true) }
-            .doOnComplete { isLoading.set(false) }
+            .doOnError { isLoading.set(false) }
             .subscribe({
+                isLoading.set(false)
+                objBundleList.postValue(it)
                 Log.d(PracticeDetailsViewModel::class.simpleName, "Fetch practice with id $practiceId is a success")
             }, {
+                objBundleList.postValue(mutableListOf())
                 Log.d(PracticeDetailsViewModel::class.simpleName, "Fetch practice with id $practiceId has failed", it)
             })
 
         practiceRepo.getPractice(practiceId)
     }
 
-    val objBundleList: LiveData<List<ObjectiveBundle>> = Transformations.switchMap(practice) {
-        it.id?.let { practiceId -> objectiveRepository.getObjectiveBundleList(practiceId, compositeDisposable) }
-    }
+    val objBundleList: MutableLiveData<MutableList<ObjectiveBundle>> = MutableLiveData()
 
     val practiceNotes: LiveData<String> = Transformations.map(practice) {
-        it.userNotes ?: context.getString(R.string.no_notes)
+        if (it != null) {
+            it.userNotes ?: context.getString(R.string.no_notes)
+        } else context.getString(R.string.no_notes)
     }
-
-
 }
