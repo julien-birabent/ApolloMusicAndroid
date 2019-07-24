@@ -60,7 +60,7 @@ class ObjectiveRepository @Inject constructor(
             val criteriaEntity = objCriteriaJoinDao.getCriteriaIdByObjId(obj.id)
                 .let { criteriaDao.getCriteriaById(it.criteriaId.toInt()) }
             val exerciseEntity = objExerciseJoinDao.getExerciseIdByObjId(obj.id).let {
-                if (it.exerciseId != null) {
+                if (it?.exerciseId != null) {
                     it.exerciseId?.toInt()?.let { exerciseId -> exerciseDao.getExerciseById(exerciseId) }
                 } else null
             }

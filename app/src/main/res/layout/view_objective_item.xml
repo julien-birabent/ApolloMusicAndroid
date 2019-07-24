@@ -134,6 +134,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
+                        android:animatedVisibility="@{item.obj.tempoBase != null}"
                         android:text="@{String.format(@string/tempo_plus_suffix,item.obj.tempoBase)}"
                         app:suffix="@string/bpm" />
 

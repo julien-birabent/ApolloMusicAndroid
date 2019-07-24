@@ -122,6 +122,7 @@ class ObjectiveCreateViewModel @Inject constructor(
         criteriaSelected.postValue(null)
         canGoToCriteriaSelection.postValue(false)
         practiceTargetTime.postValue("0")
+        customObjectiveString.postValue("")
     }
 
     fun getCriteriaList(): LiveData<StateData<MutableList<CheckedWrapper<CriteriaEntity>>>> {
