@@ -77,22 +77,26 @@ class PracticeListViewModel @Inject constructor(
         val outputList: MutableList<Any> = mutableListOf()
         val copyInputList = inputList.toMutableList()
 
-        copyInputList.retainAll { it.date.after(Date())  || DateUtils.isToday(it.date.time)}
+        copyInputList.retainAll { it.date.after(Date()) || DateUtils.isToday(it.date.time) }
         copyInputList.sortBy { it.date }
 
-        outputList.add(SimpleTextItem(R.string.header_practice_today))
+        outputList.add(SimpleTextItem(R.string.header_practice_today, true))
 
         copyInputList.filter { DateUtils.isToday(it.date.time) }.apply {
-            forEach { practice ->
-                outputList.add(practice)
-            }
+            if (this.isNotEmpty()) {
+                forEach { practice ->
+                    outputList.add(practice)
+                }
+            } else outputList.add(SimpleTextItem(R.string.no_practice_scheduled_for_today, false))
         }
-        outputList.add(SimpleTextItem(R.string.header_practice_to_come))
+        outputList.add(SimpleTextItem(R.string.header_practice_to_come, true))
 
         copyInputList.filter { !DateUtils.isToday(it.date.time) }.apply {
-            forEach { practice ->
-                outputList.add(practice)
-            }
+            if (isNotEmpty()) {
+                forEach { practice ->
+                    outputList.add(practice)
+                }
+            } else outputList.add(SimpleTextItem(R.string.no_practice_scheduled_in_future, false))
         }
         return outputList
     }

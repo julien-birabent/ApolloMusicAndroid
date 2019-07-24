@@ -22,9 +22,9 @@
         style="@style/CardViewBase.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:animateLayoutChanges="true">
+        android:paddingBottom="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -34,9 +34,11 @@
                 android:id="@+id/exercise_title"
                 style="@style/TextView.ListItem"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/item_exercise_height"
                 android:text="@{item.title}"
                 android:textSize="@dimen/text_size_med"
+                android:gravity="center_vertical"
+                app:layout_constraintBottom_toTopOf="@id/exercise_details_container"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,6 +53,7 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
                 android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toTopOf="@id/exercise_details_container"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -95,11 +98,11 @@
                     android:id="@+id/exercise_tab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/exercise_difficulty"
-                    app:tablature="@{item.tablature}"/>
+                    app:tablature="@{item.tablature}" />
 
                 <!--<androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/exercise_creator_name"

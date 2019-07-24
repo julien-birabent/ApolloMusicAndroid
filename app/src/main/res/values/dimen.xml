@@ -16,4 +16,5 @@
     <dimen name="card_corner_radius">7dp</dimen>
 
     <dimen name="rounded_square_button_size">38dp</dimen>
+    <dimen name="item_exercise_height">48dp</dimen>
 </resources>
