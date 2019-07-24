@@ -1,8 +1,8 @@
 package julienbirabent.apollomusic.ui.adapters.objective
 
-import julienbirabent.apollomusic.data.local.entities.ObjectiveEntity
+import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
 
 interface ObjectiveDetailsItemCallback {
 
-    fun begin(objective: ObjectiveEntity)
+    fun startExercise(objective: ObjectiveBundle)
 }

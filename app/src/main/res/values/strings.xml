@@ -79,4 +79,5 @@
     <string name="objective_header">Objective %1$s</string>
     <string name="title">Title : %1$s</string>
     <string name="no_notes">None.</string>
+    <string name="start_exercise">Start exercise</string>
 </resources>
