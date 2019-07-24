@@ -19,6 +19,7 @@ import julienbirabent.apollomusic.data.local.entities.ObjectiveEntity
 import julienbirabent.apollomusic.data.local.entities.ObjectiveExerciseJoin
 import julienbirabent.apollomusic.data.local.entities.PracticeEntity
 import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
+import julienbirabent.apollomusic.data.local.model.PracticeBundle
 import julienbirabent.apollomusic.extensions.add
 import julienbirabent.apollomusic.extensions.dbExec
 import julienbirabent.apollomusic.extensions.deepCopyOf
@@ -140,7 +141,13 @@ class PracticeRepository @Inject constructor(
         return if (userId != null) {
             practiceDao.findPracticeForUser(userId)
         } else return DefaultLiveData.create(emptyList())
+    }
 
+    fun getPracticeBundleList(practiceId: Int, objectiveBundle: List<ObjectiveBundle>): Observable<PracticeBundle> {
+        return Observable.fromCallable { practiceDao.findPracticeById(practiceId) }
+            .observeOn(scheduler.io())
+            .subscribeOn(scheduler.io())
+            .map { PracticeBundle(it, objectiveBundle) }
     }
 
     fun fetchPracticeList(): Single<List<PracticeEntity>> {

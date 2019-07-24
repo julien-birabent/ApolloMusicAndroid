@@ -1,9 +1,11 @@
 package julienbirabent.apollomusic.ui.adapters.objective
 
 import android.animation.ObjectAnimator
+import android.text.format.DateUtils
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
+import android.widget.Button
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.transition.TransitionManager
 import julienbirabent.apollomusic.R
@@ -11,15 +13,17 @@ import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
 import julienbirabent.apollomusic.ui.adapters.BaseAdapter
 import julienbirabent.apollomusic.ui.adapters.BaseDiffCallback
 import julienbirabent.apollomusic.ui.adapters.DataBindingViewHolder
+import java.util.*
 
 class ObjectiveDetailAdapter(callback: ObjectiveDetailsItemCallback? = null) :
     BaseAdapter<ObjectiveBundle, ObjectiveDetailsItemCallback>(callback) {
 
+    private var expandedPosition: Int = -1
+    lateinit var currentPracticeDate: Date
+
     override fun getLayoutId(position: Int, obj: ObjectiveBundle): Int {
         return R.layout.view_objective_details_item
     }
-
-    private var expandedPosition: Int = -1
 
     override fun onBindViewHolder(
         holder: DataBindingViewHolder<ObjectiveBundle, ObjectiveDetailsItemCallback>,
@@ -28,7 +32,13 @@ class ObjectiveDetailAdapter(callback: ObjectiveDetailsItemCallback? = null) :
         super.onBindViewHolder(holder, position)
 
         val item = listItems[position]
-        val displayPosition = (position +1).toString()
+        val displayPosition = (position + 1).toString()
+
+        holder.binding.root.findViewById<Button>(R.id.start_exercise).apply {
+            visibility = if (DateUtils.isToday(currentPracticeDate.time)) {
+                View.VISIBLE
+            } else View.GONE
+        }
 
         (holder.binding.root.findViewById<AppCompatTextView>(R.id.objective_header)).apply {
             text = String.format(context.resources.getString(R.string.objective_header), displayPosition)

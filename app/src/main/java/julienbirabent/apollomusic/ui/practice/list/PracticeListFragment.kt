@@ -34,8 +34,8 @@ class PracticeListFragment : BaseFragment<FragmentPracticeListBinding, PracticeL
         })
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         viewModel.refreshPracticeList()
     }
 

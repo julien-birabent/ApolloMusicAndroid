@@ -24,8 +24,9 @@ class PracticeDetailsFragment : BaseFragment<FragmentPracticeDetailsBinding, Pra
 
         with(viewModel) {
             practiceId.postValue(args.practiceId)
-            objBundleList.observe(viewLifecycleOwner, Observer {
-                objAdapter.updateList(it)
+            practiceBundle.observe(viewLifecycleOwner, Observer {
+                objAdapter.currentPracticeDate = it.practice.date
+                objAdapter.updateList(it.ObjBundleList)
             })
         }
     }

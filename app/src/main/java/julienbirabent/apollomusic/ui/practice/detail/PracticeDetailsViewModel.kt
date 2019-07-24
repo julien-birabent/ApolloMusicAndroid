@@ -8,6 +8,7 @@ import androidx.lifecycle.Transformations
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.data.local.entities.PracticeEntity
 import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
+import julienbirabent.apollomusic.data.local.model.PracticeBundle
 import julienbirabent.apollomusic.data.repository.ObjectiveRepository
 import julienbirabent.apollomusic.data.repository.PracticeRepository
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
@@ -31,21 +32,21 @@ class PracticeDetailsViewModel @Inject constructor(
             .observeOn(scheduler.io())
             .subscribeOn(scheduler.ui())
             .switchMap { objectiveRepository.getObjectiveBundleList(practiceId) }
+            .switchMap { practiceRepo.getPracticeBundleList(practiceId, it) }
             .doOnSubscribe { isLoading.set(true) }
             .doOnError { isLoading.set(false) }
             .subscribe({
                 isLoading.set(false)
-                objBundleList.postValue(it)
+                practiceBundle.postValue(it)
                 Log.d(PracticeDetailsViewModel::class.simpleName, "Fetch practice with id $practiceId is a success")
             }, {
-                objBundleList.postValue(mutableListOf())
                 Log.d(PracticeDetailsViewModel::class.simpleName, "Fetch practice with id $practiceId has failed", it)
             })
 
         practiceRepo.getPractice(practiceId)
     }
 
-    val objBundleList: MutableLiveData<MutableList<ObjectiveBundle>> = MutableLiveData()
+    val practiceBundle: MutableLiveData<PracticeBundle> = MutableLiveData()
 
     val practiceNotes: LiveData<String> = Transformations.map(practice) {
         if (it != null) {
