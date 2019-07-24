@@ -107,7 +107,12 @@ class PracticeRepository @Inject constructor(
                                     Log.d("create practice", "zip join call")
                                     dbExec {
                                         objCriteriaJoin.body()?.let { it -> objectiveCriteriaJoinDao.insert(it) }
-                                        objExerciseJoin.body()?.let { it -> objectiveExerciseJoinDao.insert(it) }
+
+                                        objExerciseJoin.body()?.let { it ->
+                                            if (it.exerciseId != null) {
+                                                objectiveExerciseJoinDao.insert(it)
+                                            }
+                                        }
                                         Log.d("create practice", "inserting ObjectiveCriteriaJoin : $objCriteriaJoin")
                                         Log.d("create practice", "inserting ObjectiveExerciseJoin : $objExerciseJoin")
                                         results.set(i, true)
@@ -203,7 +208,7 @@ class PracticeRepository @Inject constructor(
             dbExec {
                 objectiveDao.insert(objective)
                 objectiveCriteriaJoinDao.insert(*objectiveCriteriaJoin.toTypedArray())
-                objectiveExerciseJoinDao.insert(*objectiveExerciseJoin.toTypedArray())
+                objectiveExerciseJoinDao.insert(*objectiveExerciseJoin.filter { it.exerciseId != null }.toTypedArray())
             }
         }.subscribe({
             Log.d(
