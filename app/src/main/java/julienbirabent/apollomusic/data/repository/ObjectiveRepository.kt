@@ -54,7 +54,7 @@ class ObjectiveRepository @Inject constructor(
         resetPendingObj()
     }
 
-    private fun getObjectiveBundle(objId: Int): Observable<ObjectiveBundle> {
+    fun getObjectiveBundle(objId: Int): Observable<ObjectiveBundle> {
         return Observable.fromCallable {
             val obj = objectiveDao.findObjective(objId)
             val criteriaEntity = objCriteriaJoinDao.getCriteriaIdByObjId(obj.id)

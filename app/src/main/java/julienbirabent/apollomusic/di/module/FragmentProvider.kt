@@ -5,6 +5,7 @@ import dagger.android.ContributesAndroidInjector
 import julienbirabent.apollomusic.ui.objective.ObjectiveCreateFragment
 import julienbirabent.apollomusic.ui.objective.ObjectiveExerciseSelectionFragment
 import julienbirabent.apollomusic.ui.objective.criteria.ObjectiveCriteriaSelectionFragment
+import julienbirabent.apollomusic.ui.play_exercise.PlayExerciseFragment
 import julienbirabent.apollomusic.ui.practice.create.PracticeCreateFragment
 import julienbirabent.apollomusic.ui.practice.detail.PracticeDetailsFragment
 import julienbirabent.apollomusic.ui.practice.list.PracticeListFragment
@@ -29,4 +30,8 @@ abstract class FragmentProvider {
 
     @ContributesAndroidInjector
     abstract fun contributePracticeDetailsFragment(): PracticeDetailsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributePlayExerciseFragment(): PlayExerciseFragment
+
 }
