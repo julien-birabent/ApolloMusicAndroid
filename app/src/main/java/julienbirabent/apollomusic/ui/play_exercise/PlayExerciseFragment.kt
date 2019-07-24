@@ -1,5 +1,6 @@
 package julienbirabent.apollomusic.ui.play_exercise
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
@@ -22,6 +23,10 @@ class PlayExerciseFragment : BaseFragment<FragmentPlayExerciseBinding, PlayExerc
         if (activity is HomeActivity) {
             (activity as HomeActivity).hideBottomNavigation(!toolbarIsShown)
         }
+    }
+
+    override fun getDefaultScreenOrientation(): Int {
+        return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     }
 
     override fun endSession() {

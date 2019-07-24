@@ -1,6 +1,7 @@
 package julienbirabent.apollomusic.ui.base;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,10 +59,6 @@ public abstract class BaseFragment<Binding extends androidx.databinding.ViewData
             this.mActivity = activity;
             activity.onFragmentAttached();
 
-            if (this instanceof HideToolbarCallback) {
-                getBaseActivity().hideToolbar(true);
-                ((HideToolbarCallback) this).onHideToolbar(false);
-            }
         }
     }
 
@@ -76,17 +73,21 @@ public abstract class BaseFragment<Binding extends androidx.databinding.ViewData
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        hideToolbar(true);
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         rootView = binding.getRoot();
         return rootView;
     }
 
     @Override
+    public void onDestroyView() {
+        hideToolbar(false);
+        super.onDestroyView();
+    }
+
+    @Override
     public void onDetach() {
-        if (this instanceof HideToolbarCallback) {
-            getBaseActivity().hideToolbar(false);
-            ((HideToolbarCallback) this).onHideToolbar(true);
-        }
+        mActivity.setRequestedOrientation(getDefaultScreenOrientation());
         mActivity = null;
         super.onDetach();
     }
@@ -100,6 +101,7 @@ public abstract class BaseFragment<Binding extends androidx.databinding.ViewData
             viewModel.setNavigator(this);
         }
         binding.executePendingBindings();
+        mActivity.setRequestedOrientation(getDefaultScreenOrientation());
     }
 
     protected void setBindingVariables(@NotNull androidx.databinding.ViewDataBinding binding) {
@@ -120,22 +122,23 @@ public abstract class BaseFragment<Binding extends androidx.databinding.ViewData
         }
     }
 
-    public boolean isNetworkConnected() {
-        return mActivity != null && mActivity.isNetworkConnected();
-    }
-
-    public void openActivityOnTokenExpire() {
-        if (mActivity != null) {
-            mActivity.openActivityOnTokenExpire();
-        }
-    }
-
     private void performDependencyInjection() {
         AndroidSupportInjection.inject(this);
     }
 
     protected ViewModelFactory getViewModelFactory() {
         return viewModelFactory;
+    }
+
+    protected int getDefaultScreenOrientation() {
+        return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    }
+
+    private void hideToolbar(Boolean hideIt) {
+        if (this instanceof HideToolbarCallback) {
+            getBaseActivity().hideToolbar(hideIt);
+            ((HideToolbarCallback) this).onHideToolbar(!hideIt);
+        }
     }
 
     public interface Callback {
