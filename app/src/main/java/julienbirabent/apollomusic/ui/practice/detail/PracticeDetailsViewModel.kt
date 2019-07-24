@@ -12,6 +12,7 @@ import julienbirabent.apollomusic.data.local.model.PracticeBundle
 import julienbirabent.apollomusic.data.repository.ObjectiveRepository
 import julienbirabent.apollomusic.data.repository.PracticeRepository
 import julienbirabent.apollomusic.thread.AppSchedulerProvider
+import julienbirabent.apollomusic.ui.adapters.objective.ObjectiveDetailsItemCallback
 import julienbirabent.apollomusic.ui.base.BaseViewModel
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,6 +25,12 @@ class PracticeDetailsViewModel @Inject constructor(
     private val context: Context
 ) :
     BaseViewModel<PracticeDetailsNavigator>() {
+
+    val objectiveDetailsItemCallback: ObjectiveDetailsItemCallback = object : ObjectiveDetailsItemCallback {
+        override fun startExercise(objective: ObjectiveBundle) {
+            navigator?.startPractice(objective.obj.id)
+        }
+    }
 
     var practiceId: MutableLiveData<Int> = MutableLiveData()
 

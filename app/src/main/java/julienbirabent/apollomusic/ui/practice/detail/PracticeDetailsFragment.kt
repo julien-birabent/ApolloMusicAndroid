@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
@@ -37,7 +38,7 @@ class PracticeDetailsFragment : BaseFragment<FragmentPracticeDetailsBinding, Pra
 
     override fun setBindingVariables(binding: ViewDataBinding) {
         super.setBindingVariables(binding)
-        objAdapter = ObjectiveDetailAdapter()
+        objAdapter = ObjectiveDetailAdapter(viewModel.objectiveDetailsItemCallback)
         binding.setVariable(BR.objAdapter, objAdapter)
     }
 
@@ -53,7 +54,7 @@ class PracticeDetailsFragment : BaseFragment<FragmentPracticeDetailsBinding, Pra
         return ViewModelProviders.of(this, viewModelFactory).get(PracticeDetailsViewModel::class.java)
     }
 
-    override fun startPractice() {
-
+    override fun startPractice(objId: Int) {
+        findNavController().navigate(PracticeDetailsFragmentDirections.startExercise(objId))
     }
 }

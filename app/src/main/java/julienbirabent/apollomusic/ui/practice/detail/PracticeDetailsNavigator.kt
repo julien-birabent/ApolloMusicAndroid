@@ -4,5 +4,5 @@ import julienbirabent.apollomusic.ui.base.UINavigator
 
 interface PracticeDetailsNavigator :UINavigator{
 
-    fun startPractice()
+    fun startPractice(objId : Int)
 }

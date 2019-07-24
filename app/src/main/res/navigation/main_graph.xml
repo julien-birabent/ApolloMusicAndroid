@@ -97,6 +97,23 @@
             android:name="practiceId"
             android:defaultValue="-1"
             app:argType="integer" />
+        <action
+            android:id="@+id/start_exercise"
+            app:destination="@id/playExerciseFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        tools:layout="@layout/fragment_play_exercise"
+        android:id="@+id/playExerciseFragment"
+        android:name="julienbirabent.apollomusic.ui.play_exercise.PlayExerciseFragment"
+        android:label="">
+        <argument
+            android:name="ObjectiveId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

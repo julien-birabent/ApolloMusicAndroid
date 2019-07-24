@@ -2,7 +2,6 @@ package julienbirabent.apollomusic.ui.base;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +27,7 @@ import julienbirabent.apollomusic.thread.SchedulerProvider;
 import julienbirabent.apollomusic.viewmodel.ViewModelFactory;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
         implements BaseFragment.Callback, HasSupportFragmentInjector {
@@ -97,6 +97,12 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         }
+    }
+
+    public void hideToolbar(Boolean hideIt) {
+        if (hideIt) {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } else Objects.requireNonNull(getSupportActionBar()).show();
     }
 
     public boolean isNetworkConnected() {
@@ -170,7 +176,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     }
 
     public void showErrorDialog(String title, String message) {
-        AlertDialog alertDialog = new AlertDialog.Builder(this,R.style.AlertDialogTheme_White).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.AlertDialogTheme_White).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
         alertDialog.setCancelable(false);

@@ -4,16 +4,25 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import julienbirabent.apollomusic.BR
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.databinding.FragmentPlayExerciseBinding
 import julienbirabent.apollomusic.ui.base.BaseFragment
+import julienbirabent.apollomusic.ui.base.HideToolbarCallback
+import julienbirabent.apollomusic.ui.home.HomeActivity
 
 class PlayExerciseFragment : BaseFragment<FragmentPlayExerciseBinding, PlayExerciseViewModel>(),
-    PlayExerciseNavigator {
+    PlayExerciseNavigator, HideToolbarCallback {
 
-/*    private val args: PracticeDetailsFragmentArgs by navArgs()
-    private lateinit var objAdapter: ObjectiveDetailAdapter*/
+    private val args: PlayExerciseFragmentArgs by navArgs()
+
+    override fun onHideToolbar(toolbarIsShown: Boolean) {
+        super.onHideToolbar(toolbarIsShown)
+        if (activity is HomeActivity) {
+            (activity as HomeActivity).hideBottomNavigation(!toolbarIsShown)
+        }
+    }
 
     override fun endSession() {
     }

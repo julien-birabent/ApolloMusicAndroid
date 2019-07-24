@@ -1,15 +1,15 @@
 package julienbirabent.apollomusic.ui.base;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import dagger.android.support.AndroidSupportInjection;
@@ -57,6 +57,11 @@ public abstract class BaseFragment<Binding extends androidx.databinding.ViewData
             BaseActivity activity = (BaseActivity) context;
             this.mActivity = activity;
             activity.onFragmentAttached();
+
+            if (this instanceof HideToolbarCallback) {
+                getBaseActivity().hideToolbar(true);
+                ((HideToolbarCallback) this).onHideToolbar(false);
+            }
         }
     }
 
@@ -78,6 +83,10 @@ public abstract class BaseFragment<Binding extends androidx.databinding.ViewData
 
     @Override
     public void onDetach() {
+        if (this instanceof HideToolbarCallback) {
+            getBaseActivity().hideToolbar(false);
+            ((HideToolbarCallback) this).onHideToolbar(true);
+        }
         mActivity = null;
         super.onDetach();
     }
@@ -93,7 +102,7 @@ public abstract class BaseFragment<Binding extends androidx.databinding.ViewData
         binding.executePendingBindings();
     }
 
-    protected void setBindingVariables(@NotNull androidx.databinding.ViewDataBinding binding){
+    protected void setBindingVariables(@NotNull androidx.databinding.ViewDataBinding binding) {
         this.binding.setVariable(getBindingVariable(), viewModel);
     }
 
