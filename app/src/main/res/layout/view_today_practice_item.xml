@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:background="@drawable/bg_card_outlined"
+        android:background="@drawable/bg_card_outlined_color_primary"
         android:padding="8dp">
 
         <androidx.appcompat.widget.AppCompatTextView

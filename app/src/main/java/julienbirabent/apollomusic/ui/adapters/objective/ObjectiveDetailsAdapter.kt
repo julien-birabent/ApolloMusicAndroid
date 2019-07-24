@@ -4,39 +4,41 @@ import android.animation.ObjectAnimator
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.transition.TransitionManager
 import julienbirabent.apollomusic.R
 import julienbirabent.apollomusic.data.local.model.ObjectiveBundle
-import julienbirabent.apollomusic.ui.adapters.ActionItem
 import julienbirabent.apollomusic.ui.adapters.BaseAdapter
 import julienbirabent.apollomusic.ui.adapters.BaseDiffCallback
 import julienbirabent.apollomusic.ui.adapters.DataBindingViewHolder
 
-class ObjectiveDetailAdapter(callback: ActionItem<ObjectiveBundle>? = null) :
-    BaseAdapter<ObjectiveBundle, ActionItem<ObjectiveBundle>>(callback) {
+class ObjectiveDetailAdapter(callback: ObjectiveDetailsItemCallback? = null) :
+    BaseAdapter<ObjectiveBundle, ObjectiveDetailsItemCallback>(callback) {
 
     override fun getLayoutId(position: Int, obj: ObjectiveBundle): Int {
-        return R.layout.view_objective_item
+        return R.layout.view_objective_details_item
     }
 
     private var expandedPosition: Int = -1
 
     override fun onBindViewHolder(
-        holder: DataBindingViewHolder<ObjectiveBundle, ActionItem<ObjectiveBundle>>,
+        holder: DataBindingViewHolder<ObjectiveBundle, ObjectiveDetailsItemCallback>,
         position: Int
     ) {
         super.onBindViewHolder(holder, position)
 
         val item = listItems[position]
+        val displayPosition = (position +1).toString()
 
+        (holder.binding.root.findViewById<AppCompatTextView>(R.id.objective_header)).apply {
+            text = String.format(context.resources.getString(R.string.objective_header), displayPosition)
+        }
         if (item.ex == null) {
             (holder.binding.root.findViewById(R.id.view_exercise_short_info) as View).visibility = View.GONE
         }
 
         val expandButton = (holder.binding.root.findViewById(R.id.expand_button) as View)
-        (holder.binding.root.findViewById(R.id.delete_button) as View).setOnClickListener {
-            callback?.deleteItem(listItems[position])
-        }
+
         val isExpanded = position == expandedPosition
         getDetailsView(holder).visibility = if (isExpanded) View.VISIBLE else View.GONE
         holder.binding.root.setOnClickListener {
@@ -54,7 +56,7 @@ class ObjectiveDetailAdapter(callback: ActionItem<ObjectiveBundle>? = null) :
         expandButton.rotation = if (isExpanded) 180f else 0f
     }
 
-    private fun getDetailsView(holder: DataBindingViewHolder<ObjectiveBundle, ActionItem<ObjectiveBundle>>): View {
+    private fun getDetailsView(holder: DataBindingViewHolder<ObjectiveBundle, ObjectiveDetailsItemCallback>): View {
         return (holder.binding.root.findViewById(R.id.objective_details_container) as View)
     }
 

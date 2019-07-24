@@ -38,7 +38,7 @@
             android:padding="4dp">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/objective_title"
+                android:id="@+id/objective_header"
                 style="@style/TextView.ListItem"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/objective_title">
+                app:layout_constraintTop_toBottomOf="@id/objective_header">
 
                 <include
                     android:id="@+id/view_exercise_short_info"

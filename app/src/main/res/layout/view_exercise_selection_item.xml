@@ -104,17 +104,6 @@
                     app:layout_constraintTop_toBottomOf="@id/exercise_difficulty"
                     app:tablature="@{item.tablature}" />
 
-                <!--<androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/exercise_creator_name"
-                    style="@style/TextView.Subtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:padding="8dp"
-                    android:text="@{item.profileId}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/exercise_difficulty" />-->
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
