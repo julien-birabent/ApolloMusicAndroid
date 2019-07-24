@@ -133,6 +133,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_exercise"
                     android:layout_marginTop="8dp"
                     style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:backgroundTint="@color/green_fresh_herb"
