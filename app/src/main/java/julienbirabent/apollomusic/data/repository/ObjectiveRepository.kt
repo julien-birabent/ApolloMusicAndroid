@@ -66,7 +66,7 @@ class ObjectiveRepository @Inject constructor(
             }
 
             ObjectiveBundle(obj, exerciseEntity, criteriaEntity)
-        }.observeOn(scheduler.io())
+        }.observeOn(scheduler.ui()).subscribeOn(scheduler.io())
     }
 
     fun getObjectiveBundleList(practiceId: Int): Observable<MutableList<ObjectiveBundle>> {

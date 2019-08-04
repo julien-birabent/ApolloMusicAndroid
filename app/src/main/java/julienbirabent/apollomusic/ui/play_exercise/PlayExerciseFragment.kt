@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import julienbirabent.apollomusic.BR
@@ -35,8 +36,20 @@ class PlayExerciseFragment : BaseFragment<FragmentPlayExerciseBinding, PlayExerc
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        viewModel.objTrigger.observe(viewLifecycleOwner, Observer {
+            viewDataBinding.tablatureView.tablature = it.ex?.tablature
+            viewDataBinding.desiredPracticeTime.text =
+                String.format(getString(R.string.desired_practice_time), it.obj.targetPracticeTime.toString())
+            viewDataBinding.exerciseTitle.text = String.format(getString(R.string.title), it.ex?.title)
+            viewDataBinding.exerciseDescription.text =
+                String.format(getString(R.string.description), it.ex?.description)
+        })
+        viewModel.currentPracticeTime.observe(viewLifecycleOwner, Observer {
+            viewDataBinding.actualPracticeTime.text = String.format(getString(R.string.current_practice_time), it)
+        })
+        viewModel.objectiveId.value = args.ObjectiveId
     }
+
 
     override fun onResume() {
         super.onResume()
