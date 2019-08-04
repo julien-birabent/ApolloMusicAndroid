@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.transition.TransitionManager
 import julienbirabent.apollomusic.R
@@ -33,6 +34,17 @@ class ObjectiveDetailAdapter(callback: ObjectiveDetailsItemCallback? = null) :
 
         val item = listItems[position]
         val displayPosition = (position + 1).toString()
+
+        holder.binding.root.findViewById<TextView>(R.id.done_header).apply {
+            visibility = View.VISIBLE
+            if (item.obj.done) {
+                text = context.getText((R.string.done))
+                setTextColor(context.getColor(R.color.green_fresh_herb))
+            } else {
+                text = context.getText(R.string.to_do)
+                setTextColor(context.getColor(R.color.colorAccent))
+            }
+        }
 
         holder.binding.root.findViewById<Button>(R.id.start_exercise).apply {
             visibility = if (DateUtils.isToday(currentPracticeDate.time)) {

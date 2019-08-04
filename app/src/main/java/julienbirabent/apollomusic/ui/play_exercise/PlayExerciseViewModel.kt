@@ -55,7 +55,7 @@ class PlayExerciseViewModel @Inject constructor(
     fun doneAction(objId: Int) {
         compositeDisposable.add(
             objectiveRepository.updateObjective(objId, true)
-                .observeOn(scheduler.io())
+                .observeOn(scheduler.ui())
                 .subscribeOn(scheduler.ui())
                 .doOnSubscribe { isLoading.set(true) }
                 .doOnError { isLoading.set(false) }
