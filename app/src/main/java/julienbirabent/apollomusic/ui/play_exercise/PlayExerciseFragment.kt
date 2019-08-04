@@ -31,6 +31,7 @@ class PlayExerciseFragment : BaseFragment<FragmentPlayExerciseBinding, PlayExerc
     }
 
     override fun endSession() {
+        activity?.onBackPressed()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,6 +49,7 @@ class PlayExerciseFragment : BaseFragment<FragmentPlayExerciseBinding, PlayExerc
             viewDataBinding.actualPracticeTime.text = String.format(getString(R.string.current_practice_time), it)
         })
         viewModel.objectiveId.value = args.ObjectiveId
+        viewDataBinding.doneButton.setOnClickListener { viewModel.doneAction(args.ObjectiveId) }
     }
 
 

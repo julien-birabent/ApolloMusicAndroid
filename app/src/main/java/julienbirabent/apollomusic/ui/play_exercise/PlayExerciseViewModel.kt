@@ -52,4 +52,21 @@ class PlayExerciseViewModel @Inject constructor(
         return String.format("%02d:%02d", minutes, seconds)
     }
 
+    fun doneAction(objId: Int) {
+        compositeDisposable.add(
+            objectiveRepository.updateObjective(objId, true)
+                .observeOn(scheduler.io())
+                .subscribeOn(scheduler.ui())
+                .doOnSubscribe { isLoading.set(true) }
+                .doOnError { isLoading.set(false) }
+                .subscribe({
+                    isLoading.set(false)
+                    navigator?.endSession()
+                    Log.d(PlayExerciseViewModel::class.simpleName, "Objective updated to done : $it")
+                }, {
+                    Log.d(PlayExerciseViewModel::class.simpleName, "Error while updating objective to done", it)
+                })
+        )
+    }
+
 }
