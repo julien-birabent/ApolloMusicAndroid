@@ -78,6 +78,9 @@
 
     <string name="objective_header">Objective %1$s</string>
     <string name="title">Title : %1$s</string>
+    <string name="to_do">Todo</string>
     <string name="no_notes">None.</string>
     <string name="start_exercise">Start exercise</string>
+    <string name="desired_practice_time">Desired practice time : %1$s min.</string>
+    <string name="current_practice_time">Current practice time : %1$s min.</string>
 </resources>

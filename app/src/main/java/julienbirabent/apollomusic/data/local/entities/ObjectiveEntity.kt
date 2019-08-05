@@ -43,5 +43,9 @@ data class ObjectiveEntity(
     @Expose
     @SerializedName("practiceId")
     @ColumnInfo(name = "practiceId")
-    var practiceId: Int? = -1
+    var practiceId: Int? = -1,
+
+    @Expose
+    @SerializedName("done")
+    var done : Boolean = false
 )

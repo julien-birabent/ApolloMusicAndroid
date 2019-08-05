@@ -3,6 +3,7 @@ package julienbirabent.apollomusic.data.repository
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
+import julienbirabent.apollomusic.data.api.services.ObjectiveAPI
 import julienbirabent.apollomusic.data.local.dao.*
 import julienbirabent.apollomusic.data.local.entities.CriteriaEntity
 import julienbirabent.apollomusic.data.local.entities.ExerciseEntity
@@ -20,7 +21,8 @@ class ObjectiveRepository @Inject constructor(
     private val objCriteriaJoinDao: ObjectiveCriteriaJoinDao,
     private val exerciseDao: ExerciseDao,
     private val criteriaDao: CriteriaDao,
-    val objExerciseJoinDao: ObjectiveExerciseJoinDao
+    val objExerciseJoinDao: ObjectiveExerciseJoinDao,
+    private val objApi: ObjectiveAPI
 ) : BaseRepository() {
 
     companion object {
@@ -66,7 +68,7 @@ class ObjectiveRepository @Inject constructor(
             }
 
             ObjectiveBundle(obj, exerciseEntity, criteriaEntity)
-        }.observeOn(scheduler.io())
+        }.observeOn(scheduler.ui()).subscribeOn(scheduler.io())
     }
 
     fun getObjectiveBundleList(practiceId: Int): Observable<MutableList<ObjectiveBundle>> {
@@ -96,6 +98,23 @@ class ObjectiveRepository @Inject constructor(
             targetPracticeTime = practiceTime
         }
         addPendingObj(ObjectiveBundle(objectiveToCreate, exerciseEntity, criteriaEntity))
+    }
+
+    fun updateObjective(objectiveId: Int, isDone: Boolean): Observable<ObjectiveEntity?> {
+        return Observable.fromCallable {
+            objectiveDao.findObjective(objectiveId).apply { done = isDone }
+        }
+            .observeOn(scheduler.ui())
+            .subscribeOn(scheduler.io())
+            .flatMapSingle { objApi.updateObjective(it) }
+            .map { it.body() }
+            .doOnNext { storeObjectiveInDb(it) }
+    }
+
+    private fun storeObjectiveInDb(objective: ObjectiveEntity?) {
+        appExecutors.diskIO().execute {
+            objective?.let { objectiveDao.insert(it) }
+        }
     }
 
     fun getPracticeCreationObjListLive(): MutableLiveData<List<ObjectiveBundle>> {

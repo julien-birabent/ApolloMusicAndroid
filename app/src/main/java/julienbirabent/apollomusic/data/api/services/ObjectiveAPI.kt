@@ -37,4 +37,7 @@ interface ObjectiveAPI {
         @Field(value = "objectiveId") objIdField: Int?
     ): Single<Response<ObjectiveExerciseJoin>>
 
+    @PUT("/api/objectives")
+    fun updateObjective(@Body objective: ObjectiveEntity): Single<Response<ObjectiveEntity>>
+
 }
